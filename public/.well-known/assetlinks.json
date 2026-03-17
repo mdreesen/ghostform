@@ -1,0 +1,14 @@
+[{
+    "relation": [
+      "delegate_permission/common.handle_all_urls",
+      "delegate_permission/common.get_login_creds"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "app.vercel.goals_io.twa.pwa",
+      "sha256_cert_fingerprints": [
+        "98:3D:E5:C4:8F:B1:02:6D:22:8F:60:1D:68:EF:29:A8:2A:82:A7:24:6F:6C:82:A6:1E:FC:D7:CB:8F:9E:3D:FB",
+        "15:15:47:28:0B:9F:53:80:BD:31:79:8F:16:79:6D:2C:65:E9:B3:6B:C9:83:E7:B8:DF:B1:4C:9C:46:8E:9B:26"
+      ]
+    }
+}]
