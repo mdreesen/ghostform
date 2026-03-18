@@ -53,10 +53,10 @@ export default defineEventHandler(async (event) => {
     `;
 
     // Email lead
-    await emailLead(body.answers?.email);
+    await emailLead(body.answers);
 
     // Email Company
-    await emailCompany('michaeldreesen90@gmail.com', output);
+    await emailCompany(output);
 
     return { status: 'success', aiResponse: text };
 });
