@@ -19,7 +19,10 @@ export default defineEventHandler(async (event) => {
         3. Determine the project category (e.g., Deck, Remodel, New Build).
         4. Calculate an estimated price based on $200/sqft for interior and $50/sqft for exterior.
         5. Identify specific company needs (e.g., "Needs site visit," "Needs architectural plans").
-        6. Constraint: Do not be conversational. Do not say "Thanks for reaching out." Only provide the analysis.`;
+        6. Constraint: Do not be conversational. Do not say "Thanks for reaching out." Only provide the analysis.
+        
+        Let new lines be wrapped in a <div></div> element
+        `;
 
     const usePrompt = `
         Analyze the following lead data:
@@ -37,15 +40,15 @@ export default defineEventHandler(async (event) => {
     });
 
     const output = `
-        Client Information\n
-        Client Name: ${body.answers?.name}\n
-        Client Email: ${body.answers?.email}\n
-        Project Goal (what they want): ${body.answers?.goal}\n
-        Square Footage: ${body.answers?.sqft}\n
-        Budget: ${body.answers?.budget}\n
-        Message Details: ${body.answers?.message}\n
+        <h1>Lead Information</h1>
+        <div>Client Name: ${body.answers?.name}</div>
+        <div>Client Email: ${body.answers?.email}</div>
+        <div>Project Goal (what they want): ${body.answers?.goal}</div>
+        <div>Square Footage: ${body.answers?.sqft}</div>
+        <div>Budget: ${body.answers?.budget}</div>
+        <div>Message Details: ${body.answers?.message}</div>
 
-        AI Analysis:\n
+        <h2>AI Analysis:</h2>
         ${text}
     `;
 

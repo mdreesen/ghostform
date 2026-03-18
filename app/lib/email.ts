@@ -32,7 +32,6 @@ export async function emailLead(email: string) {
 export async function emailCompany(email: string, body: string) {
     try {
         const resend = new Resend(`${process.env.RESEND_KEY}`);
-        console.log('emailing: Send email')
 
         await resend.emails.send({
             from: 'NoReply@ascendpod.com',
@@ -40,8 +39,6 @@ export async function emailCompany(email: string, body: string) {
             subject: "Your Lead Inquiry", // Subject line
             html: body
         });
-        console.log('emailing: Email sent to lead');
-
     } catch (error) {
         console.log(error);
         throw createError({

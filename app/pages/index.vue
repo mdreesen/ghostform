@@ -28,8 +28,6 @@ const submitForm = async () => {
 
     isSubmitting.value = false;
 };
-
-console.log('aiResult', aiResult.value)
 </script>
 
 <template>
