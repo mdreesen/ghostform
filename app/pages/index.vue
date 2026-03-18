@@ -47,6 +47,10 @@ const submitForm = async () => {
                 </div>
             </transition>
 
+            <div>
+                <appImageUpload />
+            </div>
+
             <button v-if="!isSubmitting" @click="nextStep"
                 class="bg-blue-600 px-6 py-2 rounded-lg hover:bg-blue-500 transition">
                 {{ step === questions.length - 1 ? 'Finish' : 'Next' }}

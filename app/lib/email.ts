@@ -30,6 +30,7 @@ export async function emailLead(email: string) {
 };
 
 export async function emailCompany(email: string, body: string) {
+
     try {
         const resend = new Resend(`${process.env.RESEND_KEY}`);
 
@@ -37,7 +38,13 @@ export async function emailCompany(email: string, body: string) {
             from: 'NoReply@ascendpod.com',
             to: ['michaeldreesen90@gmail.com'],
             subject: "Your Lead Inquiry", // Subject line
-            html: body
+            html: body,
+            // attachments: [
+            //     {
+            //       filename: file.filename || 'site-photo.jpg',
+            //       content: file.data // Resend accepts the Buffer directly!
+            //     }
+            //   ]
         });
     } catch (error) {
         console.log(error);
