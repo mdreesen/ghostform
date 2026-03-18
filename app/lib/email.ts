@@ -1,7 +1,7 @@
 import { generateText } from 'ai';
 import { openai } from '@ai-sdk/openai';
 import { Resend } from 'resend';
-import type { Lead } from '~/types/lead'
+import type { Lead } from '~/types/lead';
 
 export async function emailLead(data: Lead) {
     try {
@@ -26,6 +26,7 @@ export async function emailLead(data: Lead) {
         await resend.emails.send({
             from: 'NoReply@ascendpod.com',
             to: [data?.email],
+            // to: ['michaeldreesen90@gmail.com', 'josiah@westernrockiesconstruction.com'],
             subject: "Your Job Inquiry", // Subject line
             html: text
         });
@@ -47,9 +48,8 @@ export async function emailCompany(body: string) {
 
         await resend.emails.send({
             from: 'NoReply@ascendpod.com',
-            to: ['michaeldreesen90@gmail.com', 'josiah@westernrockiesconstruction.com'],
-            // to: ['michaeldreesen90@gmail.com'],
-
+            // to: ['michaeldreesen90@gmail.com', 'josiah@westernrockiesconstruction.com'],
+            to: ['michaeldreesen90@gmail.com'],
             subject: "Your Lead Inquiry", // Subject line
             html: body,
             // attachments: [

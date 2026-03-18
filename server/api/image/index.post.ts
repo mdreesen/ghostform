@@ -1,6 +1,7 @@
 // server/api/analyze-image.post.ts
 import { generateText } from 'ai';
 import { openai } from '@ai-sdk/openai';
+import { analyze_image } from '~/utils/analyze/image';
 
 export default defineEventHandler(async (event) => {
   const formData = await readMultipartFormData(event);
@@ -16,7 +17,7 @@ export default defineEventHandler(async (event) => {
       {
         role: 'user',
         content: [
-          { type: 'text', text: 'Analyze this construction project photo for Western Rockies Construction.' },
+          { type: 'text', text: analyze_image },
           { 
             type: 'image', 
             // PASS THE RAW DATA BUFFER DIRECTLY

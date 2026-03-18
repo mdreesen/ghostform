@@ -1,42 +1,38 @@
 import { generateText } from 'ai';
 import { openai } from '@ai-sdk/openai';
-import { materials, materials_expanded } from '~/utils/category_construction_products';
-import { role } from '~/utils/category_construction_role';
 import { emailLead, emailCompany } from '~/lib/email';
+import { construction_role } from '~/utils/prompts/category_role';
+import { analyze_lead } from '~/utils/analyze/lead';
 
 export default defineEventHandler(async (event) => {
     const body = await readBody(event);
+    const formData = await readMultipartFormData(event);
 
-    const useSystem =
-        `You are a Senior Project Estimator. Your only job is to analyze lead data and output structured business intel.
-        Keep in mind a bunch of materials: 
-        ${materials}
-        ${materials_expanded}
+    const useRole = construction_role(body.answers?.address);
+    const useLeadAnalysis = analyze_lead(body.answers);
 
-        Instructions:
-        1. ${role}
-        2. Determine the area conditions for this project using their address ${body.answers?.message}
-        3. Determine the project category (e.g., Deck, Remodel, New Build).
-        4. Calculate an estimated price based on $200/sqft for interior and $50/sqft for exterior.
-        5. Identify specific company needs (e.g., "Needs site visit," "Needs architectural plans").
-        6. Constraint: Do not be conversational. Do not say "Thanks for reaching out." Only provide the analysis.
-        
-        Let new lines be wrapped in a <div></div> element
-        `;
+    console.log('formData', formData);
+    console.log('body', body)
 
-    const usePrompt = `
-        Analyze the following lead data:
-        1. Lead Name: ${body.answers?.name}
-        2. Project Goal: ${body.answers?.goal}
-        3. Approximate Square Footage: ${body.answers?.sqft}
-        4. Budget Provided: ${body.answers?.budget}
-        5. Message Provided: ${body.answers?.message}
-        `;
+    // const imageFile = formData?.find((item) => item.name === 'image');
 
     const { text } = await generateText({
         model: openai('gpt-5.3-chat-latest'),
-        system: useSystem,
-        prompt: usePrompt
+        system: useRole,
+        prompt: useLeadAnalysis,
+        // messages: [
+        //     {
+        //       role: 'user',
+        //       content: [
+        //         { type: 'text', text: `${useLeadAnalysis}` },
+        //         { 
+        //           type: 'image', 
+        //           image: imageFile, // Buffer or Uint8Array
+        //           mediaType: 'image/jpeg' 
+        //         }
+        //       ]
+        //     }
+        //   ]
     });
 
     const output = `
@@ -51,6 +47,8 @@ export default defineEventHandler(async (event) => {
         <h2>AI Analysis:</h2>
         ${text}
     `;
+
+    if (!body.answers?.email) throw createError({ statusCode: 400, message: 'Missing data' });
 
     // Email lead
     await emailLead(body.answers);
