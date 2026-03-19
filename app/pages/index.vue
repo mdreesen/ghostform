@@ -1,6 +1,7 @@
 <script setup lang="ts">
-const step = ref(0)
-const answers = ref({ name: '', email: '', address: '', goal: '', sqft: '', budget: '', message: '' })
+import { testLeadData } from '~/utils/lead/lead-data';
+const step = ref(0);
+const answers = ref(testLeadData)
 const isSubmitting = ref(false)
 const aiResult = ref(null);
 const useUploadImage = ref(false);
@@ -18,9 +19,10 @@ const questions = [
 
 // This function runs when the child "emits" the file
 const handleImageSelection = (file: File) => {
-  selectedFile.value = file
+    selectedFile.value = file;
 };
-console.log('selectedFile', selectedFile.value)
+
+const useFile = computed(() => selectedFile.value);
 
 const nextStep = () => {
     if (step.value < questions.length - 1) step.value++
@@ -29,9 +31,22 @@ const nextStep = () => {
 
 const submitForm = async () => {
     isSubmitting.value = true
+    const fd = new FormData();
+
+    // Wrap the object in a Blob
+    const jsonBlob = new Blob([JSON.stringify(answers.value)], {
+        type: 'application/json'
+    });
+
+    fd.append('answers', jsonBlob);
+
+    if (useFile.value) {
+        fd.append('image', useFile.value);
+    };
+    console.log(fd)
     aiResult.value = await $fetch('/api/lead', {
         method: 'POST',
-        body: { answers: answers.value, image: selectedFile.value }
+        body: fd
     });
 
     isSubmitting.value = false;
