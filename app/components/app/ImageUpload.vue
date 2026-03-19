@@ -38,9 +38,8 @@ const handleFileChange = (e: Event) => {
 
       <img v-else :src="previewUrl" class="mx-auto max-h-64 rounded-xl shadow-2xl" />
       
-      <div v-if="isUploading" class="absolute inset-0 bg-zinc-950/80 rounded-2xl flex items-center justify-center">
-        <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-blue-500"></div>
-      </div>
+
+      <baseLoading v-if="isUploading" />
     </div>
 
     <transition name="fade">

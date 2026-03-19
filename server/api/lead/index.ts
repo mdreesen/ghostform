@@ -22,6 +22,19 @@ export default defineEventHandler(async (event) => {
     const useRole = construction_role(answers?.address);
     const useLeadAnalysis = analyze_lead(answers);
 
+    const { text: leadText } = await generateText({
+        model: openai('gpt-4o-mini'),
+        system: `You are an assistant for a Construction Company. 
+         Be professional and helpful`,
+        prompt: `A new lead named ${answers?.name}. 
+         Write a 3-sentence email thanking them, 
+         mentioning one specific detail you see in the message, 
+         and telling them a human will call them shortly.
+         
+        Let new lines be wrapped in a <div></div> element
+        `,
+    });
+
     const { text } = await generateText({
         model: openai('gpt-5.3-chat-latest'),
         system: useRole,
@@ -43,7 +56,7 @@ export default defineEventHandler(async (event) => {
         ],
     });
 
-    const output = `
+    const aiOutput = `
         <h1>Lead Information</h1>
         <div>Lead Name: ${answers?.name}</div>
         <div>Lead Email: ${answers?.email}</div>
@@ -59,10 +72,10 @@ export default defineEventHandler(async (event) => {
     if (!answers?.email) throw createError({ statusCode: 400, message: 'Missing data' });
 
     // // Email lead
-    await emailLead(answers);
+    await emailLead(leadText, answers);
 
     // // Email Company
-    await emailCompany(output);
+    await emailCompany(aiOutput);
 
     return { status: 'success', aiResponse: text };
 });
