@@ -31,7 +31,7 @@ const handleFileChange = (e: Event) => {
       <input type="file" ref="fileInput" class="hidden" accept="image/*" @change="handleFileChange" />
       
       <div v-if="!previewUrl" class="space-y-2">
-        <div class="text-4xl">👻</div>
+        <!-- <div class="text-4xl">👻</div> -->
         <p class="text-zinc-400 font-medium text-lg">Drop your project photo here</p>
         <p class="text-zinc-600 text-sm italic">or click to browse</p>
       </div>
