@@ -1,6 +1,6 @@
 import { defineComponent, ref, computed, mergeProps, unref, useSSRContext } from 'vue';
 import { ssrRenderAttrs, ssrRenderStyle, ssrInterpolate, ssrRenderDynamicModel, ssrRenderAttr, ssrRenderComponent } from 'vue/server-renderer';
-import { _ as _export_sfc } from './server.mjs';
+import { _ as _export_sfc, u as useRoute } from './server.mjs';
 import '../nitro/nitro.mjs';
 import 'node:http';
 import 'node:https';
@@ -75,11 +75,11 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
     const analysis = ref(null);
     return (_ctx, _push, _parent, _attrs) => {
       const _component_baseLoading = __nuxt_component_0;
-      _push(`<div${ssrRenderAttrs(mergeProps({ class: "max-w-xl mx-auto p-6 space-y-6" }, _attrs))} data-v-bb22fa22><div class="group relative border-2 border-dashed border-zinc-800 rounded-2xl p-12 text-center hover:border-blue-500/50 transition-all cursor-pointer bg-zinc-900/50" data-v-bb22fa22><input type="file" class="hidden" accept="image/*" data-v-bb22fa22>`);
+      _push(`<div${ssrRenderAttrs(mergeProps({ class: "max-w-xl mx-auto p-6 space-y-6" }, _attrs))} data-v-923949b7><div class="group relative border-2 border-dashed border-zinc-800 rounded-2xl p-12 text-center hover:border-blue-500/50 transition-all cursor-pointer bg-zinc-900/50" data-v-923949b7><input type="file" class="hidden" accept="image/*" data-v-923949b7>`);
       if (!unref(previewUrl)) {
-        _push(`<div class="space-y-2" data-v-bb22fa22><p class="text-zinc-400 font-medium text-lg" data-v-bb22fa22>Drop your project photo here</p><p class="text-zinc-600 text-sm italic" data-v-bb22fa22>or click to browse</p></div>`);
+        _push(`<div class="space-y-2" data-v-923949b7><p class="text-zinc-400 font-medium text-lg" data-v-923949b7>Drop your project photo here</p><p class="text-zinc-600 text-sm italic" data-v-923949b7>or click to browse</p></div>`);
       } else {
-        _push(`<img${ssrRenderAttr("src", unref(previewUrl))} class="mx-auto max-h-64 rounded-xl shadow-2xl" data-v-bb22fa22>`);
+        _push(`<img${ssrRenderAttr("src", unref(previewUrl))} class="mx-auto max-h-64 rounded-xl shadow-2xl" data-v-923949b7>`);
       }
       if (unref(isUploading)) {
         _push(ssrRenderComponent(_component_baseLoading, null, null, _parent));
@@ -88,7 +88,7 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
       }
       _push(`</div>`);
       if (unref(analysis)) {
-        _push(`<div class="bg-zinc-900 border border-zinc-800 p-6 rounded-2xl shadow-xl" data-v-bb22fa22><h3 class="text-blue-400 font-bold mb-3 flex items-center gap-2" data-v-bb22fa22><span data-v-bb22fa22>✨</span> Ghost AI Analysis </h3><p class="text-zinc-300 leading-relaxed" data-v-bb22fa22>${ssrInterpolate(unref(analysis))}</p></div>`);
+        _push(`<div class="bg-zinc-900 border border-zinc-800 p-6 rounded-2xl shadow-xl" data-v-923949b7><h3 class="text-blue-400 font-bold mb-3 flex items-center gap-2" data-v-923949b7><span data-v-923949b7>✨</span> Ghost AI Analysis </h3><p class="text-zinc-300 leading-relaxed" data-v-923949b7>${ssrInterpolate(unref(analysis))}</p></div>`);
       } else {
         _push(`<!---->`);
       }
@@ -102,7 +102,7 @@ _sfc_main$1.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("components/app/ImageUpload.vue");
   return _sfc_setup$1 ? _sfc_setup$1(props, ctx) : void 0;
 };
-const __nuxt_component_2 = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$1, [["__scopeId", "data-v-bb22fa22"]]), { __name: "AppImageUpload" });
+const __nuxt_component_2 = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$1, [["__scopeId", "data-v-923949b7"]]), { __name: "AppImageUpload" });
 const leadData = {
   name: "",
   email: "",
@@ -112,12 +112,20 @@ const leadData = {
   budget: "",
   message: ""
 };
+const companyTestData = {
+  category: "construction",
+  company_name: "White Raven Development",
+  company_email: "michaeldreesen90@gmail.com"
+};
 const _sfc_main = /* @__PURE__ */ defineComponent({
   __name: "index",
   __ssrInlineRender: true,
   setup(__props) {
+    const route = useRoute();
+    const { category, company_name, company_email } = route.query;
     const step = ref(0);
     const answers = ref(leadData);
+    const company = ref(companyTestData);
     const loading = ref(false);
     const aiResult = ref(null);
     const useUploadImage = ref(false);
@@ -142,14 +150,17 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     const submitForm = async () => {
       loading.value = true;
       const fd = new FormData();
-      const jsonBlob = new Blob([JSON.stringify(answers.value)], {
+      const jsonLeadBlob = new Blob([JSON.stringify(answers.value)], {
         type: "application/json"
       });
-      fd.append("answers", jsonBlob);
+      const jsonCompanyBlob = new Blob([JSON.stringify(company.value)], {
+        type: "application/json"
+      });
+      fd.append("answers", jsonLeadBlob);
+      fd.append("company", jsonCompanyBlob);
       if (useFile.value) {
         fd.append("image", useFile.value);
       }
-      console.log(fd);
       aiResult.value = await $fetch("/api/lead", {
         method: "POST",
         body: fd
@@ -160,15 +171,15 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
       const _component_baseLoading = __nuxt_component_0;
       const _component_baseButton = __nuxt_component_1;
       const _component_appImageUpload = __nuxt_component_2;
-      _push(`<div${ssrRenderAttrs(mergeProps({ class: "min-h-screen bg-zinc-950 text-white flex items-center justify-center p-6 font-sans" }, _attrs))} data-v-ef3d6d0f>`);
+      _push(`<div${ssrRenderAttrs(mergeProps({ class: "min-h-screen bg-zinc-950 text-white flex items-center justify-center p-6 font-sans" }, _attrs))} data-v-1d7d6273>`);
       if (!unref(aiResult)) {
-        _push(`<div class="max-w-md w-full space-y-8" data-v-ef3d6d0f><div class="h-1 bg-zinc-800 rounded-full" data-v-ef3d6d0f><div class="h-1 bg-blue-500 transition-all duration-500" style="${ssrRenderStyle({ width: `${(unref(step) + 1) / questions.length * 100}%` })}" data-v-ef3d6d0f></div></div><div class="space-y-4" data-v-ef3d6d0f><label class="block text-2xl font-medium" data-v-ef3d6d0f>${ssrInterpolate(questions[unref(step)].label)}</label><input${ssrRenderDynamicModel(questions[unref(step)].type, unref(answers)[questions[unref(step)].id], null)}${ssrRenderAttr("type", questions[unref(step)].type)} class="w-full bg-transparent border-b-2 border-zinc-700 py-2 text-xl focus:border-blue-500 outline-none transition-colors" autofocus data-v-ef3d6d0f></div>`);
+        _push(`<div class="max-w-md w-full space-y-8" data-v-1d7d6273><div class="h-1 bg-zinc-800 rounded-full" data-v-1d7d6273><div class="h-1 bg-blue-500 transition-all duration-500" style="${ssrRenderStyle({ width: `${(unref(step) + 1) / questions.length * 100}%` })}" data-v-1d7d6273></div></div><div class="space-y-4" data-v-1d7d6273><label class="block text-2xl font-medium" data-v-1d7d6273>${ssrInterpolate(questions[unref(step)].label)}</label><input${ssrRenderDynamicModel(questions[unref(step)].type, unref(answers)[questions[unref(step)].id], null)}${ssrRenderAttr("type", questions[unref(step)].type)} class="w-full bg-transparent border-b-2 border-zinc-700 py-2 text-xl focus:border-blue-500 outline-none transition-colors" autofocus data-v-1d7d6273></div>`);
         if (unref(loading)) {
           _push(ssrRenderComponent(_component_baseLoading, { class: "z-10" }, null, _parent));
         } else {
           _push(`<!---->`);
         }
-        _push(`<div class="w-full" data-v-ef3d6d0f><div class="flex w-full justify-between" data-v-ef3d6d0f>`);
+        _push(`<div class="w-full" data-v-1d7d6273><div class="flex w-full justify-between" data-v-1d7d6273>`);
         _push(ssrRenderComponent(_component_baseButton, {
           text: unref(useUploadImage) ? "Cancel Upload" : "Upload an image",
           onClick: ($event) => useUploadImage.value = !unref(useUploadImage)
@@ -183,7 +194,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
         }
         _push(`</div>`);
         if (unref(useUploadImage)) {
-          _push(`<div data-v-ef3d6d0f>`);
+          _push(`<div data-v-1d7d6273>`);
           _push(ssrRenderComponent(_component_appImageUpload, { onFileSelected: handleImageSelection }, null, _parent));
           _push(`</div>`);
         } else {
@@ -191,7 +202,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
         }
         _push(`</div></div>`);
       } else {
-        _push(`<div class="bg-zinc-900 p-8 rounded-2xl border border-zinc-800 max-w-lg" data-v-ef3d6d0f><h2 class="text-green-400 font-bold mb-2" data-v-ef3d6d0f>Analysis Complete</h2><p class="text-zinc-400 mb-4 italic" data-v-ef3d6d0f>Company will get back to you shortly!</p></div>`);
+        _push(`<div class="bg-zinc-900 p-8 rounded-2xl border border-zinc-800 max-w-lg" data-v-1d7d6273><h2 class="text-green-400 font-bold mb-2" data-v-1d7d6273>Thank you for your inquiry</h2><p class="text-zinc-400 mb-4 italic" data-v-1d7d6273>${ssrInterpolate(unref(company_name))} will get back to you shortly!</p></div>`);
       }
       _push(`</div>`);
     };
@@ -203,7 +214,7 @@ _sfc_main.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("pages/index.vue");
   return _sfc_setup ? _sfc_setup(props, ctx) : void 0;
 };
-const index = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-ef3d6d0f"]]);
+const index = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-1d7d6273"]]);
 
 export { index as default };
-//# sourceMappingURL=index-DYuzbe6J.mjs.map
+//# sourceMappingURL=index-DL9KkTmH.mjs.map

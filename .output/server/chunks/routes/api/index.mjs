@@ -36,7 +36,7 @@ async function emailCompany(aiOutput, data) {
   try {
     await resend.emails.send({
       from: "NoReply@ascendpod.com",
-      to: [data == null ? void 0 : data.email],
+      to: [data == null ? void 0 : data.company_email],
       subject: "Your Lead Inquiry",
       html: aiOutput
     });
@@ -147,18 +147,31 @@ const leadData = {
   message: ""
 };
 
+const companyData = {
+  category: "",
+  company_name: "",
+  company_email: ""
+};
+
 const index = defineEventHandler(async (event) => {
   var _a;
   try {
     const formData = await readMultipartFormData(event);
     const answersPart = formData == null ? void 0 : formData.find((item) => item.name === "answers");
+    const companyPart = formData == null ? void 0 : formData.find((item) => item.name === "company");
     let answers = leadData;
+    let company = companyData;
     if (answersPart) {
       const jsonString = answersPart.data.toString("utf-8");
       answers = JSON.parse(jsonString);
     }
+    ;
+    if (companyPart) {
+      const jsonString = companyPart.data.toString("utf-8");
+      company = JSON.parse(jsonString);
+    }
+    ;
     const imagePart = (_a = formData == null ? void 0 : formData.find((item) => item.name === "image")) != null ? _a : {};
-    console.log("imagePart", imagePart);
     const useRole = construction_role(answers == null ? void 0 : answers.address);
     const useLeadAnalysis = analyze_lead(answers);
     const { text: leadText } = await generateText({
@@ -169,6 +182,10 @@ const index = defineEventHandler(async (event) => {
              Write a 3-sentence email thanking them, 
              mentioning one specific detail you see in the message, 
              and telling them a human will call them shortly.
+
+            End the email with:
+            Best regards,
+            ${company == null ? void 0 : company.company_name}
              
             Let new lines be wrapped in a <div></div> element
             `
@@ -217,7 +234,7 @@ const index = defineEventHandler(async (event) => {
         `;
     if (!(answers == null ? void 0 : answers.email)) throw createError({ statusCode: 400, message: "Missing data" });
     await emailLead(leadText, answers);
-    await emailCompany(aiOutput, answers);
+    await emailCompany(aiOutput, company);
     return { status: "success", aiResponse: text };
   } catch (error) {
     console.error("Validation Details:", JSON.stringify(error.cause, null, 2));

@@ -8,9 +8,8 @@ const { category, company_name, company_email } = route.query;
 
 
 const step = ref(0);
-const answers = ref(testLeadData);
-const company = ref(companyTestData);
-// const company = ref({ category: category, company_name: company_name, company_email: company_email })
+const answers = ref(leadData);
+const company = ref(companyTestData)
 const loading = ref(false)
 const aiResult = ref(null);
 const useUploadImage = ref(false);
