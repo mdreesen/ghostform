@@ -28,7 +28,7 @@ export async function emailCompany(aiOutput: string) {
     try {
         await resend.emails.send({
             from: 'NoReply@ascendpod.com',
-            to: ['michaeldreesen90@gmail.com'],
+            to: ['michaeldreesen90@gmail.com', '4066072405@tmomail.net'],
             subject: "Your Lead Inquiry",
             html: aiOutput,
         });
