@@ -4,8 +4,9 @@ import { emailLead, emailCompany } from '~/lib/email';
 import { sms } from '~/lib/sms';
 import { construction_role } from '~/utils/prompts/category_role';
 import { analyze_lead } from '~/utils/analyze/lead';
-import type { Lead } from '~/types/lead';
-import { leadData } from '~/utils/lead/lead-data';
+import type { Lead } from '~/types/user';
+import { leadData } from '~/utils/users/lead';
+import { companyData } from '~/utils/users/company';
 
 export default defineEventHandler(async (event) => {
 
@@ -13,16 +14,22 @@ export default defineEventHandler(async (event) => {
         const formData = await readMultipartFormData(event);
 
         const answersPart = formData?.find(item => item.name === 'answers');
+        const companyPart = formData?.find(item => item.name === 'company');
 
         let answers: Lead = leadData;
+        let company = companyData;
+
         if (answersPart) {
             const jsonString = answersPart.data.toString('utf-8');
             answers = JSON.parse(jsonString);
-        }
+        };
+        if (companyPart) {
+            const jsonString = companyPart.data.toString('utf-8');
+            company = JSON.parse(jsonString);
+        };
 
         const imagePart = formData?.find(item => item.name === 'image') ?? {};
 
-        console.log('imagePart', imagePart)
         const useRole = construction_role(answers?.address);
         const useLeadAnalysis = analyze_lead(answers);
 
@@ -34,6 +41,10 @@ export default defineEventHandler(async (event) => {
              Write a 3-sentence email thanking them, 
              mentioning one specific detail you see in the message, 
              and telling them a human will call them shortly.
+
+            End the email with:
+            Best regards,
+            ${company?.company_name}
              
             Let new lines be wrapped in a <div></div> element
             `,
@@ -89,7 +100,7 @@ export default defineEventHandler(async (event) => {
         await emailLead(leadText, answers);
 
         // // Email Company
-        await emailCompany(aiOutput, answers);
+        await emailCompany(aiOutput, company);
 
         // await sms();
 

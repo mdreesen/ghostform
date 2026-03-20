@@ -1,7 +1,16 @@
 <script setup lang="ts">
-import { leadData } from '~/utils/lead/lead-data';
+import { leadData, testLeadData } from '~/utils/users/lead';
+import { companyData, companyTestData } from '~/utils/users/company';
+// http://localhost:3000/?category=construction&company_name=White+Raven+Development&company_email=whiteravendev90@gmail.com
+
+const route = useRoute();
+const { category, company_name, company_email } = route.query;
+
+
 const step = ref(0);
-const answers = ref(leadData)
+const answers = ref(testLeadData);
+const company = ref(companyTestData);
+// const company = ref({ category: category, company_name: company_name, company_email: company_email })
 const loading = ref(false)
 const aiResult = ref(null);
 const useUploadImage = ref(false);
@@ -33,17 +42,20 @@ const submitForm = async () => {
     loading.value = true
     const fd = new FormData();
 
-    // Wrap the object in a Blob
-    const jsonBlob = new Blob([JSON.stringify(answers.value)], {
+    const jsonLeadBlob = new Blob([JSON.stringify(answers.value)], {
+        type: 'application/json'
+    });
+    const jsonCompanyBlob = new Blob([JSON.stringify(company.value)], {
         type: 'application/json'
     });
 
-    fd.append('answers', jsonBlob);
+    fd.append('answers', jsonLeadBlob);
+    fd.append('company', jsonCompanyBlob);
 
     if (useFile.value) {
         fd.append('image', useFile.value);
     };
-    console.log(fd)
+
     aiResult.value = await $fetch('/api/lead', {
         method: 'POST',
         body: fd
@@ -70,7 +82,7 @@ const submitForm = async () => {
                 </div>
             </transition>
 
-            <baseLoading v-if="loading" class="z-10"  />
+            <baseLoading v-if="loading" class="z-10" />
 
             <div class="w-full">
 
@@ -89,8 +101,8 @@ const submitForm = async () => {
         </div>
 
         <div v-else class="bg-zinc-900 p-8 rounded-2xl border border-zinc-800 max-w-lg">
-            <h2 class="text-green-400 font-bold mb-2">Analysis Complete</h2>
-            <p class="text-zinc-400 mb-4 italic">Company will get back to you shortly!</p>
+            <h2 class="text-green-400 font-bold mb-2">Thank you for your inquiry</h2>
+            <p class="text-zinc-400 mb-4 italic">{{ company_name }} will get back to you shortly!</p>
         </div>
     </div>
 </template>
