@@ -1,7 +1,7 @@
 import { c as createError, d as defineEventHandler, r as readMultipartFormData } from '../../nitro/nitro.mjs';
+import { Resend } from 'resend';
 import { generateText } from 'ai';
 import { openai } from '@ai-sdk/openai';
-import { Resend } from 'resend';
 import 'node:http';
 import 'node:https';
 import 'node:events';
@@ -49,6 +49,45 @@ async function emailCompany(aiOutput, data) {
     });
   }
 }
+
+const leadData = {
+  name: "",
+  email: "",
+  address: "",
+  goal: "",
+  sqft: "",
+  budget: "",
+  message: ""
+};
+
+const companyData = {
+  category: "",
+  company_name: "",
+  company_email: ""
+};
+
+const analyze_lead = (data) => `
+Lead Name: ${data.name}
+Project Goal: ${data.goal}
+Budget: $${data.budget}
+Message: ${data.message}
+Address: ${data.address}
+
+If there is a picture attached:
+Based on the attached photo of the current deck, identify potential structural issues, 
+confirm if the ${data.sqft} sqft estimate looks accurate, and suggest 2-3 next steps.
+If no picture do not analyze a photo and do not do that step.
+
+Analyze the following lead data:
+1. Lead Name: ${data == null ? void 0 : data.name}
+2. Project Goal: ${data == null ? void 0 : data.goal}
+3. Approximate Square Footage: ${data == null ? void 0 : data.sqft}
+4. Budget Provided: ${data == null ? void 0 : data.budget}
+5. Message Provided: ${data == null ? void 0 : data.message}
+
+Please wrap each seperated section with <div></div> as this uses resend email.
+Also have it have an extra space per each section.
+`;
 
 function date() {
   return (/* @__PURE__ */ new Date()).toISOString();
@@ -114,47 +153,76 @@ Instructions:
 6. Constraint: Do not be conversational. Do not say "Thanks for reaching out." Only provide the analysis.
 `;
 
-const analyze_lead = (data) => `
-Lead Name: ${data.name}
-Project Goal: ${data.goal}
-Budget: $${data.budget}
-Message: ${data.message}
-Address: ${data.address}
+async function aiClient(data) {
+  const { text } = await generateText({
+    model: openai("gpt-4o-mini"),
+    system: `You are an assistant for a Construction Company. 
+         Be professional and helpful`,
+    prompt: `A new lead named ${data == null ? void 0 : data.name}. 
+         Write a 3-sentence email thanking them, 
+         mentioning one specific detail you see in the message, 
+         and telling them a human will call them shortly.
 
-If there is a picture attached:
-Based on the attached photo of the current deck, identify potential structural issues, 
-confirm if the ${data.sqft} sqft estimate looks accurate, and suggest 2-3 next steps.
-If no picture do not analyze a photo and do not do that step.
+        End the email with:
+        Best regards,
+        ${data == null ? void 0 : data.company_name}
+         
+        Let new lines be wrapped in a <div></div> element
+        `
+  });
+  return text;
+}
+async function aiCompany(data) {
+  var _a;
+  console.log(data.imagePart.data);
+  const useLeadAnalysis = analyze_lead(data);
+  const useRole = construction_role(data == null ? void 0 : data.address);
+  const { text } = await generateText({
+    model: openai("gpt-4o-mini"),
+    system: useRole,
+    messages: ((_a = data.imagePart) == null ? void 0 : _a.data) ? [
+      {
+        role: "user",
+        content: [
+          {
+            type: "text",
+            text: useLeadAnalysis
+          },
+          {
+            type: "image",
+            image: new Uint8Array(data.imagePart.data),
+            mediaType: data.imagePart.type || "image/jpeg"
+          }
+        ]
+      }
+    ] : [
+      {
+        role: "user",
+        content: [
+          {
+            type: "text",
+            text: useLeadAnalysis
+          }
+        ]
+      }
+    ]
+  });
+  const aiOutput = `
+    <h1>Lead Information</h1>
+    <div>Lead Name: ${data == null ? void 0 : data.name}</div>
+    <div>Lead Email: ${data == null ? void 0 : data.email}</div>
+    <div>Project Goal: ${data == null ? void 0 : data.goal}</div>
+    <div>Square Footage: ${data == null ? void 0 : data.sqft}</div>
+    <div>Budget: ${data == null ? void 0 : data.budget}</div>
+    <div>Message Details: ${data == null ? void 0 : data.message}</div>
 
-Analyze the following lead data:
-1. Lead Name: ${data == null ? void 0 : data.name}
-2. Project Goal: ${data == null ? void 0 : data.goal}
-3. Approximate Square Footage: ${data == null ? void 0 : data.sqft}
-4. Budget Provided: ${data == null ? void 0 : data.budget}
-5. Message Provided: ${data == null ? void 0 : data.message}
-
-Please wrap each seperated section with <div></div> as this uses resend email.
-Also have it have an extra space per each section.
+    <h2>AI Analysis:</h2>
+    ${text}
 `;
-
-const leadData = {
-  name: "",
-  email: "",
-  address: "",
-  goal: "",
-  sqft: "",
-  budget: "",
-  message: ""
-};
-
-const companyData = {
-  category: "",
-  company_name: "",
-  company_email: ""
-};
+  return aiOutput;
+}
 
 const index = defineEventHandler(async (event) => {
-  var _a;
   try {
     const formData = await readMultipartFormData(event);
     const answersPart = formData == null ? void 0 : formData.find((item) => item.name === "answers");
@@ -171,73 +239,19 @@ const index = defineEventHandler(async (event) => {
       company = JSON.parse(jsonString);
     }
     ;
-    const imagePart = (_a = formData == null ? void 0 : formData.find((item) => item.name === "image")) != null ? _a : {};
-    const useRole = construction_role(answers == null ? void 0 : answers.address);
-    const useLeadAnalysis = analyze_lead(answers);
-    const { text: leadText } = await generateText({
-      model: openai("gpt-4o-mini"),
-      system: `You are an assistant for a Construction Company. 
-             Be professional and helpful`,
-      prompt: `A new lead named ${answers == null ? void 0 : answers.name}. 
-             Write a 3-sentence email thanking them, 
-             mentioning one specific detail you see in the message, 
-             and telling them a human will call them shortly.
-
-            End the email with:
-            Best regards,
-            ${company == null ? void 0 : company.company_name}
-             
-            Let new lines be wrapped in a <div></div> element
-            `
-    });
-    const { text } = await generateText({
-      model: openai("gpt-4o"),
-      system: useRole,
-      messages: (imagePart == null ? void 0 : imagePart.data) ? [
-        {
-          role: "user",
-          content: [
-            {
-              type: "text",
-              text: useLeadAnalysis
-            },
-            {
-              type: "image",
-              image: new Uint8Array(imagePart.data),
-              mediaType: imagePart.type || "image/jpeg"
-            }
-          ]
-        }
-      ] : [
-        {
-          role: "user",
-          content: [
-            {
-              type: "text",
-              text: useLeadAnalysis
-            }
-          ]
-        }
-      ]
-    });
-    const aiOutput = `
-            <h1>Lead Information</h1>
-            <div>Lead Name: ${answers == null ? void 0 : answers.name}</div>
-            <div>Lead Email: ${answers == null ? void 0 : answers.email}</div>
-            <div>Project Goal: ${answers == null ? void 0 : answers.goal}</div>
-            <div>Square Footage: ${answers == null ? void 0 : answers.sqft}</div>
-            <div>Budget: ${answers == null ? void 0 : answers.budget}</div>
-            <div>Message Details: ${answers == null ? void 0 : answers.message}</div>
-    
-            <h2>AI Analysis:</h2>
-            ${text}
-        `;
+    const imagePart = formData == null ? void 0 : formData.find((item) => item.name === "image");
+    const useAiClient = await aiClient({ ...answers, ...company });
+    const useAiCompany = await aiCompany({ ...imagePart, ...answers, ...company });
     if (!(answers == null ? void 0 : answers.email)) throw createError({ statusCode: 400, message: "Missing data" });
-    await emailLead(leadText, answers);
-    await emailCompany(aiOutput, company);
-    return { status: "success", aiResponse: text };
+    await emailLead(useAiClient, answers);
+    await emailCompany(useAiCompany, company);
+    return { status: "success", aiResponse: useAiCompany };
   } catch (error) {
-    console.error("Validation Details:", JSON.stringify(error.cause, null, 2));
+    if (error instanceof Error) {
+      console.error("Validation Details:", JSON.stringify(error.cause, null, 2));
+    } else {
+      console.log("An unknown error occurred");
+    }
     throw error;
   }
 });
