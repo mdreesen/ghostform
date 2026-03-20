@@ -1,17 +1,16 @@
 <script setup lang="ts">
-import { leadData, testLeadData } from '~/utils/lead/lead-data';
+import { leadData, testLeadData } from '~/utils/users/lead';
+import { companyData, companyTestData } from '~/utils/users/company';
 // http://localhost:3000/?category=construction&company_name=White+Raven+Development&company_email=whiteravendev90@gmail.com
+
 const route = useRoute();
 const { category, company_name, company_email } = route.query;
 
 
 const step = ref(0);
 const answers = ref(testLeadData);
-const company_info = ref({
-    category: category,
-    company_name: company_name,
-    company_email: company_email,
-});
+const company = ref(companyTestData);
+// const company = ref({ category: category, company_name: company_name, company_email: company_email })
 const loading = ref(false)
 const aiResult = ref(null);
 const useUploadImage = ref(false);
@@ -43,22 +42,20 @@ const submitForm = async () => {
     loading.value = true
     const fd = new FormData();
 
-    const objData = {
-        ...answers.value,
-        ...company_info.value
-    };
-    console.log(objData)
-
-    // Wrap the object in a Blob
-    const jsonBlob = new Blob([JSON.stringify(objData)], {
+    const jsonLeadBlob = new Blob([JSON.stringify(answers.value)], {
+        type: 'application/json'
+    });
+    const jsonCompanyBlob = new Blob([JSON.stringify(company.value)], {
         type: 'application/json'
     });
 
-    fd.append('answers', jsonBlob);
+    fd.append('answers', jsonLeadBlob);
+    fd.append('company', jsonCompanyBlob);
 
     if (useFile.value) {
         fd.append('image', useFile.value);
     };
+
     aiResult.value = await $fetch('/api/lead', {
         method: 'POST',
         body: fd

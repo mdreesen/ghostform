@@ -1,5 +1,5 @@
 import { Resend } from 'resend';
-import type { Lead } from '~/types/lead';
+import type { Lead, Company } from '~/types/user';
 
 const resend = new Resend(`${process.env.RESEND_KEY}`);
 
@@ -23,12 +23,12 @@ export async function emailLead(aiOutput: string, data: Lead) {
     };
 };
 
-export async function emailCompany(aiOutput: string, data: Lead) {
-
+export async function emailCompany(aiOutput: string, data: Company) {
+console.log(data)
     try {
         await resend.emails.send({
             from: 'NoReply@ascendpod.com',
-            to: [data?.email],
+            to: [data?.company_email],
             subject: "Your Lead Inquiry",
             html: aiOutput,
         });
