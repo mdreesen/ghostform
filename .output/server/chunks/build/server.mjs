@@ -1,8 +1,8 @@
-import process from 'node:process';globalThis._importMeta_=globalThis._importMeta_||{url:"file:///_entry.js",env:process.env};import { hasInjectionContext, inject, getCurrentInstance, defineAsyncComponent, defineComponent, useSlots, h, Fragment, createElementBlock, shallowRef, provide, cloneVNode, computed, useSSRContext, unref, shallowReactive, ref, Suspense, createApp, reactive, toRaw, onServerPrefetch, useAttrs, mergeProps, mergeModels, useModel, withCtx, renderSlot, createVNode, createBlock, createCommentVNode, openBlock, createTextVNode, toDisplayString, watch, resolveDynamicComponent, toRef as toRef$1, renderList, useId, resolveComponent, onErrorCaptured, effectScope, isReadonly, isRef, isShallow, isReactive, toValue, useTemplateRef, withModifiers, getCurrentScope, nextTick, onScopeDispose, toRefs, readonly, customRef, markRaw } from 'vue';
-import { s as serialize, j as getContext, $ as $fetch$1, k as baseURL, l as defuFn, m as defu, n as klona, o as createHooks, q as executeAsync, e as createError$1, r as parseQuery, t as isEqual, v as hasProtocol, w as joinURL, x as toRouteMatcher, y as createRouter$1, z as withQuery, A as sanitizeStatusCode, B as withTrailingSlash, C as withoutTrailingSlash, D as withLeadingSlash, E as parseURL, F as isScriptProtocol, G as encodeParam, H as encodePath } from '../nitro/nitro.mjs';
+import process from 'node:process';globalThis._importMeta_=globalThis._importMeta_||{url:"file:///_entry.js",env:process.env};import { hasInjectionContext, inject, getCurrentInstance, defineAsyncComponent, defineComponent, useSlots, h, Fragment, createElementBlock, shallowRef, provide, cloneVNode, computed, useSSRContext, unref, shallowReactive, ref, Suspense, createApp, reactive, toRaw, onServerPrefetch, useAttrs, mergeProps, useModel, withCtx, renderSlot, createVNode, openBlock, createBlock, createTextVNode, toDisplayString, createCommentVNode, mergeModels, watch, resolveDynamicComponent, toRef as toRef$1, renderList, useId, resolveComponent, onErrorCaptured, effectScope, toValue, useTemplateRef, withModifiers, getCurrentScope, isRef, nextTick, onScopeDispose, isReadonly, toRefs, isShallow, isReactive, readonly, customRef, markRaw } from 'vue';
+import { s as serialize, m as getContext, $ as $fetch$1, n as baseURL, o as defu, q as defuFn, t as klona, v as createHooks, c as createError$1, w as isEqual, x as parseQuery, y as hasProtocol, k as joinURL, z as hasProtocol$1, A as withLeadingSlash, B as joinURL$1, C as parseURL, D as withQuery, E as isScriptProtocol, F as withTrailingSlash, G as withoutTrailingSlash, H as sanitizeStatusCode, I as executeAsync, J as encodeParam, K as toRouteMatcher, L as createRouter$1, M as encodePath } from '../nitro/nitro.mjs';
 import { useRoute as useRoute$1, RouterView, createMemoryHistory, createRouter, START_LOCATION } from 'vue-router';
 import colors from 'tailwindcss/colors';
-import { Icon, _api, addAPIProvider, setCustomIconsLoader, getIcon, loadIcon as loadIcon$1 } from '@iconify/vue';
+import { Icon, getIcon, loadIcon as loadIcon$1, _api, addAPIProvider, setCustomIconsLoader } from '@iconify/vue';
 import sync, { getFrameData } from 'framesync';
 import { inertia, animate, velocityPerSecond, cubicBezier, bounceOut, bounceInOut, bounceIn, anticipate, backOut, backInOut, backIn, circOut, circInOut, circIn, easeOut, easeInOut, easeIn, linear } from 'popmotion';
 import { number, complex, alpha, filter, px, progressPercentage, degrees, scale, color } from 'style-value-types';
@@ -142,7 +142,7 @@ function createNuxtApp(options) {
     provide: void 0,
     versions: {
       get nuxt() {
-        return "4.2.2";
+        return "4.1.3";
       },
       get vue() {
         return nuxtApp.vueApp.version;
@@ -486,7 +486,7 @@ const _routes = [
   {
     name: "index",
     path: "/",
-    component: () => import('./index-Cc1Zf1V8.mjs')
+    component: () => import('./index-DYuzbe6J.mjs')
   }
 ];
 const _wrapInTransition = (props, children) => {
@@ -650,12 +650,13 @@ const plugin = /* @__PURE__ */ defineNuxtPlugin({
     const syncCurrentRoute = () => {
       _route.value = router.currentRoute.value;
     };
+    nuxtApp.hook("page:finish", syncCurrentRoute);
     router.afterEach((to, from) => {
-      if (to.matched.at(-1)?.components?.default === from.matched.at(-1)?.components?.default) {
+      if (to.matched[to.matched.length - 1]?.components?.default === from.matched[from.matched.length - 1]?.components?.default) {
         syncCurrentRoute();
       }
     });
-    const route = { sync: syncCurrentRoute };
+    const route = {};
     for (const key in _route.value) {
       Object.defineProperty(route, key, {
         get: () => _route.value[key],
@@ -852,19 +853,6 @@ const components_plugin_4kY4pyzJIYX99vmMAAIorFf3CnAaptHitJgf7JxiED8 = /* @__PURE
       nuxtApp.vueApp.component("Lazy" + name, component);
     }
   }
-});
-const pwa_icons_plugin_OtOZ6CGly_Vz5_PCGGLA9qHLz2Y5_d5czYAX7q_3Lug = /* @__PURE__ */ defineNuxtPlugin(() => {
-  return {
-    provide: {
-      pwaIcons: {
-        transparent: {},
-        maskable: {},
-        favicon: {},
-        apple: {},
-        appleSplashScreen: {}
-      }
-    }
-  };
 });
 const inlineConfig = {
   "nuxt": {},
@@ -3121,7 +3109,6 @@ const plugins = [
   plugin,
   revive_payload_server_MVtmlZaQpj6ApFmshWfUWl5PehCebzaBf2NuRMiIbms,
   components_plugin_4kY4pyzJIYX99vmMAAIorFf3CnAaptHitJgf7JxiED8,
-  pwa_icons_plugin_OtOZ6CGly_Vz5_PCGGLA9qHLz2Y5_d5czYAX7q_3Lug,
   colors_E7kSti5pGZ28QhUUurq6gGRU3l65WuXO_KJC3GQgzFo,
   plugin_MeUvTuoKUi51yb_kBguab6hdcExVXeTtZtTg9TZZBB8,
   plugin_server_9Ca9_HhnjAGwBWpwAydRauMHxWoxTDY60BrArRnXN_A,
@@ -3664,17 +3651,7 @@ function useAsyncData(...args) {
       return nuxtApp._asyncData[key.value].execute(...args2);
     },
     execute: (...args2) => asyncReturn.refresh(...args2),
-    clear: () => {
-      const entry2 = nuxtApp._asyncData[key.value];
-      if (entry2?._abortController) {
-        try {
-          entry2._abortController.abort(new DOMException("AsyncData aborted by user.", "AbortError"));
-        } finally {
-          entry2._abortController = void 0;
-        }
-      }
-      clearNuxtDataByKey(nuxtApp, key.value);
-    }
+    clear: () => clearNuxtDataByKey(nuxtApp, key.value)
   };
   const asyncDataPromise = Promise.resolve(nuxtApp._asyncDataPromises[key.value]).then(() => asyncReturn);
   Object.assign(asyncDataPromise, asyncReturn);
@@ -3718,6 +3695,9 @@ function clearNuxtDataByKey(nuxtApp, key) {
     nuxtApp._asyncData[key].status.value = "idle";
   }
   if (key in nuxtApp._asyncDataPromises) {
+    if (nuxtApp._asyncDataPromises[key]) {
+      nuxtApp._asyncDataPromises[key].cancelled = true;
+    }
     nuxtApp._asyncDataPromises[key] = void 0;
   }
 }
@@ -3751,6 +3731,7 @@ function createAsyncData(nuxtApp, key, _handler, options, initialCachedData) {
         if ((opts.dedupe ?? options.dedupe) === "defer") {
           return nuxtApp._asyncDataPromises[key];
         }
+        nuxtApp._asyncDataPromises[key].cancelled = true;
       }
       {
         const cachedData = "cachedData" in opts ? opts.cachedData : options.getCachedData(key, nuxtApp, { cause: opts.cause ?? "refresh:manual" });
@@ -3761,32 +3742,19 @@ function createAsyncData(nuxtApp, key, _handler, options, initialCachedData) {
           return Promise.resolve(cachedData);
         }
       }
-      if (asyncData._abortController) {
-        asyncData._abortController.abort(new DOMException("AsyncData request cancelled by deduplication", "AbortError"));
-      }
-      asyncData._abortController = new AbortController();
       asyncData.status.value = "pending";
-      const cleanupController = new AbortController();
       const promise = new Promise(
         (resolve, reject) => {
           try {
-            const timeout = opts.timeout ?? options.timeout;
-            const mergedSignal = mergeAbortSignals([asyncData._abortController?.signal, opts?.signal], cleanupController.signal, timeout);
-            if (mergedSignal.aborted) {
-              const reason = mergedSignal.reason;
-              reject(reason instanceof Error ? reason : new DOMException(String(reason ?? "Aborted"), "AbortError"));
-              return;
-            }
-            mergedSignal.addEventListener("abort", () => {
-              const reason = mergedSignal.reason;
-              reject(reason instanceof Error ? reason : new DOMException(String(reason ?? "Aborted"), "AbortError"));
-            }, { once: true, signal: cleanupController.signal });
-            return Promise.resolve(handler(nuxtApp, { signal: mergedSignal })).then(resolve, reject);
+            resolve(handler(nuxtApp));
           } catch (err) {
             reject(err);
           }
         }
       ).then(async (_result) => {
+        if (promise.cancelled) {
+          return nuxtApp._asyncDataPromises[key];
+        }
         let result = _result;
         if (options.transform) {
           result = await options.transform(_result);
@@ -3799,21 +3767,16 @@ function createAsyncData(nuxtApp, key, _handler, options, initialCachedData) {
         asyncData.error.value = void 0;
         asyncData.status.value = "success";
       }).catch((error) => {
-        if (nuxtApp._asyncDataPromises[key] && nuxtApp._asyncDataPromises[key] !== promise) {
-          return nuxtApp._asyncDataPromises[key];
-        }
-        if (asyncData._abortController?.signal.aborted) {
-          return nuxtApp._asyncDataPromises[key];
-        }
-        if (typeof DOMException !== "undefined" && error instanceof DOMException && error.name === "AbortError") {
-          asyncData.status.value = "idle";
+        if (promise.cancelled) {
           return nuxtApp._asyncDataPromises[key];
         }
         asyncData.error.value = createError(error);
         asyncData.data.value = unref(options.default());
         asyncData.status.value = "error";
       }).finally(() => {
-        cleanupController.abort();
+        if (promise.cancelled) {
+          return;
+        }
         delete nuxtApp._asyncDataPromises[key];
       });
       nuxtApp._asyncDataPromises[key] = promise;
@@ -3850,43 +3813,6 @@ const getDefaultCachedData = (key, nuxtApp, ctx) => {
     return nuxtApp.static.data[key];
   }
 };
-function mergeAbortSignals(signals, cleanupSignal, timeout) {
-  const list = signals.filter((s) => !!s);
-  if (typeof timeout === "number" && timeout >= 0) {
-    const timeoutSignal = AbortSignal.timeout?.(timeout);
-    if (timeoutSignal) {
-      list.push(timeoutSignal);
-    }
-  }
-  if (AbortSignal.any) {
-    return AbortSignal.any(list);
-  }
-  const controller = new AbortController();
-  for (const sig of list) {
-    if (sig.aborted) {
-      const reason = sig.reason ?? new DOMException("Aborted", "AbortError");
-      try {
-        controller.abort(reason);
-      } catch {
-        controller.abort();
-      }
-      return controller.signal;
-    }
-  }
-  const onAbort = () => {
-    const abortedSignal = list.find((s) => s.aborted);
-    const reason = abortedSignal?.reason ?? new DOMException("Aborted", "AbortError");
-    try {
-      controller.abort(reason);
-    } catch {
-      controller.abort();
-    }
-  };
-  for (const sig of list) {
-    sig.addEventListener?.("abort", onAbort, { once: true, signal: cleanupSignal });
-  }
-  return controller.signal;
-}
 const NuxtIconSvg = /* @__PURE__ */ defineComponent({
   name: "NuxtIconSvg",
   props: {
@@ -4148,18 +4074,18 @@ function resolveImage(ctx, input, options) {
   }
   const { provider, defaults } = getProvider(ctx, options.provider || ctx.options.provider);
   const preset = getPreset(ctx, options.preset);
-  input = hasProtocol(input) ? input : withLeadingSlash(input);
+  input = hasProtocol$1(input) ? input : withLeadingSlash(input);
   if (!provider.supportsAlias) {
     for (const base in ctx.options.alias) {
       if (input.startsWith(base)) {
         const alias = ctx.options.alias[base];
         if (alias) {
-          input = joinURL(alias, input.slice(base.length));
+          input = joinURL$1(alias, input.slice(base.length));
         }
       }
     }
   }
-  if (provider.validateDomains && hasProtocol(input)) {
+  if (provider.validateDomains && hasProtocol$1(input)) {
     const inputHost = parseURL(input).host;
     if (!ctx.options.domains.find((d) => d === inputHost)) {
       return {
@@ -4334,10 +4260,10 @@ const getImage = (src, { modifiers = {}, baseURL: baseURL2 } = {}, ctx) => {
   }
   const params = operationsGenerator(modifiers) || "_";
   if (!baseURL2) {
-    baseURL2 = joinURL(ctx.options.nuxt.baseURL, "/_ipx");
+    baseURL2 = joinURL$1(ctx.options.nuxt.baseURL, "/_ipx");
   }
   return {
-    url: joinURL(baseURL2, params, encodePath(src))
+    url: joinURL$1(baseURL2, params, encodePath(src))
   };
 };
 const validateDomains = true;
@@ -5301,6 +5227,7 @@ function defineNuxtLink(options) {
         }, slots.default?.());
       };
     }
+    // }) as unknown as DefineComponent<NuxtLinkProps, object, object, ComputedOptions, MethodOptions, object, object, EmitsOptions, string, object, NuxtLinkProps, object, SlotsType<NuxtLinkSlots>>
   });
 }
 const __nuxt_component_0$1 = /* @__PURE__ */ defineNuxtLink(nuxtLinkDefaults);
@@ -7609,7 +7536,7 @@ _sfc_main$3.setup = (props, ctx) => {
 };
 const __nuxt_component_0 = Object.assign(_sfc_main$3, { __name: "UApp" });
 const layouts = {
-  default: defineAsyncComponent(() => import('./default-B_gyQzby.mjs').then((m) => m.default || m))
+  default: defineAsyncComponent(() => import('./default-DhgIeIS3.mjs').then((m) => m.default || m))
 };
 const LayoutLoader = defineComponent({
   name: "LayoutLoader",

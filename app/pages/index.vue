@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { testLeadData } from '~/utils/lead/lead-data';
+import { leadData } from '~/utils/lead/lead-data';
 const step = ref(0);
-const answers = ref(testLeadData)
+const answers = ref(leadData)
 const loading = ref(false)
 const aiResult = ref(null);
 const useUploadImage = ref(false);

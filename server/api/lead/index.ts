@@ -89,7 +89,7 @@ export default defineEventHandler(async (event) => {
         await emailLead(leadText, answers);
 
         // // Email Company
-        await emailCompany(aiOutput);
+        await emailCompany(aiOutput, answers);
 
         // await sms();
 

@@ -23,12 +23,12 @@ export async function emailLead(aiOutput: string, data: Lead) {
     };
 };
 
-export async function emailCompany(aiOutput: string) {
+export async function emailCompany(aiOutput: string, data: Lead) {
 
     try {
         await resend.emails.send({
             from: 'NoReply@ascendpod.com',
-            to: ['michaeldreesen90@gmail.com', '4066072405@tmomail.net'],
+            to: [data?.email],
             subject: "Your Lead Inquiry",
             html: aiOutput,
         });

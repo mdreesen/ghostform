@@ -1,10 +1,10 @@
 import { createRenderer, getRequestDependencies, getPreloadLinks, getPrefetchLinks } from 'vue-bundle-renderer/runtime';
-import { b as buildAssetsURL, u as useRuntimeConfig, g as getResponseStatusText, a as getResponseStatus, d as defineRenderHandler, p as publicAssetsURL, c as getQuery, e as createError, f as destr, h as getRouteRules, i as useNitroApp } from '../nitro/nitro.mjs';
+import { b as buildAssetsURL, u as useRuntimeConfig, g as getResponseStatusText, a as getResponseStatus, e as defineRenderHandler, p as publicAssetsURL, f as getQuery, c as createError, h as destr, i as getRouteRules, j as relative, k as joinURL, l as useNitroApp } from '../nitro/nitro.mjs';
 import { renderToString } from 'vue/server-renderer';
 import { createHead as createHead$1, propsToString, renderSSRHead } from 'unhead/server';
 import { stringify, uneval } from 'devalue';
 import { walkResolver } from 'unhead/utils';
-import { toValue, isRef, hasInjectionContext, inject, ref, watchEffect, getCurrentInstance, onBeforeUnmount, onDeactivated, onActivated } from 'vue';
+import { isRef, toValue, hasInjectionContext, inject, ref, watchEffect, getCurrentInstance, onBeforeUnmount, onDeactivated, onActivated } from 'vue';
 
 const VueResolver = (_, value) => {
   return isRef(value) ? toValue(value) : value;
@@ -27,10 +27,9 @@ function vueInstall(head) {
 function injectHead() {
   if (hasInjectionContext()) {
     const instance = inject(headSymbol);
-    if (!instance) {
-      throw new Error("useHead() was called without provide context, ensure you call it through the setup() function.");
+    if (instance) {
+      return instance;
     }
-    return instance;
   }
   throw new Error("useHead() was called without provide context, ensure you call it through the setup() function.");
 }
@@ -93,19 +92,22 @@ const appId = "nuxt-app";
 const APP_ROOT_OPEN_TAG = `<${appRootTag}${propsToString(appRootAttrs)}>`;
 const APP_ROOT_CLOSE_TAG = `</${appRootTag}>`;
 const getServerEntry = () => import('../build/server.mjs').then((r) => r.default || r);
-const getPrecomputedDependencies = () => import('../build/client.precomputed.mjs').then((r) => r.default || r).then((r) => typeof r === "function" ? r() : r);
+const getClientManifest = () => import('../build/client.manifest.mjs').then((r) => r.default || r).then((r) => typeof r === "function" ? r() : r);
 const getSSRRenderer = lazyCachedFunction(async () => {
+  const manifest = await getClientManifest();
+  if (!manifest) {
+    throw new Error("client.manifest is not available");
+  }
   const createSSRApp = await getServerEntry();
   if (!createSSRApp) {
     throw new Error("Server bundle is not available");
   }
-  const precomputed = await getPrecomputedDependencies();
-  const renderer = createRenderer(createSSRApp, {
-    precomputed,
-    manifest: void 0,
+  const options = {
+    manifest,
     renderToString: renderToString$1,
     buildAssetsURL
-  });
+  };
+  const renderer = createRenderer(createSSRApp, options);
   async function renderToString$1(input, context) {
     const html = await renderToString(input, context);
     return APP_ROOT_OPEN_TAG + html + APP_ROOT_CLOSE_TAG;
@@ -113,7 +115,7 @@ const getSSRRenderer = lazyCachedFunction(async () => {
   return renderer;
 });
 const getSPARenderer = lazyCachedFunction(async () => {
-  const precomputed = await getPrecomputedDependencies();
+  const manifest = await getClientManifest();
   const spaTemplate = await import('../virtual/_virtual_spa-template.mjs').then((r) => r.template).catch(() => "").then((r) => {
     {
       const APP_SPA_LOADER_OPEN_TAG = `<${appSpaLoaderTag}${propsToString(appSpaLoaderAttrs)}>`;
@@ -123,13 +125,13 @@ const getSPARenderer = lazyCachedFunction(async () => {
       return appTemplate + loaderTemplate;
     }
   });
-  const renderer = createRenderer(() => () => {
-  }, {
-    precomputed,
-    manifest: void 0,
+  const options = {
+    manifest,
     renderToString: () => spaTemplate,
     buildAssetsURL
-  });
+  };
+  const renderer = createRenderer(() => () => {
+  }, options);
   const result = await renderer.renderToString({});
   const renderToString = (ssrContext) => {
     const config = useRuntimeConfig(ssrContext.event);
@@ -162,6 +164,15 @@ function getRenderer(ssrContext) {
   return ssrContext.noSSR ? getSPARenderer() : getSSRRenderer();
 }
 const getSSRStyles = lazyCachedFunction(() => import('../build/styles.mjs').then((r) => r.default || r));
+const getEntryIds = () => getClientManifest().then((r) => {
+  const entryIds = [];
+  for (const entry of Object.values(r)) {
+    if (entry._globalCSS) {
+      entryIds.push(entry.src);
+    }
+  }
+  return entryIds;
+});
 
 function renderPayloadResponse(ssrContext) {
   return {
@@ -245,7 +256,7 @@ async function renderInlineStyles(usedModules) {
 
 const renderSSRHeadOptions = {"omitLineBreaks":true};
 
-const entryIds = [];
+const entryFileName = "K0WXDhae.js";
 
 globalThis.__buildAssetsURL = buildAssetsURL;
 globalThis.__publicAssetsURL = publicAssetsURL;
@@ -253,6 +264,7 @@ const HAS_APP_TELEPORTS = !!(appTeleportAttrs.id);
 const APP_TELEPORT_OPEN_TAG = HAS_APP_TELEPORTS ? `<${appTeleportTag}${propsToString(appTeleportAttrs)}>` : "";
 const APP_TELEPORT_CLOSE_TAG = HAS_APP_TELEPORTS ? `</${appTeleportTag}>` : "";
 const PAYLOAD_URL_RE = /^[^?]*\/_payload.json(?:\?.*)?$/ ;
+let entryPath;
 const renderer = defineRenderHandler(async (event) => {
   const nitroApp = useNitroApp();
   const ssrError = event.path.startsWith("/__nuxt_error") ? getQuery(event) : null;
@@ -287,7 +299,7 @@ const renderer = defineRenderHandler(async (event) => {
   }
   const renderer = await getRenderer(ssrContext);
   {
-    for (const id of entryIds) {
+    for (const id of await getEntryIds()) {
       ssrContext.modules.add(id);
     }
   }
@@ -313,6 +325,28 @@ const renderer = defineRenderHandler(async (event) => {
   }
   const NO_SCRIPTS = routeOptions.noScripts;
   const { styles, scripts } = getRequestDependencies(ssrContext, renderer.rendererContext);
+  if (!NO_SCRIPTS) {
+    let path = entryPath;
+    if (!path) {
+      path = buildAssetsURL(entryFileName);
+      if (ssrContext.runtimeConfig.app.cdnURL || /^(?:\/|\.+\/)/.test(path)) {
+        entryPath = path;
+      } else {
+        path = relative(event.path.replace(/\/[^/]+$/, "/"), joinURL("/", path));
+        if (!/^(?:\/|\.+\/)/.test(path)) {
+          path = `./${path}`;
+        }
+      }
+    }
+    ssrContext.head.push({
+      script: [{
+        tagPosition: "head",
+        tagPriority: -2,
+        type: "importmap",
+        innerHTML: JSON.stringify({ imports: { "#entry": path } })
+      }]
+    }, headEntryOptions);
+  }
   if (ssrContext._preloadManifest && !NO_SCRIPTS) {
     ssrContext.head.push({
       link: [
