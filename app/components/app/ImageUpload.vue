@@ -1,35 +1,25 @@
 <script setup lang="ts">
-const fileInput = ref<HTMLInputElement | null>(null)
-const previewUrl = ref<string | null>(null)
-const isUploading = ref(false)
-const analysis = ref<string | null>(null)
+const fileInput = ref<HTMLInputElement | null>(null);
+const previewUrl = ref<string | null>(null);
+const isUploading = ref(false);
+const analysis = ref<string | null>(null);
+
+  const emit = defineEmits<{
+  (e: 'file-selected', file: File): void
+}>();
 
 const handleFileChange = (e: Event) => {
   const target = e.target as HTMLInputElement
   const file = target.files?.[0]
+  
   if (file) {
+    // 1. Create a local preview for the UI
     previewUrl.value = URL.createObjectURL(file)
-    uploadImage(file)
+    
+    // 2. Pass the raw file up to the parent
+    emit('file-selected', file)
   }
-}
-
-const uploadImage = async (file: File) => {
-  isUploading.value = true
-  const formData = new FormData()
-  formData.append('image', file)
-
-  try {
-    const response = await $fetch('/api/image', {
-      method: 'POST',
-      body: formData
-    })
-    analysis.value = response?.analysis
-  } catch (err) {
-    console.error('Upload failed', err)
-  } finally {
-    isUploading.value = false
-  }
-}
+};
 </script>
 
 <template>
@@ -48,9 +38,8 @@ const uploadImage = async (file: File) => {
 
       <img v-else :src="previewUrl" class="mx-auto max-h-64 rounded-xl shadow-2xl" />
       
-      <div v-if="isUploading" class="absolute inset-0 bg-zinc-950/80 rounded-2xl flex items-center justify-center">
-        <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-blue-500"></div>
-      </div>
+
+      <baseLoading v-if="isUploading" />
     </div>
 
     <transition name="fade">

@@ -1,4 +1,9 @@
 export interface Lead {
-    email: string;
-    name: string;
-  }
+  name: string,
+  email: string,
+  address: string,
+  goal: string,
+  sqft: string,
+  budget: string,
+  message: string
+}
