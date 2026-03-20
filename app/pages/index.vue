@@ -2,7 +2,7 @@
 import { testLeadData } from '~/utils/lead/lead-data';
 const step = ref(0);
 const answers = ref(testLeadData)
-const isSubmitting = ref(false)
+const loading = ref(false)
 const aiResult = ref(null);
 const useUploadImage = ref(false);
 const selectedFile = ref<File | null>(null);
@@ -30,7 +30,7 @@ const nextStep = () => {
 }
 
 const submitForm = async () => {
-    isSubmitting.value = true
+    loading.value = true
     const fd = new FormData();
 
     // Wrap the object in a Blob
@@ -49,7 +49,7 @@ const submitForm = async () => {
         body: fd
     });
 
-    isSubmitting.value = false;
+    loading.value = false;
 };
 </script>
 
@@ -70,28 +70,21 @@ const submitForm = async () => {
                 </div>
             </transition>
 
-            <div class="flex w-full justify-between">
+            <baseLoading v-if="loading" class="z-10"  />
 
-                <!-- Either upload an image or close it out -->
-                <button v-if="!useUploadImage" @click="useUploadImage = true"
-                    class="bg-blue-600 px-6 py-2 rounded-lg hover:bg-blue-500 transition">
-                    Upload an image
-                </button>
-                <button v-if="useUploadImage" @click="useUploadImage = false"
-                    class="bg-blue-600 px-6 py-2 rounded-lg hover:bg-blue-500 transition">
-                    close
-                </button>
+            <div class="w-full">
 
+                <div class="flex w-full justify-between">
+                    <baseButton :text="useUploadImage ? 'Cancel Upload' : 'Upload an image'"
+                        @click="useUploadImage = !useUploadImage" />
 
-                    <button v-if="!isSubmitting" @click="nextStep"
-                        class="bg-blue-600 px-6 py-2 rounded-lg hover:bg-blue-500 transition">
-                        {{ step === questions.length - 1 ? 'Finish' : 'Next' }}
-                    </button>
-                    <baseLoading v-if="isSubmitting" />
-            </div>
+                    <baseButton v-if="!loading" @click="nextStep"
+                        :text="step === questions.length - 1 ? 'Finish' : 'Next'" />
+                </div>
 
-            <div v-if="useUploadImage">
-                <appImageUpload @file-selected="handleImageSelection" />
+                <div v-if="useUploadImage">
+                    <appImageUpload @file-selected="handleImageSelection" />
+                </div>
             </div>
         </div>
 
