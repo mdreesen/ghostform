@@ -28,9 +28,6 @@ export default defineEventHandler(async (event) => {
             company = JSON.parse(jsonString);
         };
 
-        console.log(formData);
-        console.log(answers?.address);
-        console.log(company?.category);
         const imagePart = formData?.find(item => item.name === 'image') ?? {};
 
         const useRole = construction_role(answers?.address);
@@ -44,6 +41,10 @@ export default defineEventHandler(async (event) => {
              Write a 3-sentence email thanking them, 
              mentioning one specific detail you see in the message, 
              and telling them a human will call them shortly.
+
+            End the email with:
+            Best regards,
+            ${company?.company_name}
              
             Let new lines be wrapped in a <div></div> element
             `,

@@ -24,7 +24,7 @@ export async function emailLead(aiOutput: string, data: Lead) {
 };
 
 export async function emailCompany(aiOutput: string, data: Company) {
-console.log(data)
+
     try {
         await resend.emails.send({
             from: 'NoReply@ascendpod.com',
