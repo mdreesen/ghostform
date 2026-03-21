@@ -8,7 +8,7 @@ const { category, company_name, company_email } = route.query;
 
 
 const step = ref(0);
-const answers = ref(leadData);
+const answers = ref(testLeadData);
 const company = ref(companyTestData)
 const loading = ref(false)
 const aiResult = ref(null);
@@ -101,7 +101,7 @@ const submitForm = async () => {
 
         <div v-else class="bg-zinc-900 p-8 rounded-2xl border border-zinc-800 max-w-lg">
             <h2 class="text-green-400 font-bold mb-2">Thank you for your inquiry</h2>
-            <p class="text-zinc-400 mb-4 italic">{{ company_name }} will get back to you shortly!</p>
+            <p class="text-zinc-400 mb-4 italic">{{ companyTestData.company_name }} will get back to you shortly!</p>
         </div>
     </div>
 </template>

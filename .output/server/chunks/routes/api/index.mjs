@@ -174,13 +174,12 @@ async function aiClient(data) {
 }
 async function aiCompany(data) {
   var _a;
-  console.log(data.imagePart.data);
   const useLeadAnalysis = analyze_lead(data);
   const useRole = construction_role(data == null ? void 0 : data.address);
   const { text } = await generateText({
     model: openai("gpt-4o-mini"),
     system: useRole,
-    messages: ((_a = data.imagePart) == null ? void 0 : _a.data) ? [
+    messages: ((_a = data == null ? void 0 : data.imagePart) == null ? void 0 : _a.data) ? [
       {
         role: "user",
         content: [
