@@ -223,6 +223,7 @@ async function aiCompany(data) {
 
 const index = defineEventHandler(async (event) => {
   try {
+    console.log(event);
     const formData = await readMultipartFormData(event);
     const answersPart = formData == null ? void 0 : formData.find((item) => item.name === "answers");
     const companyPart = formData == null ? void 0 : formData.find((item) => item.name === "company");

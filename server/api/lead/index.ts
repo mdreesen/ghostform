@@ -8,6 +8,7 @@ import { aiClient, aiCompany } from '~/lib/ai';
 export default defineEventHandler(async (event) => {
 
     try {
+        console.log(event)
         const formData = await readMultipartFormData(event);
 
         const answersPart = formData?.find(item => item.name === 'answers');
@@ -27,6 +28,7 @@ export default defineEventHandler(async (event) => {
 
         const imagePart = formData?.find((item) => item.name === 'image');
 
+        // Ai For Client and Compnay
         const useAiClient = await aiClient({ ...answers, ...company })
         const useAiCompany = await aiCompany({ ...imagePart, ...answers, ...company })
 

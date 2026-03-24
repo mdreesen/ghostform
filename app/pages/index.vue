@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { leadData, testLeadData } from '~/utils/users/lead';
 import { companyData, companyTestData } from '~/utils/users/company';
+import { compressImage } from '~/lib/compress';
 // http://localhost:3000/?category=construction&company_name=White+Raven+Development&company_email=whiteravendev90@gmail.com
 
 const route = useRoute();
@@ -26,8 +27,21 @@ const questions = [
 ];
 
 // This function runs when the child "emits" the file
-const handleImageSelection = (file: File) => {
-    selectedFile.value = file;
+const handleImageSelection = async (file: File) => {
+    loading.value = true; // Optional: show loading if it's a huge file
+    try {
+        // Shrink it before it even touches the 'selectedFile' ref
+        const compressed = await compressImage(file);
+        selectedFile.value = compressed;
+
+        console.log(`Original: ${(file.size / 1024).toFixed(0)}kb`);
+        console.log(`Compressed: ${(compressed.size / 1024).toFixed(0)}kb`);
+    } catch (err) {
+        console.error("Compression failed, using original file", err);
+        selectedFile.value = file;
+    } finally {
+        loading.value = false;
+    }
 };
 
 const useFile = computed(() => selectedFile.value);
