@@ -103,15 +103,19 @@ _sfc_main$1.setup = (props, ctx) => {
   return _sfc_setup$1 ? _sfc_setup$1(props, ctx) : void 0;
 };
 const __nuxt_component_2 = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$1, [["__scopeId", "data-v-923949b7"]]), { __name: "AppImageUpload" });
+const leadData = {
+  name: "",
+  email: "",
+  address: "",
+  goal: "",
+  sqft: "",
+  budget: "",
+  message: ""
+};
 const companyTestData = {
   category: "construction",
   company_name: "White Raven Development",
   company_email: "michaeldreesen90@gmail.com"
-};
-const companyData = {
-  category: "",
-  company_name: "",
-  company_email: ""
 };
 const compressImage = async (file) => {
   const maxWidth = 1600;
@@ -138,7 +142,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     const route = useRoute();
     const { category, company_name, company_email } = route.query;
     const step = ref(0);
-    const answers = ref(companyData);
+    const answers = ref(leadData);
     const company = ref(companyTestData);
     const loading = ref(false);
     const aiResult = ref(null);
@@ -158,8 +162,6 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
       try {
         const compressed = await compressImage(file);
         selectedFile.value = compressed;
-        console.log(`Original: ${(file.size / 1024).toFixed(0)}kb`);
-        console.log(`Compressed: ${(compressed.size / 1024).toFixed(0)}kb`);
       } catch (err) {
         console.error("Compression failed, using original file", err);
         selectedFile.value = file;
@@ -196,15 +198,15 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
       const _component_baseLoading = __nuxt_component_0;
       const _component_baseButton = __nuxt_component_1;
       const _component_appImageUpload = __nuxt_component_2;
-      _push(`<div${ssrRenderAttrs(mergeProps({ class: "min-h-screen bg-zinc-950 text-white flex items-center justify-center p-6 font-sans" }, _attrs))} data-v-b1a40e08>`);
+      _push(`<div${ssrRenderAttrs(mergeProps({ class: "min-h-screen bg-zinc-950 text-white flex items-center justify-center p-6 font-sans" }, _attrs))} data-v-1de05d48>`);
       if (!unref(aiResult)) {
-        _push(`<div class="max-w-md w-full space-y-8" data-v-b1a40e08><div class="h-1 bg-zinc-800 rounded-full" data-v-b1a40e08><div class="h-1 bg-blue-500 transition-all duration-500" style="${ssrRenderStyle({ width: `${(unref(step) + 1) / questions.length * 100}%` })}" data-v-b1a40e08></div></div><div class="space-y-4" data-v-b1a40e08><label class="block text-2xl font-medium" data-v-b1a40e08>${ssrInterpolate(questions[unref(step)].label)}</label><input${ssrRenderDynamicModel(questions[unref(step)].type, unref(answers)[questions[unref(step)].id], null)}${ssrRenderAttr("type", questions[unref(step)].type)} class="w-full bg-transparent border-b-2 border-zinc-700 py-2 text-xl focus:border-blue-500 outline-none transition-colors" autofocus data-v-b1a40e08></div>`);
+        _push(`<div class="max-w-md w-full space-y-8" data-v-1de05d48><div class="h-1 bg-zinc-800 rounded-full" data-v-1de05d48><div class="h-1 bg-blue-500 transition-all duration-500" style="${ssrRenderStyle({ width: `${(unref(step) + 1) / questions.length * 100}%` })}" data-v-1de05d48></div></div><div class="space-y-4" data-v-1de05d48><label class="block text-2xl font-medium" data-v-1de05d48>${ssrInterpolate(questions[unref(step)].label)}</label><input${ssrRenderDynamicModel(questions[unref(step)].type, unref(answers)[questions[unref(step)].id], null)}${ssrRenderAttr("type", questions[unref(step)].type)} class="w-full bg-transparent border-b-2 border-zinc-700 py-2 text-xl focus:border-blue-500 outline-none transition-colors" autofocus data-v-1de05d48></div>`);
         if (unref(loading)) {
           _push(ssrRenderComponent(_component_baseLoading, { class: "z-10" }, null, _parent));
         } else {
           _push(`<!---->`);
         }
-        _push(`<div class="w-full" data-v-b1a40e08><div class="flex w-full justify-between" data-v-b1a40e08>`);
+        _push(`<div class="w-full" data-v-1de05d48><div class="flex w-full justify-between" data-v-1de05d48>`);
         _push(ssrRenderComponent(_component_baseButton, {
           text: unref(useUploadImage) ? "Cancel Upload" : "Upload an image",
           onClick: ($event) => useUploadImage.value = !unref(useUploadImage)
@@ -219,7 +221,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
         }
         _push(`</div>`);
         if (unref(useUploadImage)) {
-          _push(`<div data-v-b1a40e08>`);
+          _push(`<div data-v-1de05d48>`);
           _push(ssrRenderComponent(_component_appImageUpload, { onFileSelected: handleImageSelection }, null, _parent));
           _push(`</div>`);
         } else {
@@ -227,7 +229,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
         }
         _push(`</div></div>`);
       } else {
-        _push(`<div class="bg-zinc-900 p-8 rounded-2xl border border-zinc-800 max-w-lg" data-v-b1a40e08><h2 class="text-green-400 font-bold mb-2" data-v-b1a40e08>Thank you for your inquiry</h2><p class="text-zinc-400 mb-4 italic" data-v-b1a40e08>${ssrInterpolate(unref(companyTestData).company_name)} will get back to you shortly!</p></div>`);
+        _push(`<div class="bg-zinc-900 p-8 rounded-2xl border border-zinc-800 max-w-lg" data-v-1de05d48><h2 class="text-green-400 font-bold mb-2" data-v-1de05d48>Thank you for your inquiry</h2><p class="text-zinc-400 mb-4 italic" data-v-1de05d48>${ssrInterpolate(unref(companyTestData).company_name)} will get back to you shortly!</p></div>`);
       }
       _push(`</div>`);
     };
@@ -239,7 +241,7 @@ _sfc_main.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("pages/index.vue");
   return _sfc_setup ? _sfc_setup(props, ctx) : void 0;
 };
-const index = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-b1a40e08"]]);
+const index = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-1de05d48"]]);
 
 export { index as default };
-//# sourceMappingURL=index-Cyh92UpI.mjs.map
+//# sourceMappingURL=index-DYb9tpbC.mjs.map

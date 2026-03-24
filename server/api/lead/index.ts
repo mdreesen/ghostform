@@ -8,7 +8,6 @@ import { aiClient, aiCompany } from '~/lib/ai';
 export default defineEventHandler(async (event) => {
 
     try {
-        console.log(event)
         const formData = await readMultipartFormData(event);
 
         const answersPart = formData?.find(item => item.name === 'answers');
@@ -38,7 +37,7 @@ export default defineEventHandler(async (event) => {
         await emailLead(useAiClient, answers);
 
         // // Email Company
-        await emailCompany(useAiCompany, company);
+        await emailCompany(useAiCompany, company, imagePart);
 
         // await sms();
 

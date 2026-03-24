@@ -9,7 +9,7 @@ const { category, company_name, company_email } = route.query;
 
 
 const step = ref(0);
-const answers = ref(companyData);
+const answers = ref(leadData);
 const company = ref(companyTestData)
 const loading = ref(false)
 const aiResult = ref(null);
@@ -33,9 +33,6 @@ const handleImageSelection = async (file: File) => {
         // Shrink it before it even touches the 'selectedFile' ref
         const compressed = await compressImage(file);
         selectedFile.value = compressed;
-
-        console.log(`Original: ${(file.size / 1024).toFixed(0)}kb`);
-        console.log(`Compressed: ${(compressed.size / 1024).toFixed(0)}kb`);
     } catch (err) {
         console.error("Compression failed, using original file", err);
         selectedFile.value = file;

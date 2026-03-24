@@ -12,7 +12,6 @@ export async function emailLead(aiOutput: string, data: Lead) {
             subject: "Your Job Inquiry",
             html: aiOutput
         });
-        console.log('emailing: Email sent to lead');
 
     } catch (error) {
         console.log(error);
@@ -23,17 +22,20 @@ export async function emailLead(aiOutput: string, data: Lead) {
     };
 };
 
-export async function emailCompany(aiOutput: string, data: Company) {
-
+export async function emailCompany(aiOutput: string, data: Company, image) {
     try {
         await resend.emails.send({
             from: 'NoReply@ascendpod.com',
             to: [data?.company_email],
             subject: "Your Lead Inquiry",
             html: aiOutput,
+            attachments: image?.filename ? [
+                {
+                    filename: image?.filename,
+                    content: image?.data, // Resend handles the Buffer automatically
+                },
+            ] : [],
         });
-
-        console.log('emailing: Email sent to Company');
 
     } catch (error) {
         console.log(error);

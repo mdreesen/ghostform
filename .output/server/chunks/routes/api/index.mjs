@@ -23,7 +23,6 @@ async function emailLead(aiOutput, data) {
       subject: "Your Job Inquiry",
       html: aiOutput
     });
-    console.log("emailing: Email sent to lead");
   } catch (error) {
     console.log(error);
     throw createError({
@@ -32,15 +31,21 @@ async function emailLead(aiOutput, data) {
     });
   }
 }
-async function emailCompany(aiOutput, data) {
+async function emailCompany(aiOutput, data, image) {
   try {
     await resend.emails.send({
       from: "NoReply@ascendpod.com",
       to: [data == null ? void 0 : data.company_email],
       subject: "Your Lead Inquiry",
-      html: aiOutput
+      html: aiOutput,
+      attachments: (image == null ? void 0 : image.filename) ? [
+        {
+          filename: image == null ? void 0 : image.filename,
+          content: image == null ? void 0 : image.data
+          // Resend handles the Buffer automatically
+        }
+      ] : []
     });
-    console.log("emailing: Email sent to Company");
   } catch (error) {
     console.log(error);
     throw createError({
@@ -223,7 +228,6 @@ async function aiCompany(data) {
 
 const index = defineEventHandler(async (event) => {
   try {
-    console.log(event);
     const formData = await readMultipartFormData(event);
     const answersPart = formData == null ? void 0 : formData.find((item) => item.name === "answers");
     const companyPart = formData == null ? void 0 : formData.find((item) => item.name === "company");
@@ -244,7 +248,7 @@ const index = defineEventHandler(async (event) => {
     const useAiCompany = await aiCompany({ ...imagePart, ...answers, ...company });
     if (!(answers == null ? void 0 : answers.email)) throw createError({ statusCode: 400, message: "Missing data" });
     await emailLead(useAiClient, answers);
-    await emailCompany(useAiCompany, company);
+    await emailCompany(useAiCompany, company, imagePart);
     return { status: "success", aiResponse: useAiCompany };
   } catch (error) {
     if (error instanceof Error) {
