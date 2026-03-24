@@ -1,5 +1,5 @@
-import process from 'node:process';globalThis._importMeta_=globalThis._importMeta_||{url:"file:///_entry.js",env:process.env};import { hasInjectionContext, inject, getCurrentInstance, defineAsyncComponent, defineComponent, useSlots, h, Fragment, createElementBlock, shallowRef, provide, cloneVNode, computed, useSSRContext, unref, shallowReactive, ref, Suspense, createApp, reactive, toRaw, onServerPrefetch, useAttrs, mergeProps, useModel, withCtx, renderSlot, createVNode, openBlock, createBlock, createTextVNode, toDisplayString, createCommentVNode, mergeModels, watch, resolveDynamicComponent, toRef as toRef$1, renderList, useId, resolveComponent, onErrorCaptured, effectScope, toValue, useTemplateRef, withModifiers, getCurrentScope, isRef, nextTick, onScopeDispose, isReadonly, toRefs, isShallow, isReactive, readonly, customRef, markRaw } from 'vue';
-import { s as serialize, m as getContext, $ as $fetch$1, n as baseURL, o as defu, q as defuFn, t as klona, v as createHooks, c as createError$1, w as isEqual, x as parseQuery, y as hasProtocol, k as joinURL, z as hasProtocol$1, A as withLeadingSlash, B as joinURL$1, C as parseURL, D as withQuery, E as isScriptProtocol, F as withTrailingSlash, G as withoutTrailingSlash, H as sanitizeStatusCode, I as executeAsync, J as encodeParam, K as toRouteMatcher, L as createRouter$1, M as encodePath } from '../nitro/nitro.mjs';
+import process from 'node:process';globalThis._importMeta_=globalThis._importMeta_||{url:"file:///_entry.js",env:process.env};import { hasInjectionContext, inject, defineComponent, useAttrs, ref, computed, mergeProps, unref, getCurrentInstance, defineAsyncComponent, useSlots, h, Fragment, createElementBlock, shallowRef, provide, cloneVNode, useSSRContext, shallowReactive, Suspense, createApp, reactive, toRaw, onServerPrefetch, useModel, withCtx, renderSlot, createVNode, openBlock, createBlock, createTextVNode, toDisplayString, createCommentVNode, mergeModels, watch, resolveDynamicComponent, toRef as toRef$1, renderList, useId, resolveComponent, onErrorCaptured, effectScope, toValue, useTemplateRef, withModifiers, getCurrentScope, isRef, nextTick, onScopeDispose, isReadonly, toRefs, isShallow, isReactive, readonly, customRef, markRaw } from 'vue';
+import { s as serialize, m as getContext, n as defu, o as hasProtocol, w as withLeadingSlash, q as joinURL, t as parseURL, $ as $fetch$1, v as baseURL, x as defuFn, y as klona, z as createHooks, c as createError$1, A as encodeParam, B as encodePath, C as isEqual, D as parseQuery, E as hasProtocol$1, k as joinURL$1, F as withQuery, G as isScriptProtocol, H as withTrailingSlash, I as withoutTrailingSlash, J as sanitizeStatusCode, K as executeAsync, L as toRouteMatcher, M as createRouter$1 } from '../nitro/nitro.mjs';
 import { useRoute as useRoute$1, RouterView, createMemoryHistory, createRouter, START_LOCATION } from 'vue-router';
 import colors from 'tailwindcss/colors';
 import { Icon, getIcon, loadIcon as loadIcon$1, _api, addAPIProvider, setCustomIconsLoader } from '@iconify/vue';
@@ -368,7 +368,7 @@ const URL_QUOTE_RE = /"/g;
 const navigateTo = (to, options) => {
   to ||= "/";
   const toPath = typeof to === "string" ? to : "path" in to ? resolveRouteObject(to) : useRouter().resolve(to).href;
-  const isExternalHost = hasProtocol(toPath, { acceptRelative: true });
+  const isExternalHost = hasProtocol$1(toPath, { acceptRelative: true });
   const isExternal = options?.external || isExternalHost;
   if (isExternal) {
     if (!options?.external) {
@@ -385,7 +385,7 @@ const navigateTo = (to, options) => {
   {
     if (nuxtApp.ssrContext) {
       const fullPath = typeof to === "string" || isExternal ? toPath : router.resolve(to).fullPath || "/";
-      const location2 = isExternal ? toPath : joinURL((/* @__PURE__ */ useRuntimeConfig()).app.baseURL, fullPath);
+      const location2 = isExternal ? toPath : joinURL$1((/* @__PURE__ */ useRuntimeConfig()).app.baseURL, fullPath);
       const redirect = async function(response) {
         await nuxtApp.callHook("app:redirected");
         const encodedLoc = location2.replace(URL_QUOTE_RE, "%22");
@@ -486,7 +486,7 @@ const _routes = [
   {
     name: "index",
     path: "/",
-    component: () => import('./index-DYb9tpbC.mjs')
+    component: () => import('./index-DhOOco2M.mjs')
   }
 ];
 const _wrapInTransition = (props, children) => {
@@ -3850,7 +3850,7 @@ const NuxtIconSvg = /* @__PURE__ */ defineComponent({
     }, slots);
   }
 });
-const __nuxt_component_0$2 = defineComponent({
+const __nuxt_component_0$3 = defineComponent({
   name: "NuxtIcon",
   props: {
     name: {
@@ -3899,7 +3899,7 @@ const __nuxt_component_0$2 = defineComponent({
 });
 const index = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
-  default: __nuxt_component_0$2
+  default: __nuxt_component_0$3
 }, Symbol.toStringTag, { value: "Module" }));
 const _sfc_main$e = {
   __name: "UIcon",
@@ -3914,7 +3914,7 @@ const _sfc_main$e = {
     const props = __props;
     const iconProps = useForwardProps(reactivePick(props, "name", "mode", "size", "customize"));
     return (_ctx, _push, _parent, _attrs) => {
-      const _component_Icon = __nuxt_component_0$2;
+      const _component_Icon = __nuxt_component_0$3;
       if (typeof __props.name === "string") {
         _push(ssrRenderComponent(_component_Icon, mergeProps(unref(iconProps), _attrs), null, _parent));
       } else {
@@ -4074,18 +4074,18 @@ function resolveImage(ctx, input, options) {
   }
   const { provider, defaults } = getProvider(ctx, options.provider || ctx.options.provider);
   const preset = getPreset(ctx, options.preset);
-  input = hasProtocol$1(input) ? input : withLeadingSlash(input);
+  input = hasProtocol(input) ? input : withLeadingSlash(input);
   if (!provider.supportsAlias) {
     for (const base in ctx.options.alias) {
       if (input.startsWith(base)) {
         const alias = ctx.options.alias[base];
         if (alias) {
-          input = joinURL$1(alias, input.slice(base.length));
+          input = joinURL(alias, input.slice(base.length));
         }
       }
     }
   }
-  if (provider.validateDomains && hasProtocol$1(input)) {
+  if (provider.validateDomains && hasProtocol(input)) {
     const inputHost = parseURL(input).host;
     if (!ctx.options.domains.find((d) => d === inputHost)) {
       return {
@@ -4260,10 +4260,10 @@ const getImage = (src, { modifiers = {}, baseURL: baseURL2 } = {}, ctx) => {
   }
   const params = operationsGenerator(modifiers) || "_";
   if (!baseURL2) {
-    baseURL2 = joinURL$1(ctx.options.nuxt.baseURL, "/_ipx");
+    baseURL2 = joinURL(ctx.options.nuxt.baseURL, "/_ipx");
   }
   return {
-    url: joinURL$1(baseURL2, params, encodePath(src))
+    url: joinURL(baseURL2, params, encodePath(src))
   };
 };
 const validateDomains = true;
@@ -4508,7 +4508,7 @@ _sfc_main$d.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("../node_modules/@nuxt/image/dist/runtime/components/NuxtImg.vue");
   return _sfc_setup$d ? _sfc_setup$d(props, ctx) : void 0;
 };
-const ImageComponent = Object.assign(_sfc_main$d, { __name: "NuxtImg" });
+const __nuxt_component_0$2 = Object.assign(_sfc_main$d, { __name: "NuxtImg" });
 const avatarGroupInjectionKey = /* @__PURE__ */ Symbol("nuxt-ui.avatar-group");
 function useAvatarGroup(props) {
   const avatarGroup = inject(avatarGroupInjectionKey, void 0);
@@ -4777,7 +4777,7 @@ const _sfc_main$b = /* @__PURE__ */ Object.assign({ inheritAttrs: false }, {
         default: withCtx((_, _push2, _parent2, _scopeId) => {
           if (_push2) {
             if (__props.src && !error.value) {
-              ssrRenderVNode(_push2, createVNode(resolveDynamicComponent(as.value.img || unref(ImageComponent)), mergeProps({
+              ssrRenderVNode(_push2, createVNode(resolveDynamicComponent(as.value.img || unref(__nuxt_component_0$2)), mergeProps({
                 src: __props.src,
                 alt: __props.alt,
                 width: sizePx.value,
@@ -4824,7 +4824,7 @@ const _sfc_main$b = /* @__PURE__ */ Object.assign({ inheritAttrs: false }, {
             }
           } else {
             return [
-              __props.src && !error.value ? (openBlock(), createBlock(resolveDynamicComponent(as.value.img || unref(ImageComponent)), mergeProps({
+              __props.src && !error.value ? (openBlock(), createBlock(resolveDynamicComponent(as.value.img || unref(__nuxt_component_0$2)), mergeProps({
                 key: 0,
                 src: __props.src,
                 alt: __props.alt,
@@ -4989,7 +4989,7 @@ function defineNuxtLink(options) {
     const hasTarget = computed(() => !!props.target && props.target !== "_self");
     const isAbsoluteUrl = computed(() => {
       const path = props.to || props.href || "";
-      return typeof path === "string" && hasProtocol(path, { acceptRelative: true });
+      return typeof path === "string" && hasProtocol$1(path, { acceptRelative: true });
     });
     const builtinRouterLink = resolveComponent("RouterLink");
     const useBuiltinLink = builtinRouterLink && typeof builtinRouterLink !== "string" ? builtinRouterLink.useLink : void 0;
@@ -5024,7 +5024,7 @@ function defineNuxtLink(options) {
       if (typeof to.value === "object") {
         return router.resolve(to.value)?.href ?? null;
       }
-      return applyTrailingSlashBehavior(joinURL(config.app.baseURL, to.value), effectiveTrailingSlash);
+      return applyTrailingSlashBehavior(joinURL$1(config.app.baseURL, to.value), effectiveTrailingSlash);
     });
     return {
       to,
@@ -5233,7 +5233,7 @@ function defineNuxtLink(options) {
 const __nuxt_component_0$1 = /* @__PURE__ */ defineNuxtLink(nuxtLinkDefaults);
 function applyTrailingSlashBehavior(to, trailingSlash) {
   const normalizeFn = trailingSlash === "append" ? withTrailingSlash : withoutTrailingSlash;
-  const hasProtocolDifferentFromHttp = hasProtocol(to) && !to.startsWith("http");
+  const hasProtocolDifferentFromHttp = hasProtocol$1(to) && !to.startsWith("http");
   if (hasProtocolDifferentFromHttp) {
     return to;
   }
@@ -7536,7 +7536,7 @@ _sfc_main$3.setup = (props, ctx) => {
 };
 const __nuxt_component_0 = Object.assign(_sfc_main$3, { __name: "UApp" });
 const layouts = {
-  default: defineAsyncComponent(() => import('./default-DhgIeIS3.mjs').then((m) => m.default || m))
+  default: defineAsyncComponent(() => import('./default-DTRzleal.mjs').then((m) => m.default || m))
 };
 const LayoutLoader = defineComponent({
   name: "LayoutLoader",
@@ -7906,5 +7906,5 @@ let entry;
 }
 const entry_default = (ssrContext) => entry(ssrContext);
 
-export { _export_sfc as _, useHead as a, entry_default as default, useRoute as u };
+export { _export_sfc as _, __nuxt_component_0$2 as a, useHead as b, entry_default as default, useRoute as u };
 //# sourceMappingURL=server.mjs.map

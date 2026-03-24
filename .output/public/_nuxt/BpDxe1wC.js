@@ -1,0 +1,1 @@
+import{d as o,i as a,m as s,c as n,p as r,o as l}from"#entry";const d=o({__name:"default",setup(c){const e=a();return s({meta:[{property:"og:title",content:`Ascend - ${e.meta.title}`}]}),(t,u)=>(l(),n("div",null,[r(t.$slots,"default")]))}});export{d as default};

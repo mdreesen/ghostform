@@ -1,6 +1,6 @@
 import { defineComponent, ref, computed, mergeProps, unref, useSSRContext } from 'vue';
 import { ssrRenderAttrs, ssrRenderStyle, ssrInterpolate, ssrRenderDynamicModel, ssrRenderAttr, ssrRenderComponent } from 'vue/server-renderer';
-import { _ as _export_sfc, u as useRoute } from './server.mjs';
+import { _ as _export_sfc, u as useRoute, a as __nuxt_component_0$2 } from './server.mjs';
 import '../nitro/nitro.mjs';
 import 'node:http';
 import 'node:https';
@@ -74,12 +74,22 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
     const isUploading = ref(false);
     const analysis = ref(null);
     return (_ctx, _push, _parent, _attrs) => {
+      const _component_NuxtImg = __nuxt_component_0$2;
       const _component_baseLoading = __nuxt_component_0;
-      _push(`<div${ssrRenderAttrs(mergeProps({ class: "max-w-xl mx-auto p-6 space-y-6" }, _attrs))} data-v-923949b7><div class="group relative border-2 border-dashed border-zinc-800 rounded-2xl p-12 text-center hover:border-blue-500/50 transition-all cursor-pointer bg-zinc-900/50" data-v-923949b7><input type="file" class="hidden" accept="image/*" data-v-923949b7>`);
+      _push(`<div${ssrRenderAttrs(mergeProps({ class: "max-w-xl mx-auto p-6 space-y-6" }, _attrs))} data-v-544feb0d><div class="group relative border-2 border-dashed border-zinc-800 rounded-2xl p-12 text-center hover:border-blue-500/50 transition-all cursor-pointer bg-zinc-900/50" data-v-544feb0d><input type="file" class="hidden" accept="image/*" data-v-544feb0d>`);
       if (!unref(previewUrl)) {
-        _push(`<div class="space-y-2" data-v-923949b7><p class="text-zinc-400 font-medium text-lg" data-v-923949b7>Drop your project photo here</p><p class="text-zinc-600 text-sm italic" data-v-923949b7>or click to browse</p></div>`);
+        _push(`<div class="space-y-2" data-v-544feb0d><div class="text-4xl" data-v-544feb0d>`);
+        _push(ssrRenderComponent(_component_NuxtImg, {
+          class: "relative z-10 h-full w-full object-contain drop-shadow-md",
+          src: "/images/logo.jpg",
+          format: "webp",
+          preload: "",
+          loading: "eager",
+          "fetch-priority": "high"
+        }, null, _parent));
+        _push(`</div><p class="text-zinc-400 font-medium text-lg" data-v-544feb0d>Drop your project photo here</p><p class="text-zinc-600 text-sm italic" data-v-544feb0d>or click to browse</p></div>`);
       } else {
-        _push(`<img${ssrRenderAttr("src", unref(previewUrl))} class="mx-auto max-h-64 rounded-xl shadow-2xl" data-v-923949b7>`);
+        _push(`<img${ssrRenderAttr("src", unref(previewUrl))} class="mx-auto max-h-64 rounded-xl shadow-2xl" data-v-544feb0d>`);
       }
       if (unref(isUploading)) {
         _push(ssrRenderComponent(_component_baseLoading, null, null, _parent));
@@ -88,7 +98,7 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
       }
       _push(`</div>`);
       if (unref(analysis)) {
-        _push(`<div class="bg-zinc-900 border border-zinc-800 p-6 rounded-2xl shadow-xl" data-v-923949b7><h3 class="text-blue-400 font-bold mb-3 flex items-center gap-2" data-v-923949b7><span data-v-923949b7>✨</span> Ghost AI Analysis </h3><p class="text-zinc-300 leading-relaxed" data-v-923949b7>${ssrInterpolate(unref(analysis))}</p></div>`);
+        _push(`<div class="bg-zinc-900 border border-zinc-800 p-6 rounded-2xl shadow-xl" data-v-544feb0d><h3 class="text-blue-400 font-bold mb-3 flex items-center gap-2" data-v-544feb0d><span data-v-544feb0d>✨</span> Ghost AI Analysis </h3><p class="text-zinc-300 leading-relaxed" data-v-544feb0d>${ssrInterpolate(unref(analysis))}</p></div>`);
       } else {
         _push(`<!---->`);
       }
@@ -102,7 +112,7 @@ _sfc_main$1.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("components/app/ImageUpload.vue");
   return _sfc_setup$1 ? _sfc_setup$1(props, ctx) : void 0;
 };
-const __nuxt_component_2 = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$1, [["__scopeId", "data-v-923949b7"]]), { __name: "AppImageUpload" });
+const __nuxt_component_2 = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$1, [["__scopeId", "data-v-544feb0d"]]), { __name: "AppImageUpload" });
 const leadData = {
   name: "",
   email: "",
@@ -244,4 +254,4 @@ _sfc_main.setup = (props, ctx) => {
 const index = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-1de05d48"]]);
 
 export { index as default };
-//# sourceMappingURL=index-DYb9tpbC.mjs.map
+//# sourceMappingURL=index-DhOOco2M.mjs.map

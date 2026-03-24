@@ -1,6 +1,6 @@
 import { defineComponent, useSSRContext } from 'vue';
 import { ssrRenderAttrs, ssrRenderSlot } from 'vue/server-renderer';
-import { u as useRoute, a as useHead } from './server.mjs';
+import { u as useRoute, b as useHead } from './server.mjs';
 import '../nitro/nitro.mjs';
 import 'node:http';
 import 'node:https';
@@ -52,4 +52,4 @@ _sfc_main.setup = (props, ctx) => {
 };
 
 export { _sfc_main as default };
-//# sourceMappingURL=default-DhgIeIS3.mjs.map
+//# sourceMappingURL=default-DTRzleal.mjs.map
