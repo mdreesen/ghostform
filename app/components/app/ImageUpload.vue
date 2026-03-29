@@ -30,8 +30,8 @@ const handleFileChange = (e: Event) => {
 
       <div v-if="!previewUrl" class="space-y-2">
         <div class="text-4xl">
-          <NuxtImg class="relative z-10 h-full w-full object-contain drop-shadow-md" :src="'/images/logo.jpg'" format="webp"
-          preload loading="eager" fetch-priority="high" />
+          <!-- <NuxtImg class="relative z-10 h-full w-full object-contain drop-shadow-md" :src="'/images/logo.jpg'" format="webp"
+          preload loading="eager" fetch-priority="high" /> -->
         </div>
         <p class="text-zinc-400 font-medium text-lg">Drop your project photo here</p>
         <p class="text-zinc-600 text-sm italic">or click to browse</p>

@@ -1,13 +1,13 @@
-<script setup lang="ts">
-const route = useRoute();
-
-useHead({
-  meta: [{ property: 'og:title', content: `Ascend - ${route.meta.title}` }],
-});
-</script>
-
 <template>
-    <div>
-        <slot />
-    </div>
+  <div class="bg-transparent antialiased min-h-fit">
+    <slot />
+  </div>
 </template>
+
+<style>
+/* Ensure the body doesn't have a background so the host site shows through */
+html, body {
+  background: transparent !important;
+  overflow: hidden; /* The parent iframe handles the height */
+}
+</style>

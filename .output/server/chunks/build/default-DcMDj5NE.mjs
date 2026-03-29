@@ -1,6 +1,6 @@
-import { defineComponent, useSSRContext } from 'vue';
+import { mergeProps, useSSRContext } from 'vue';
 import { ssrRenderAttrs, ssrRenderSlot } from 'vue/server-renderer';
-import { u as useRoute, b as useHead } from './server.mjs';
+import { _ as _export_sfc } from './server.mjs';
 import '../nitro/nitro.mjs';
 import 'node:http';
 import 'node:https';
@@ -29,27 +29,19 @@ import 'unhead/server';
 import 'devalue';
 import 'unhead/utils';
 
-const _sfc_main = /* @__PURE__ */ defineComponent({
-  __name: "default",
-  __ssrInlineRender: true,
-  setup(__props) {
-    const route = useRoute();
-    useHead({
-      meta: [{ property: "og:title", content: `Ascend - ${route.meta.title}` }]
-    });
-    return (_ctx, _push, _parent, _attrs) => {
-      _push(`<div${ssrRenderAttrs(_attrs)}>`);
-      ssrRenderSlot(_ctx.$slots, "default", {}, null, _push, _parent);
-      _push(`</div>`);
-    };
-  }
-});
+const _sfc_main = {};
+function _sfc_ssrRender(_ctx, _push, _parent, _attrs) {
+  _push(`<div${ssrRenderAttrs(mergeProps({ class: "bg-transparent antialiased min-h-fit" }, _attrs))}>`);
+  ssrRenderSlot(_ctx.$slots, "default", {}, null, _push, _parent);
+  _push(`</div>`);
+}
 const _sfc_setup = _sfc_main.setup;
 _sfc_main.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("layouts/default.vue");
   return _sfc_setup ? _sfc_setup(props, ctx) : void 0;
 };
+const _default = /* @__PURE__ */ _export_sfc(_sfc_main, [["ssrRender", _sfc_ssrRender]]);
 
-export { _sfc_main as default };
-//# sourceMappingURL=default-DTRzleal.mjs.map
+export { _default as default };
+//# sourceMappingURL=default-DcMDj5NE.mjs.map
