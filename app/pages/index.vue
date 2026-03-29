@@ -2,10 +2,10 @@
 import { leadData, testLeadData } from '~/utils/users/lead';
 import { companyData, companyTestData } from '~/utils/users/company';
 import { compressImage } from '~/lib/compress';
-// http://localhost:3000/?category=construction&company_name=White+Raven+Development&company_email=whiteravendev90@gmail.com
+// http://localhost:3000/?category=construction&company_name=White+Raven+Development&company_email=whiteravendev90@gmail.com&background_color=#09090B&font_color=#FFFFFF
 
 const route = useRoute();
-const { category, company_name, company_email } = route.query;
+const { category, company_name, company_email, background_color, font_color } = route.query;
 
 
 const step = ref(0);
@@ -73,10 +73,17 @@ const submitForm = async () => {
 
     loading.value = false;
 };
+
+// Company Information
+const useCompanyName = computed(() => company_name ? company_name : 'We');
+
+// Application design
+const useBackgroundColor = computed(() => background_color ? `bg-[${background_color}]` : 'bg-zinc-950');
+const useFontColor = computed(() => font_color ? `text-[${font_color}]` : 'text-white');
 </script>
 
 <template>
-    <div class="min-h-screen bg-zinc-950 text-white flex items-center justify-center p-6 font-sans">
+    <div :class="`min-h-screen ${useBackgroundColor} ${useFontColor} flex items-center justify-center p-6 font-sans`">
         <div v-if="!aiResult" class="max-w-md w-full space-y-8">
             <div class="h-1 bg-zinc-800 rounded-full">
                 <div class="h-1 bg-blue-500 transition-all duration-500"
@@ -110,9 +117,9 @@ const submitForm = async () => {
             </div>
         </div>
 
-        <div v-else class="bg-zinc-900 p-8 rounded-2xl border border-zinc-800 max-w-lg">
-            <h2 class="text-green-400 font-bold mb-2">Thank you for your inquiry</h2>
-            <p class="text-zinc-400 mb-4 italic">{{ companyTestData.company_name }} will get back to you shortly!</p>
+        <div v-else class="p-8 rounded-2xl border border-zinc-800 max-w-lg">
+            <h2 class="font-bold mb-2">Thank you for your inquiry</h2>
+            <p class="mb-4 italic">{{ useCompanyName }} will get back to you shortly!</p>
         </div>
     </div>
 </template>
