@@ -1,75 +1,47 @@
-# Nuxt Minimal Starter
+# 👻 GhostForm
+GhostForm is a high-performance, minimalist multi-step form engine built with Nuxt 4 and TypeScript. It features client-side image compression to bypass server payload limits and seamless integration with Resend for lead delivery.
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+## ✨ Features
+⚡ Ultra-Lightweight: Built with Nuxt 4 and optimized for speed.
 
-## Setup
+🖼️ Smart Compression: Automatic client-side image resizing (Canvas API) to prevent 413 Payload Too Large errors.
 
-Make sure to install dependencies:
+📧 Resend Integration: Direct-to-email lead delivery with image attachments.
 
-```bash
-# npm
+📱 Responsive UI: Styled with Tailwind CSS and designed for mobile-first interactions.
+
+🔒 Type Safe: Fully written in TypeScript for robust development.
+
+## 🚀 Getting Started
+1. Clone the repository
+Bash
+git clone https://github.com/your-username/ghostform.git
+cd ghostform
+2. Install dependencies
+Bash
 npm install
+3. Environment Setup
+Create a .env file in the root directory and add your Resend API key:
 
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
+Code snippet
+RESEND_API_KEY=re_your_api_key_here
+4. Run Development Server
+Bash
 npm run dev
+Open http://localhost:3000 to see the form in action.
 
-# pnpm
-pnpm dev
+## 🛠️ How It Works
+Image Compression
+GhostForm intercepts file uploads using a custom TypeScript utility. It resizes images to a maximum width of 1600px and converts them to JPEG (0.7 quality) before sending. This typically reduces a 10MB mobile photo to under 500KB.
 
-# yarn
-yarn dev
+Multi-Step Logic
+The form uses a reactive step state to transition between questions with smooth CSS transitions. Data is collected into a FormData object and sent to a Nitro server route.
 
-# bun
-bun run dev
-```
+Backend (Nitro)
+The /server/api/lead.index.ts endpoint:
 
-## Production
+Parses multipart form data.
 
-Build the application for production:
+Extracts the JSON payload and the image buffer.
 
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+Constructs an email via Resend with the image as an attachment.
