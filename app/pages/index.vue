@@ -15,6 +15,8 @@ const loading = ref(false)
 const aiResult = ref(null);
 const useUploadImage = ref(false);
 const selectedFile = ref<File | null>(null);
+const userEmail = ref('');
+const showSuccess = ref(false);
 
 const questions = [
     { id: 'name', label: "What's your name?", type: 'text' },
@@ -33,6 +35,7 @@ const handleImageSelection = async (file: File) => {
         // Shrink it before it even touches the 'selectedFile' ref
         const compressed = await compressImage(file);
         selectedFile.value = compressed;
+
     } catch (err) {
         console.error("Compression failed, using original file", err);
         selectedFile.value = file;
@@ -50,28 +53,35 @@ const nextStep = () => {
 
 const submitForm = async () => {
     loading.value = true
-    const fd = new FormData();
+    try {
+        const fd = new FormData();
 
-    const jsonLeadBlob = new Blob([JSON.stringify(answers.value)], {
-        type: 'application/json'
-    });
-    const jsonCompanyBlob = new Blob([JSON.stringify(company.value)], {
-        type: 'application/json'
-    });
+        const jsonLeadBlob = new Blob([JSON.stringify(answers.value)], {
+            type: 'application/json'
+        });
+        const jsonCompanyBlob = new Blob([JSON.stringify(company.value)], {
+            type: 'application/json'
+        });
 
-    fd.append('answers', jsonLeadBlob);
-    fd.append('company', jsonCompanyBlob);
+        fd.append('answers', jsonLeadBlob);
+        fd.append('company', jsonCompanyBlob);
 
-    if (useFile.value) {
-        fd.append('image', useFile.value);
-    };
+        if (useFile.value) {
+            fd.append('image', useFile.value);
+        };
 
-    aiResult.value = await $fetch('/api/lead', {
-        method: 'POST',
-        body: fd
-    });
+        aiResult.value = await $fetch('/api/lead', {
+            method: 'POST',
+            body: fd
+        });
 
-    loading.value = false;
+        userEmail.value = answers.value.email;
+        showSuccess.value = true;
+        loading.value = false;
+    } catch (error) {
+        console.log(error);
+        loading.value = false;
+    }
 };
 
 // Company Information
@@ -84,6 +94,7 @@ const useFontColor = computed(() => font_color ? `text-[${font_color}]` : 'text-
 
 <template>
     <div :class="`min-h-screen ${useBackgroundColor} ${useFontColor} flex items-center justify-center p-6 font-sans`">
+
         <div v-if="!aiResult" class="max-w-md w-full space-y-8">
             <div class="h-1 bg-zinc-800 rounded-full">
                 <div class="h-1 bg-blue-500 transition-all duration-500"
@@ -118,6 +129,8 @@ const useFontColor = computed(() => font_color ? `text-[${font_color}]` : 'text-
         </div>
 
         <div v-else class="p-8 rounded-2xl border border-zinc-800 max-w-lg">
+            <appSuccess :company="useCompanyName as string" :show="showSuccess" :email="userEmail" />
+
             <h2 class="font-bold mb-2">Thank you for your inquiry</h2>
             <p class="mb-4 italic">{{ useCompanyName }} will get back to you shortly!</p>
         </div>
