@@ -1,16 +1,16 @@
 <template>
-  <div class="min-h-screen bg-transparent">
+  <div>
     <slot />
   </div>
 </template>
 
 <style>
 /* Reset everything to be weightless */
-html, body, #__nuxt {
+/* html, body, #__nuxt {
   background-color: transparent !important;
   background: transparent !important;
   margin: 0;
   padding: 0;
-  overflow: hidden; /* Parent iframe handles height */
-}
+  overflow: hidden;
+} */
 </style>
