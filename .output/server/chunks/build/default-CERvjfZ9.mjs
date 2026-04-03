@@ -31,7 +31,7 @@ import 'unhead/utils';
 
 const _sfc_main = {};
 function _sfc_ssrRender(_ctx, _push, _parent, _attrs) {
-  _push(`<div${ssrRenderAttrs(mergeProps({ class: "bg-transparent antialiased min-h-fit" }, _attrs))}>`);
+  _push(`<div${ssrRenderAttrs(mergeProps({ class: "transparent-layout" }, _attrs))}>`);
   ssrRenderSlot(_ctx.$slots, "default", {}, null, _push, _parent);
   _push(`</div>`);
 }
@@ -44,4 +44,4 @@ _sfc_main.setup = (props, ctx) => {
 const _default = /* @__PURE__ */ _export_sfc(_sfc_main, [["ssrRender", _sfc_ssrRender]]);
 
 export { _default as default };
-//# sourceMappingURL=default-DcMDj5NE.mjs.map
+//# sourceMappingURL=default-CERvjfZ9.mjs.map

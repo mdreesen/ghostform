@@ -1,13 +1,17 @@
 <template>
-  <div class="bg-transparent antialiased min-h-fit min-w-fit">
+  <div class="transparent-layout">
     <slot />
   </div>
 </template>
 
 <style>
-/* Ensure the body doesn't have a background so the host site shows through */
+/* This targets the actual browser window inside the iframe */
 html, body {
+  background-color: transparent !important;
   background: transparent !important;
-  overflow: hidden; /* The parent iframe handles the height */
+}
+
+.transparent-layout {
+  background: transparent !important;
 }
 </style>

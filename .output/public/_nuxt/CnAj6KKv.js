@@ -1,1 +1,0 @@
-import{_ as t,c as s,q as a,o as n}from"#entry";const o={},r={class:"bg-transparent antialiased min-h-fit"};function c(e,_){return n(),s("div",r,[a(e.$slots,"default")])}const d=t(o,[["render",c]]);export{d as default};

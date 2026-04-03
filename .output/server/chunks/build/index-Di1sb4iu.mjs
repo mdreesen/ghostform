@@ -1,5 +1,5 @@
 import { defineComponent, mergeProps, unref, ref, computed, watch, useSSRContext } from 'vue';
-import { ssrRenderAttrs, ssrRenderComponent, ssrRenderStyle, ssrInterpolate, ssrRenderDynamicModel, ssrRenderAttr } from 'vue/server-renderer';
+import { ssrRenderComponent, ssrRenderAttrs, ssrRenderStyle, ssrInterpolate, ssrRenderDynamicModel, ssrRenderAttr } from 'vue/server-renderer';
 import { _ as _export_sfc, u as useRoute } from './server.mjs';
 import confetti from 'canvas-confetti';
 import '../nitro/nitro.mjs';
@@ -322,12 +322,10 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     const formId = route.params.id;
     return (_ctx, _push, _parent, _attrs) => {
       const _component_appForm = __nuxt_component_0;
-      _push(`<div${ssrRenderAttrs(mergeProps({ class: "fixed inset-0 flex items-center justify-center p-6 bg-transparent" }, _attrs))} data-v-0ee7b9b3>`);
-      _push(ssrRenderComponent(_component_appForm, {
+      _push(ssrRenderComponent(_component_appForm, mergeProps({
         routeData: unref(route).query,
         id: unref(formId)
-      }, null, _parent));
-      _push(`</div>`);
+      }, _attrs), null, _parent));
     };
   }
 });
@@ -337,7 +335,7 @@ _sfc_main.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("pages/index.vue");
   return _sfc_setup ? _sfc_setup(props, ctx) : void 0;
 };
-const index = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-0ee7b9b3"]]);
+const index = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-1fd48a68"]]);
 
 export { index as default };
-//# sourceMappingURL=index-CUNMJzlP.mjs.map
+//# sourceMappingURL=index-Di1sb4iu.mjs.map
