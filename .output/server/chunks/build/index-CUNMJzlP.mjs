@@ -1,6 +1,6 @@
-import { defineComponent, unref, ref, computed, mergeProps, watch, useSSRContext } from 'vue';
+import { defineComponent, mergeProps, unref, ref, computed, watch, useSSRContext } from 'vue';
 import { ssrRenderAttrs, ssrRenderComponent, ssrRenderStyle, ssrInterpolate, ssrRenderDynamicModel, ssrRenderAttr } from 'vue/server-renderer';
-import { u as useRoute, _ as _export_sfc } from './server.mjs';
+import { _ as _export_sfc, u as useRoute } from './server.mjs';
 import confetti from 'canvas-confetti';
 import '../nitro/nitro.mjs';
 import 'node:http';
@@ -190,6 +190,7 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
   setup(__props) {
     const props = __props;
     const { category, company_name, company_email, background_color, font_color } = props.routeData;
+    console.log("background_color", props.routeData);
     const step = ref(0);
     const answers = ref(leadData);
     const company = ref(companyTestData);
@@ -254,24 +255,24 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
       }
     };
     const useCompanyName = computed(() => company_name ? company_name : "We");
-    const useBackgroundColor = computed(() => background_color ? `bg-[${background_color}]` : "bg-zinc-950");
-    const useFontColor = computed(() => font_color ? `text-[${font_color}]` : "text-white");
+    const useBackgroundColor = computed(() => background_color ? `bg-[#${background_color}]` : "bg-[#3c4044]");
+    const useFontColor = computed(() => font_color ? `color-[#${font_color}]` : "color-white");
     return (_ctx, _push, _parent, _attrs) => {
       const _component_baseLoading = __nuxt_component_0$1;
       const _component_baseButton = __nuxt_component_1;
       const _component_appImageUpload = __nuxt_component_2;
       const _component_appSuccess = __nuxt_component_3;
       _push(`<div${ssrRenderAttrs(mergeProps({
-        class: `min-h-screen ${unref(useBackgroundColor)} ${unref(useFontColor)} flex items-center justify-center p-6 font-sans`
-      }, _attrs))} data-v-c2a46bac>`);
+        class: `w-105 h-135 ${unref(useBackgroundColor)} ${unref(useFontColor)} flex items-center justify-center p-6 font-sans rounded-4xl drop-shadow-2xl`
+      }, _attrs))} data-v-3f9ff4fc>`);
       if (!unref(aiResult)) {
-        _push(`<div class="max-w-md w-full space-y-8" data-v-c2a46bac><div class="h-1 bg-zinc-800 rounded-full" data-v-c2a46bac><div class="h-1 bg-blue-500 transition-all duration-500" style="${ssrRenderStyle({ width: `${(unref(step) + 1) / questions.length * 100}%` })}" data-v-c2a46bac></div></div><div class="space-y-4" data-v-c2a46bac><label class="block text-2xl font-medium" data-v-c2a46bac>${ssrInterpolate(questions[unref(step)].label)}</label><input${ssrRenderDynamicModel(questions[unref(step)].type, unref(answers)[questions[unref(step)].id], null)}${ssrRenderAttr("type", questions[unref(step)].type)} class="w-full bg-transparent border-b-2 border-zinc-700 py-2 text-xl focus:border-blue-500 outline-none transition-colors" autofocus data-v-c2a46bac></div>`);
+        _push(`<div class="max-w-md w-full space-y-8" data-v-3f9ff4fc><div class="h-1 bg-zinc-800 rounded-full" data-v-3f9ff4fc><div class="h-1 bg-blue-500 transition-all duration-500" style="${ssrRenderStyle({ width: `${(unref(step) + 1) / questions.length * 100}%` })}" data-v-3f9ff4fc></div></div><div class="space-y-4" data-v-3f9ff4fc><label class="block text-2xl font-medium" data-v-3f9ff4fc>${ssrInterpolate(questions[unref(step)].label)}</label><input${ssrRenderDynamicModel(questions[unref(step)].type, unref(answers)[questions[unref(step)].id], null)}${ssrRenderAttr("type", questions[unref(step)].type)} class="w-full bg-transparent border-b-2 border-white py-2 text-xl focus:border-blue-500 outline-none transition-colors" autofocus data-v-3f9ff4fc></div>`);
         if (unref(loading)) {
           _push(ssrRenderComponent(_component_baseLoading, { class: "z-10" }, null, _parent));
         } else {
           _push(`<!---->`);
         }
-        _push(`<div class="w-full" data-v-c2a46bac><div class="flex w-full justify-between" data-v-c2a46bac>`);
+        _push(`<div class="w-full" data-v-3f9ff4fc><div class="flex w-full justify-between" data-v-3f9ff4fc>`);
         _push(ssrRenderComponent(_component_baseButton, {
           text: unref(useUploadImage) ? "Cancel Upload" : "Upload an image",
           onClick: ($event) => useUploadImage.value = !unref(useUploadImage)
@@ -286,7 +287,7 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
         }
         _push(`</div>`);
         if (unref(useUploadImage)) {
-          _push(`<div data-v-c2a46bac>`);
+          _push(`<div data-v-3f9ff4fc>`);
           _push(ssrRenderComponent(_component_appImageUpload, { onFileSelected: handleImageSelection }, null, _parent));
           _push(`</div>`);
         } else {
@@ -294,13 +295,13 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
         }
         _push(`</div></div>`);
       } else {
-        _push(`<div class="p-8 rounded-2xl border border-zinc-800 max-w-lg" data-v-c2a46bac>`);
+        _push(`<div class="p-8 rounded-2xl border border-zinc-800 max-w-lg" data-v-3f9ff4fc>`);
         _push(ssrRenderComponent(_component_appSuccess, {
           company: unref(useCompanyName),
           show: unref(showSuccess),
           email: unref(userEmail)
         }, null, _parent));
-        _push(`<h2 class="font-bold mb-2" data-v-c2a46bac>Thank you for your inquiry</h2><p class="mb-4 italic" data-v-c2a46bac>${ssrInterpolate(unref(useCompanyName))} will get back to you shortly!</p></div>`);
+        _push(`<h2 class="font-bold mb-2" data-v-3f9ff4fc>Thank you for your inquiry</h2><p class="mb-4 italic" data-v-3f9ff4fc>${ssrInterpolate(unref(useCompanyName))} will get back to you shortly!</p></div>`);
       }
       _push(`</div>`);
     };
@@ -312,7 +313,7 @@ _sfc_main$1.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("components/app/form.vue");
   return _sfc_setup$1 ? _sfc_setup$1(props, ctx) : void 0;
 };
-const __nuxt_component_0 = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$1, [["__scopeId", "data-v-c2a46bac"]]), { __name: "AppForm" });
+const __nuxt_component_0 = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$1, [["__scopeId", "data-v-3f9ff4fc"]]), { __name: "AppForm" });
 const _sfc_main = /* @__PURE__ */ defineComponent({
   __name: "index",
   __ssrInlineRender: true,
@@ -321,7 +322,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     const formId = route.params.id;
     return (_ctx, _push, _parent, _attrs) => {
       const _component_appForm = __nuxt_component_0;
-      _push(`<div${ssrRenderAttrs(_attrs)}>`);
+      _push(`<div${ssrRenderAttrs(mergeProps({ class: "fixed inset-0 flex items-center justify-center p-6 bg-transparent" }, _attrs))} data-v-0ee7b9b3>`);
       _push(ssrRenderComponent(_component_appForm, {
         routeData: unref(route).query,
         id: unref(formId)
@@ -336,6 +337,7 @@ _sfc_main.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("pages/index.vue");
   return _sfc_setup ? _sfc_setup(props, ctx) : void 0;
 };
+const index = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-0ee7b9b3"]]);
 
-export { _sfc_main as default };
-//# sourceMappingURL=index-BK1VvNRX.mjs.map
+export { index as default };
+//# sourceMappingURL=index-CUNMJzlP.mjs.map

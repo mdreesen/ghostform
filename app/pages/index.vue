@@ -26,7 +26,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="fixed inset-0 z-100 flex items-center justify-center p-6 bg-transparent">
+    <div class="fixed inset-0 flex items-center justify-center p-6 bg-transparent">
       <Transition name="ghost-modal">
 
       <appForm :routeData="route.query" :id="formId" />

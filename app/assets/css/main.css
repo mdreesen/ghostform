@@ -9,12 +9,12 @@ textarea {
 };
 
 .dark-mode {
-    background-color: linear-gradient(to bottom right, #0a0a0a, #1f2937);
+    background-color: transparent;
     color: white;
 };
 
 .dark {
-    background-color: linear-gradient(to bottom right, #0a0a0a, #1f2937);
+    background-color: transparent;
     color: white;
 };
 
@@ -45,7 +45,7 @@ textarea {
 @theme {
     --font-sans: 'Public Sans', system-ui, sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
-    --dark-mode: linear-gradient(to bottom right, #0a0a0a, #1f2937);
+    --dark-mode: transparent;
   }
 
   :root {
