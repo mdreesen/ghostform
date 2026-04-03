@@ -1,22 +1,16 @@
 <template>
-  <div class="layout">
+  <div class="min-h-screen bg-transparent">
     <slot />
   </div>
 </template>
 
 <style>
-/* Zero out the browser defaults for the iframe */
-html, body {
-  margin: 0 !important;
-  padding: 0 !important;
-  background: transparent !important;
+/* Reset everything to be weightless */
+html, body, #__nuxt {
   background-color: transparent !important;
-  overflow: hidden; /* Important: The parent handles scrolling */
-}
-
-/* Ensure Nuxt doesn't add background colors */
-#__nuxt, .layout {
   background: transparent !important;
-  min-height: unset !important;
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Parent iframe handles height */
 }
 </style>

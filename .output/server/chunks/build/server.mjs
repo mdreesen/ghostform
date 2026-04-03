@@ -7540,7 +7540,7 @@ _sfc_main$3.setup = (props, ctx) => {
 };
 const __nuxt_component_0 = Object.assign(_sfc_main$3, { __name: "UApp" });
 const layouts = {
-  default: defineAsyncComponent(() => import('./default-BECeLqKj.mjs').then((m) => m.default || m))
+  default: defineAsyncComponent(() => import('./default-DvGTzxxf.mjs').then((m) => m.default || m))
 };
 const LayoutLoader = defineComponent({
   name: "LayoutLoader",

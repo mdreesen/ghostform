@@ -1,0 +1,1 @@
+import{_ as s,c as t,q as n,o as r}from"#entry";const c={},o={class:"min-h-screen bg-transparent"};function a(e,_){return r(),t("div",o,[n(e.$slots,"default")])}const d=s(c,[["render",a]]);export{d as default};
