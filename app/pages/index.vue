@@ -14,9 +14,9 @@ onMounted(() => {
     for (let entry of entries) {
       const height = entry.target.scrollHeight;
       // Send the "Spectral Signal" to the parent window
-      window.parent.postMessage({ 
-        type: 'resize', 
-        height: height 
+      window.parent.postMessage({
+        type: 'resize',
+        height: height
       }, '*');
     }
   });
@@ -26,13 +26,9 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="fixed inset-0 flex items-center justify-center p-6 bg-transparent">
-      <Transition name="ghost-modal">
-
-      <appForm :routeData="route.query" :id="formId" />
-    </Transition>
-
-  </div>
+  <Transition name="ghost-modal">
+    <appForm :routeData="route.query" :id="formId" />
+  </Transition>
 </template>
 
 <style scoped>
