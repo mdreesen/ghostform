@@ -25,7 +25,7 @@ const handleFileChange = (e: Event) => {
 <template>
   <div class="max-w-xl mx-auto p-6 space-y-6">
     <div @click="fileInput?.click()"
-      class="group relative border-2 border-dashed border-zinc-800 rounded-2xl p-12 text-center hover:border-blue-500/50 transition-all cursor-pointer bg-zinc-900/50">
+      class="group relative border-2 border-dashed border-zinc-800 rounded-2xl p-6 text-center hover:border-blue-500/50 transition-all cursor-pointer bg-zinc-900/50">
       <input type="file" ref="fileInput" class="hidden" accept="image/*" @change="handleFileChange" />
 
       <div v-if="!previewUrl" class="space-y-2">
@@ -37,7 +37,7 @@ const handleFileChange = (e: Event) => {
         <p class="text-zinc-600 text-sm italic">or click to browse</p>
       </div>
 
-      <img v-else :src="previewUrl" class="mx-auto max-h-64 rounded-xl shadow-2xl" />
+      <img v-else :src="previewUrl" class="mx-auto max-h-45 rounded-xl shadow-2xl" />
 
 
       <baseLoading v-if="isUploading" />
