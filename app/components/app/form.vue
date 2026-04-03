@@ -12,6 +12,7 @@ const props = defineProps({
 })
 
 const { category, company_name, company_email, background_color, font_color } = props.routeData;
+console.log('background_color', props.routeData)
 
 
 const step = ref(0);
@@ -94,8 +95,8 @@ const submitForm = async () => {
 const useCompanyName = computed(() => company_name ? company_name : 'We');
 
 // Application design
-const useBackgroundColor = computed(() => background_color ? `bg-[${background_color}]` : 'bg-zinc-950');
-const useFontColor = computed(() => font_color ? `text-[${font_color}]` : 'text-white');
+const useBackgroundColor = computed(() => background_color ? `bg-[#${background_color}]` : 'bg-zinc-950');
+const useFontColor = computed(() => font_color ? `color-[#${font_color}]` : 'color-white');
 </script>
 
 <template>
