@@ -95,12 +95,12 @@ const submitForm = async () => {
 const useCompanyName = computed(() => company_name ? company_name : 'We');
 
 // Application design
-const useBackgroundColor = computed(() => background_color ? `bg-[#${background_color}]` : 'bg-zinc-950');
+const useBackgroundColor = computed(() => background_color ? `bg-[#${background_color}]` : 'bg-[#3c4044]');
 const useFontColor = computed(() => font_color ? `color-[#${font_color}]` : 'color-white');
 </script>
 
 <template>
-    <div :class="`min-h-screen ${useBackgroundColor} ${useFontColor} flex items-center justify-center p-6 font-sans`">
+    <div :class="`w-105 h-135 ${useBackgroundColor} ${useFontColor} flex items-center justify-center p-6 font-sans rounded-4xl drop-shadow-2xl`">
 
         <div v-if="!aiResult" class="max-w-md w-full space-y-8">
             <div class="h-1 bg-zinc-800 rounded-full">
@@ -112,7 +112,7 @@ const useFontColor = computed(() => font_color ? `color-[#${font_color}]` : 'col
                 <div :key="step" class="space-y-4">
                     <label class="block text-2xl font-medium">{{ questions[step].label }}</label>
                     <input v-model="answers[questions[step].id]" :type="questions[step].type" @keyup.enter="nextStep"
-                        class="w-full bg-transparent border-b-2 border-zinc-700 py-2 text-xl focus:border-blue-500 outline-none transition-colors"
+                        class="w-full bg-transparent border-b-2 border-white py-2 text-xl focus:border-blue-500 outline-none transition-colors"
                         autofocus />
                 </div>
             </transition>
