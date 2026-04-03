@@ -1,29 +1,22 @@
 <template>
-  <div class="transparent-layout">
+  <div class="layout">
     <slot />
   </div>
 </template>
 
 <style>
-/* This targets the actual browser window inside the iframe */
+/* Zero out the browser defaults for the iframe */
 html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
   background-color: transparent !important;
-  background: transparent !important;
+  overflow: hidden; /* Important: The parent handles scrolling */
 }
 
-.transparent-layout {
+/* Ensure Nuxt doesn't add background colors */
+#__nuxt, .layout {
   background: transparent !important;
-}
-
-/* This is crucial for the iframe content itself */
-:where(html, body) {
-  background-color: transparent !important;
-  background: transparent !important;
-}
-
-/* If you are using Tailwind, you might have a default bg-white 
-   on a wrapper div. Remove it or set it to bg-transparent */
-.__nuxt, #__nuxt {
-  background: transparent !important;
+  min-height: unset !important;
 }
 </style>

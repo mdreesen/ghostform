@@ -1,1 +1,0 @@
-import{_ as t,c as s,q as o,o as a}from"#entry";const r={},c={class:"transparent-layout"};function n(e,_){return a(),s("div",c,[o(e.$slots,"default")])}const d=t(r,[["render",n]]);export{d as default};

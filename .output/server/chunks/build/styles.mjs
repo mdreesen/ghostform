@@ -2,8 +2,8 @@ const interopDefault = r => r.default || r || [];
 const styles = {
   "pages/index.vue": () => import('./index-styles.Csm_Q6KX.mjs').then(interopDefault),
   "pages/index.vue?vue&type=style&index=0&scoped=1fd48a68&lang.css": () => import('./index-styles.Csm_Q6KX.mjs').then(interopDefault),
-  "layouts/default.vue": () => import('./default-styles.DmKsM-wE.mjs').then(interopDefault),
-  "layouts/default.vue?vue&type=style&index=0&lang.css": () => import('./default-styles.DmKsM-wE.mjs').then(interopDefault),
+  "layouts/default.vue": () => import('./default-styles.2W9eKCsN.mjs').then(interopDefault),
+  "layouts/default.vue?vue&type=style&index=0&lang.css": () => import('./default-styles.2W9eKCsN.mjs').then(interopDefault),
   "components/app/form.vue": () => import('./form-styles.BDh1v98y.mjs').then(interopDefault),
   "components/app/form.vue?vue&type=style&index=0&scoped=3f9ff4fc&lang.css": () => import('./form-styles.BDh1v98y.mjs').then(interopDefault),
   "components/app/ImageUpload.vue": () => import('./ImageUpload-styles.CxyaUWxa.mjs').then(interopDefault),
