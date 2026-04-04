@@ -12,8 +12,6 @@ const props = defineProps({
 })
 
 const { category, company_name, company_email, background_color, font_color } = props.routeData;
-console.log('background_color', props.routeData)
-
 
 const step = ref(0);
 const answers = ref(leadData);
@@ -100,7 +98,8 @@ const useFontColor = computed(() => font_color ? `color-[#${font_color}]` : 'col
 </script>
 
 <template>
-    <div :class="`w-105 h-135 ${useBackgroundColor} ${useFontColor} flex items-center justify-center p-6 font-sans rounded-4xl drop-shadow-2xl`">
+    <div 
+    :class="`max-w-105 h-135 ${useBackgroundColor} ${useFontColor} flex items-center justify-center p-6 font-sans rounded-4xl drop-shadow-2xl`">
 
         <div v-if="!aiResult" class="max-w-md w-full space-y-8">
             <div class="h-1 bg-zinc-800 rounded-full">
@@ -121,7 +120,7 @@ const useFontColor = computed(() => font_color ? `color-[#${font_color}]` : 'col
 
             <div class="w-full">
 
-                <div class="flex w-full justify-between">
+                <div class="flex w-full justify-between gap-5">
                     <baseButton :text="useUploadImage ? 'Cancel Upload' : 'Upload an image'"
                         @click="useUploadImage = !useUploadImage" />
 
