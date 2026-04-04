@@ -105,8 +105,8 @@ const useCompanyName = computed(() => company_name ? company_name : 'We');
 
             <transition name="fade" mode="out-in">
                 <div :key="step" class="space-y-4">
-                    <label class="block text-2xl font-medium">{{ questions[step].label }}</label>
-                    <input v-model="answers[questions[step].id]" :type="questions[step].type" @keyup.enter="nextStep"
+                    <label class="block text-2xl font-medium">{{ questions[step]?.label }}</label>
+                    <input v-model="answers[questions[step]?.id]" :type="questions[step]?.type" @keyup.enter="nextStep" :name="questions[step]?.id"
                         class="w-full bg-transparent border-b-2 border-white py-2 text-xl focus:border-blue-500 outline-none transition-colors"
                         autofocus />
                 </div>

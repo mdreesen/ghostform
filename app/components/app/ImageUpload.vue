@@ -37,7 +37,7 @@ const handleFileChange = (e: Event) => {
         preload loading="eager" fetch-priority="high" />
       </div>
 
-      <img v-else :src="previewUrl" class="mx-auto max-h-45 rounded-xl shadow-2xl" />
+      <img v-else :src="previewUrl" class="mx-auto max-h-35 rounded-xl shadow-2xl" />
 
 
       <baseLoading v-if="isUploading" />

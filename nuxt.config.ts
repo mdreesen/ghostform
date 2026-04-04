@@ -21,9 +21,6 @@ export default defineNuxtConfig({
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       ],
-      script: [
-        { src: '/_vercel/insights/script.js', defer: true, async: true }
-      ]
     }
   },
   vite: {
