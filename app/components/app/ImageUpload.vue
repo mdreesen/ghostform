@@ -33,7 +33,7 @@ const handleFileChange = (e: Event) => {
         </div>
         <p class="text-zinc-400 font-medium text-lg">Drop your project photo here</p>
         <p class="text-zinc-600 text-sm italic">or click to browse</p>
-        <NuxtImg class="relative z-10 h-20 w-full object-contain drop-shadow-md" :src="'/images/logo.jpg'" format="webp"
+        <NuxtImg class="relative z-10 h-12 w-full object-contain drop-shadow-md" :src="'/images/logo-icon.webp'" format="webp"
         preload loading="eager" fetch-priority="high" />
       </div>
 

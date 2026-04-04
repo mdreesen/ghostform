@@ -77,12 +77,12 @@ const _sfc_main$3 = /* @__PURE__ */ defineComponent({
     return (_ctx, _push, _parent, _attrs) => {
       const _component_NuxtImg = __nuxt_component_0$2;
       const _component_baseLoading = __nuxt_component_0$1;
-      _push(`<div${ssrRenderAttrs(mergeProps({ class: "max-w-xl mx-auto p-6 space-y-6" }, _attrs))} data-v-1bf47cea><div class="group relative border-2 border-dashed border-zinc-800 rounded-2xl p-6 text-center hover:border-blue-500/50 transition-all cursor-pointer bg-zinc-900/50" data-v-1bf47cea><input type="file" class="hidden" accept="image/*" data-v-1bf47cea>`);
+      _push(`<div${ssrRenderAttrs(mergeProps({ class: "max-w-xl mx-auto p-6 space-y-6" }, _attrs))} data-v-12859c8f><div class="group relative border-2 border-dashed border-zinc-800 rounded-2xl p-6 text-center hover:border-blue-500/50 transition-all cursor-pointer bg-zinc-900/50" data-v-12859c8f><input type="file" class="hidden" accept="image/*" data-v-12859c8f>`);
       if (!unref(previewUrl)) {
-        _push(`<div class="space-y-2" data-v-1bf47cea><div class="text-4xl" data-v-1bf47cea></div><p class="text-zinc-400 font-medium text-lg" data-v-1bf47cea>Drop your project photo here</p><p class="text-zinc-600 text-sm italic" data-v-1bf47cea>or click to browse</p>`);
+        _push(`<div class="space-y-2" data-v-12859c8f><div class="text-4xl" data-v-12859c8f></div><p class="text-zinc-400 font-medium text-lg" data-v-12859c8f>Drop your project photo here</p><p class="text-zinc-600 text-sm italic" data-v-12859c8f>or click to browse</p>`);
         _push(ssrRenderComponent(_component_NuxtImg, {
-          class: "relative z-10 h-20 w-full object-contain drop-shadow-md",
-          src: "/images/logo.jpg",
+          class: "relative z-10 h-12 w-full object-contain drop-shadow-md",
+          src: "/images/logo-icon.webp",
           format: "webp",
           preload: "",
           loading: "eager",
@@ -90,7 +90,7 @@ const _sfc_main$3 = /* @__PURE__ */ defineComponent({
         }, null, _parent));
         _push(`</div>`);
       } else {
-        _push(`<img${ssrRenderAttr("src", unref(previewUrl))} class="mx-auto max-h-45 rounded-xl shadow-2xl" data-v-1bf47cea>`);
+        _push(`<img${ssrRenderAttr("src", unref(previewUrl))} class="mx-auto max-h-45 rounded-xl shadow-2xl" data-v-12859c8f>`);
       }
       if (unref(isUploading)) {
         _push(ssrRenderComponent(_component_baseLoading, null, null, _parent));
@@ -99,7 +99,7 @@ const _sfc_main$3 = /* @__PURE__ */ defineComponent({
       }
       _push(`</div>`);
       if (unref(analysis)) {
-        _push(`<div class="bg-zinc-900 border border-zinc-800 p-6 rounded-2xl shadow-xl" data-v-1bf47cea><h3 class="text-blue-400 font-bold mb-3 flex items-center gap-2" data-v-1bf47cea><span data-v-1bf47cea>✨</span> Ghost AI Analysis </h3><p class="text-zinc-300 leading-relaxed" data-v-1bf47cea>${ssrInterpolate(unref(analysis))}</p></div>`);
+        _push(`<div class="bg-zinc-900 border border-zinc-800 p-6 rounded-2xl shadow-xl" data-v-12859c8f><h3 class="text-blue-400 font-bold mb-3 flex items-center gap-2" data-v-12859c8f><span data-v-12859c8f>✨</span> Ghost AI Analysis </h3><p class="text-zinc-300 leading-relaxed" data-v-12859c8f>${ssrInterpolate(unref(analysis))}</p></div>`);
       } else {
         _push(`<!---->`);
       }
@@ -113,7 +113,7 @@ _sfc_main$3.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("components/app/ImageUpload.vue");
   return _sfc_setup$3 ? _sfc_setup$3(props, ctx) : void 0;
 };
-const __nuxt_component_2 = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$3, [["__scopeId", "data-v-1bf47cea"]]), { __name: "AppImageUpload" });
+const __nuxt_component_2 = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$3, [["__scopeId", "data-v-12859c8f"]]), { __name: "AppImageUpload" });
 const _sfc_main$2 = /* @__PURE__ */ defineComponent({
   __name: "success",
   __ssrInlineRender: true,
@@ -264,24 +264,20 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
       }
     };
     const useCompanyName = computed(() => company_name ? company_name : "We");
-    const useBackgroundColor = computed(() => background_color ? `bg-[#${background_color}]` : "bg-[#3c4044]");
-    const useFontColor = computed(() => font_color ? `color-[#${font_color}]` : "color-white");
     return (_ctx, _push, _parent, _attrs) => {
       const _component_baseLoading = __nuxt_component_0$1;
       const _component_baseButton = __nuxt_component_1;
       const _component_appImageUpload = __nuxt_component_2;
       const _component_appSuccess = __nuxt_component_3;
-      _push(`<div${ssrRenderAttrs(mergeProps({
-        class: `max-w-105 h-135 ${unref(useBackgroundColor)} ${unref(useFontColor)} flex items-center justify-center p-6 font-sans rounded-4xl drop-shadow-2xl`
-      }, _attrs))} data-v-57a3617b>`);
+      _push(`<div${ssrRenderAttrs(mergeProps({ class: `max-w-105 h-135 flex items-center justify-center p-6 font-sans rounded-4xl drop-shadow-2xl` }, _attrs))} data-v-ea1c49c1>`);
       if (!unref(aiResult)) {
-        _push(`<div class="max-w-md w-full space-y-8" data-v-57a3617b><div class="h-1 bg-zinc-800 rounded-full" data-v-57a3617b><div class="h-1 bg-blue-500 transition-all duration-500" style="${ssrRenderStyle({ width: `${(unref(step) + 1) / questions.length * 100}%` })}" data-v-57a3617b></div></div><div class="space-y-4" data-v-57a3617b><label class="block text-2xl font-medium" data-v-57a3617b>${ssrInterpolate(questions[unref(step)].label)}</label><input${ssrRenderDynamicModel(questions[unref(step)].type, unref(answers)[questions[unref(step)].id], null)}${ssrRenderAttr("type", questions[unref(step)].type)} class="w-full bg-transparent border-b-2 border-white py-2 text-xl focus:border-blue-500 outline-none transition-colors" autofocus data-v-57a3617b></div>`);
+        _push(`<div class="max-w-md w-full space-y-8" data-v-ea1c49c1><div class="h-1 bg-zinc-800 rounded-full" data-v-ea1c49c1><div class="h-1 bg-blue-500 transition-all duration-500" style="${ssrRenderStyle({ width: `${(unref(step) + 1) / questions.length * 100}%` })}" data-v-ea1c49c1></div></div><div class="space-y-4" data-v-ea1c49c1><label class="block text-2xl font-medium" data-v-ea1c49c1>${ssrInterpolate(questions[unref(step)].label)}</label><input${ssrRenderDynamicModel(questions[unref(step)].type, unref(answers)[questions[unref(step)].id], null)}${ssrRenderAttr("type", questions[unref(step)].type)} class="w-full bg-transparent border-b-2 border-white py-2 text-xl focus:border-blue-500 outline-none transition-colors" autofocus data-v-ea1c49c1></div>`);
         if (unref(loading)) {
           _push(ssrRenderComponent(_component_baseLoading, { class: "z-10" }, null, _parent));
         } else {
           _push(`<!---->`);
         }
-        _push(`<div class="w-full" data-v-57a3617b><div class="flex w-full justify-between gap-5" data-v-57a3617b>`);
+        _push(`<div class="w-full" data-v-ea1c49c1><div class="flex w-full justify-between gap-5" data-v-ea1c49c1>`);
         _push(ssrRenderComponent(_component_baseButton, {
           text: unref(useUploadImage) ? "Cancel Upload" : "Upload an image",
           onClick: ($event) => useUploadImage.value = !unref(useUploadImage)
@@ -296,7 +292,7 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
         }
         _push(`</div>`);
         if (unref(useUploadImage)) {
-          _push(`<div data-v-57a3617b>`);
+          _push(`<div data-v-ea1c49c1>`);
           _push(ssrRenderComponent(_component_appImageUpload, { onFileSelected: handleImageSelection }, null, _parent));
           _push(`</div>`);
         } else {
@@ -304,13 +300,13 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
         }
         _push(`</div></div>`);
       } else {
-        _push(`<div class="p-8 rounded-2xl border border-zinc-800 max-w-lg" data-v-57a3617b>`);
+        _push(`<div class="p-8 rounded-2xl border border-zinc-800 max-w-lg" data-v-ea1c49c1>`);
         _push(ssrRenderComponent(_component_appSuccess, {
           company: unref(useCompanyName),
           show: unref(showSuccess),
           email: unref(userEmail)
         }, null, _parent));
-        _push(`<h2 class="font-bold mb-2" data-v-57a3617b>Thank you for your inquiry</h2><p class="mb-4 italic" data-v-57a3617b>${ssrInterpolate(unref(useCompanyName))} will get back to you shortly!</p></div>`);
+        _push(`<h2 class="font-bold mb-2" data-v-ea1c49c1>Thank you for your inquiry</h2><p class="mb-4 italic" data-v-ea1c49c1>${ssrInterpolate(unref(useCompanyName))} will get back to you shortly!</p></div>`);
       }
       _push(`</div>`);
     };
@@ -322,7 +318,7 @@ _sfc_main$1.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("components/app/form.vue");
   return _sfc_setup$1 ? _sfc_setup$1(props, ctx) : void 0;
 };
-const __nuxt_component_0 = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$1, [["__scopeId", "data-v-57a3617b"]]), { __name: "AppForm" });
+const __nuxt_component_0 = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$1, [["__scopeId", "data-v-ea1c49c1"]]), { __name: "AppForm" });
 const _sfc_main = /* @__PURE__ */ defineComponent({
   __name: "index",
   __ssrInlineRender: true,
@@ -347,4 +343,4 @@ _sfc_main.setup = (props, ctx) => {
 const index = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-1fd48a68"]]);
 
 export { index as default };
-//# sourceMappingURL=index-xELMjcP5.mjs.map
+//# sourceMappingURL=index-BMAq89h1.mjs.map

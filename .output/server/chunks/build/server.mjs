@@ -490,7 +490,7 @@ const _routes = [
     name: "index",
     path: "/",
     meta: __nuxt_page_meta || {},
-    component: () => import('./index-xELMjcP5.mjs')
+    component: () => import('./index-BMAq89h1.mjs')
   }
 ];
 const _wrapInTransition = (props, children) => {
@@ -7540,7 +7540,7 @@ _sfc_main$3.setup = (props, ctx) => {
 };
 const __nuxt_component_0 = Object.assign(_sfc_main$3, { __name: "UApp" });
 const layouts = {
-  default: defineAsyncComponent(() => import('./default-8ROQpVJY.mjs').then((m) => m.default || m))
+  default: defineAsyncComponent(() => import('./default-YjL8EAbA.mjs').then((m) => m.default || m))
 };
 const LayoutLoader = defineComponent({
   name: "LayoutLoader",

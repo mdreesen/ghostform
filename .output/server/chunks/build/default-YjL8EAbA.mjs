@@ -35,8 +35,8 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
   setup(__props) {
     const route = useRoute();
     const { background_color, font_color } = route.query;
-    const useBackgroundColor = computed(() => background_color ? `#${background_color.toString()}` : "#3c4044");
-    const useFontColor = computed(() => font_color ? `#${font_color}` : "color-white");
+    const useBackgroundColor = computed(() => background_color ? `#${background_color.toString()}` : "#0f0b0b");
+    const useFontColor = computed(() => font_color ? `#${font_color.toString()}` : "white");
     useHead({
       htmlAttrs: {
         style: `--backgroundColor: ${useBackgroundColor.value}; --font-color: ${useFontColor.value};`
@@ -57,4 +57,4 @@ _sfc_main.setup = (props, ctx) => {
 };
 
 export { _sfc_main as default };
-//# sourceMappingURL=default-8ROQpVJY.mjs.map
+//# sourceMappingURL=default-YjL8EAbA.mjs.map

@@ -91,15 +91,11 @@ const submitForm = async () => {
 
 // Company Information
 const useCompanyName = computed(() => company_name ? company_name : 'We');
-
-// Application design
-const useBackgroundColor = computed(() => background_color ? `bg-[#${background_color}]` : 'bg-[#3c4044]');
-const useFontColor = computed(() => font_color ? `color-[#${font_color}]` : 'color-white');
 </script>
 
 <template>
     <div 
-    :class="`max-w-105 h-135 ${useBackgroundColor} ${useFontColor} flex items-center justify-center p-6 font-sans rounded-4xl drop-shadow-2xl`">
+    :class="`max-w-105 h-135 flex items-center justify-center p-6 font-sans rounded-4xl drop-shadow-2xl`">
 
         <div v-if="!aiResult" class="max-w-md w-full space-y-8">
             <div class="h-1 bg-zinc-800 rounded-full">
