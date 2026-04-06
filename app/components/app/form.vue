@@ -2,6 +2,7 @@
 import { leadData, testLeadData } from '~/utils/users/lead';
 import { companyData, companyTestData } from '~/utils/users/company';
 import { compressImage } from '~/lib/compress';
+import { errors } from '~/lib/errors';
 // http://localhost:3000/?category=construction&company_name=White+Raven+Development&company_email=whiteravendev90@gmail.com&background_color=#09090B&font_color=#FFFFFF
 
 const props = defineProps({
@@ -16,12 +17,15 @@ const { category, company_name, company_email, background_color, font_color } = 
 const step = ref(0);
 const answers = ref(leadData);
 const company = ref(companyTestData)
-const loading = ref(false)
+const loading = ref(false);
+const setError = ref('')
 const aiResult = ref(null);
 const useUploadImage = ref(false);
 const selectedFile = ref<File | null>(null);
 const userEmail = ref('');
 const showSuccess = ref(false);
+
+// Looking for project completion
 
 const questions = [
     { id: 'name', label: "What's your name?", type: 'text' },
@@ -50,6 +54,10 @@ const handleImageSelection = async (file: File) => {
 };
 
 const useFile = computed(() => selectedFile.value);
+
+const backStep = () => {
+    if (step.value >= 1) step.value--;
+}
 
 const nextStep = () => {
     if (step.value < questions.length - 1) step.value++
@@ -85,6 +93,7 @@ const submitForm = async () => {
         loading.value = false;
     } catch (error) {
         console.log(error);
+        setError.value = error.message;
         loading.value = false;
     }
 };
@@ -94,8 +103,7 @@ const useCompanyName = computed(() => company_name ? company_name : 'We');
 </script>
 
 <template>
-    <div 
-    :class="`max-w-105 h-135 flex items-center justify-center p-6 font-sans rounded-4xl drop-shadow-2xl`">
+    <div :class="`max-w-105 h-135 flex items-center justify-center p-6 font-sans rounded-4xl drop-shadow-2xl`">
 
         <div v-if="!aiResult" class="max-w-md w-full space-y-8">
             <div class="h-1 bg-zinc-800 rounded-full">
@@ -106,7 +114,8 @@ const useCompanyName = computed(() => company_name ? company_name : 'We');
             <transition name="fade" mode="out-in">
                 <div :key="step" class="space-y-4">
                     <label class="block text-2xl font-medium">{{ questions[step]?.label }}</label>
-                    <input v-model="answers[questions[step]?.id]" :type="questions[step]?.type" @keyup.enter="nextStep" :name="questions[step]?.id"
+                    <input v-model="answers[questions[step]?.id]" :type="questions[step]?.type" @keyup.enter="nextStep"
+                        :name="questions[step]?.id"
                         class="w-full bg-transparent border-b-2 border-white py-2 text-xl focus:border-blue-500 outline-none transition-colors"
                         autofocus />
                 </div>
@@ -120,13 +129,27 @@ const useCompanyName = computed(() => company_name ? company_name : 'We');
                     <baseButton :text="useUploadImage ? 'Cancel Upload' : 'Upload an image'"
                         @click="useUploadImage = !useUploadImage" />
 
-                    <baseButton v-if="!loading" @click="nextStep"
-                        :text="step === questions.length - 1 ? 'Finish' : 'Next'" />
+                    <div class="bg-blue-600 px-6 py-2 rounded-lg flex gap-2 items-center">
+                        <button class="hover:bg-blue-500 transition" @click="backStep">
+                            Back
+                        </button>
+
+                        <span>|</span>
+
+                        <button class="hover:bg-blue-500 transition" @click="nextStep">
+                            {{ step === questions.length - 1 ? 'Finish' : 'Next' }}
+                        </button>
+
+                    </div>
                 </div>
 
                 <div v-if="useUploadImage">
                     <appImageUpload @file-selected="handleImageSelection" />
                 </div>
+            </div>
+
+            <div v-if="setError">
+                <baseError :message="errors(setError)" />
             </div>
         </div>
 

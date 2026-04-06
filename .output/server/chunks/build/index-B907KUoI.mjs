@@ -30,18 +30,18 @@ import 'unhead/server';
 import 'devalue';
 import 'unhead/utils';
 
-const _sfc_main$5 = {};
+const _sfc_main$6 = {};
 function _sfc_ssrRender(_ctx, _push, _parent, _attrs) {
   _push(`<div${ssrRenderAttrs(mergeProps({ class: "absolute inset-0 bg-zinc-950/80 rounded-2xl flex items-center justify-center" }, _attrs))}><div class="animate-spin rounded-full h-8 w-8 border-t-2 border-blue-500"></div></div>`);
 }
-const _sfc_setup$5 = _sfc_main$5.setup;
-_sfc_main$5.setup = (props, ctx) => {
+const _sfc_setup$6 = _sfc_main$6.setup;
+_sfc_main$6.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("components/base/Loading.vue");
-  return _sfc_setup$5 ? _sfc_setup$5(props, ctx) : void 0;
+  return _sfc_setup$6 ? _sfc_setup$6(props, ctx) : void 0;
 };
-const __nuxt_component_0$1 = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$5, [["ssrRender", _sfc_ssrRender]]), { __name: "BaseLoading" });
-const _sfc_main$4 = /* @__PURE__ */ defineComponent({
+const __nuxt_component_0$1 = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$6, [["ssrRender", _sfc_ssrRender]]), { __name: "BaseLoading" });
+const _sfc_main$5 = /* @__PURE__ */ defineComponent({
   __name: "Button",
   __ssrInlineRender: true,
   props: {
@@ -58,14 +58,14 @@ const _sfc_main$4 = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const _sfc_setup$4 = _sfc_main$4.setup;
-_sfc_main$4.setup = (props, ctx) => {
+const _sfc_setup$5 = _sfc_main$5.setup;
+_sfc_main$5.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("components/base/Button.vue");
-  return _sfc_setup$4 ? _sfc_setup$4(props, ctx) : void 0;
+  return _sfc_setup$5 ? _sfc_setup$5(props, ctx) : void 0;
 };
-const __nuxt_component_1 = Object.assign(_sfc_main$4, { __name: "BaseButton" });
-const _sfc_main$3 = /* @__PURE__ */ defineComponent({
+const __nuxt_component_1 = Object.assign(_sfc_main$5, { __name: "BaseButton" });
+const _sfc_main$4 = /* @__PURE__ */ defineComponent({
   __name: "ImageUpload",
   __ssrInlineRender: true,
   emits: ["file-selected"],
@@ -107,13 +107,36 @@ const _sfc_main$3 = /* @__PURE__ */ defineComponent({
     };
   }
 });
+const _sfc_setup$4 = _sfc_main$4.setup;
+_sfc_main$4.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("components/app/ImageUpload.vue");
+  return _sfc_setup$4 ? _sfc_setup$4(props, ctx) : void 0;
+};
+const __nuxt_component_2 = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$4, [["__scopeId", "data-v-a678dbc3"]]), { __name: "AppImageUpload" });
+const _sfc_main$3 = /* @__PURE__ */ defineComponent({
+  __name: "Error",
+  __ssrInlineRender: true,
+  props: {
+    message: {}
+  },
+  setup(__props) {
+    return (_ctx, _push, _parent, _attrs) => {
+      if (__props.message) {
+        _push(`<div${ssrRenderAttrs(mergeProps({ class: "flex items-center gap-3 p-4 mb-6 rounded-2xl bg-red-500/10 border border-red-500/20 backdrop-blur-md" }, _attrs))} data-v-c28b9695><div class="shrink-0 w-8 h-8 rounded-full bg-red-500/20 flex items-center justify-center text-red-400" data-v-c28b9695><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-v-c28b9695><circle cx="12" cy="12" r="10" data-v-c28b9695></circle><line x1="12" y1="8" x2="12" y2="12" data-v-c28b9695></line><line x1="12" y1="16" x2="12.01" y2="16" data-v-c28b9695></line></svg></div><p class="text-sm font-medium text-red-200/80 leading-tight" data-v-c28b9695>${ssrInterpolate(__props.message)}</p></div>`);
+      } else {
+        _push(`<!---->`);
+      }
+    };
+  }
+});
 const _sfc_setup$3 = _sfc_main$3.setup;
 _sfc_main$3.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("components/app/ImageUpload.vue");
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("components/base/Error.vue");
   return _sfc_setup$3 ? _sfc_setup$3(props, ctx) : void 0;
 };
-const __nuxt_component_2 = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$3, [["__scopeId", "data-v-a678dbc3"]]), { __name: "AppImageUpload" });
+const __nuxt_component_3 = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$3, [["__scopeId", "data-v-c28b9695"]]), { __name: "BaseError" });
 const _sfc_main$2 = /* @__PURE__ */ defineComponent({
   __name: "success",
   __ssrInlineRender: true,
@@ -155,7 +178,7 @@ _sfc_main$2.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("components/app/success.vue");
   return _sfc_setup$2 ? _sfc_setup$2(props, ctx) : void 0;
 };
-const __nuxt_component_3 = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$2, [["__scopeId", "data-v-4c15b7ff"]]), { __name: "AppSuccess" });
+const __nuxt_component_4 = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$2, [["__scopeId", "data-v-4c15b7ff"]]), { __name: "AppSuccess" });
 const leadData = {
   name: "",
   email: "",
@@ -188,6 +211,14 @@ const compressImage = async (file) => {
     type: "image/jpeg"
   });
 };
+function errors(error) {
+  switch (true) {
+    case error.includes("400"):
+      return "Missing Data";
+    default:
+      return "Error 500, something went wrong.";
+  }
+}
 const _sfc_main$1 = /* @__PURE__ */ defineComponent({
   __name: "form",
   __ssrInlineRender: true,
@@ -202,8 +233,9 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
     const { category, company_name, company_email, background_color, font_color } = props.routeData;
     const step = ref(0);
     const answers = ref(leadData);
-    const company = ref(companyTestData);
+    ref(companyTestData);
     const loading = ref(false);
+    const setError = ref("");
     const aiResult = ref(null);
     const useUploadImage = ref(false);
     const selectedFile = ref(null);
@@ -230,83 +262,54 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
         loading.value = false;
       }
     };
-    const useFile = computed(() => selectedFile.value);
-    const nextStep = () => {
-      if (step.value < questions.length - 1) step.value++;
-      else submitForm();
-    };
-    const submitForm = async () => {
-      loading.value = true;
-      try {
-        const fd = new FormData();
-        const jsonLeadBlob = new Blob([JSON.stringify(answers.value)], {
-          type: "application/json"
-        });
-        const jsonCompanyBlob = new Blob([JSON.stringify(company.value)], {
-          type: "application/json"
-        });
-        fd.append("answers", jsonLeadBlob);
-        fd.append("company", jsonCompanyBlob);
-        if (useFile.value) {
-          fd.append("image", useFile.value);
-        }
-        ;
-        aiResult.value = await $fetch("/api/lead", {
-          method: "POST",
-          body: fd
-        });
-        userEmail.value = answers.value.email;
-        showSuccess.value = true;
-        loading.value = false;
-      } catch (error) {
-        console.log(error);
-        loading.value = false;
-      }
-    };
+    computed(() => selectedFile.value);
     const useCompanyName = computed(() => company_name ? company_name : "We");
     return (_ctx, _push, _parent, _attrs) => {
       const _component_baseLoading = __nuxt_component_0$1;
       const _component_baseButton = __nuxt_component_1;
       const _component_appImageUpload = __nuxt_component_2;
-      const _component_appSuccess = __nuxt_component_3;
-      _push(`<div${ssrRenderAttrs(mergeProps({ class: `max-w-105 h-135 flex items-center justify-center p-6 font-sans rounded-4xl drop-shadow-2xl` }, _attrs))} data-v-18b33c9b>`);
+      const _component_baseError = __nuxt_component_3;
+      const _component_appSuccess = __nuxt_component_4;
+      _push(`<div${ssrRenderAttrs(mergeProps({ class: `max-w-105 h-135 flex items-center justify-center p-6 font-sans rounded-4xl drop-shadow-2xl` }, _attrs))} data-v-db625606>`);
       if (!unref(aiResult)) {
-        _push(`<div class="max-w-md w-full space-y-8" data-v-18b33c9b><div class="h-1 bg-zinc-800 rounded-full" data-v-18b33c9b><div class="h-1 bg-blue-500 transition-all duration-500" style="${ssrRenderStyle({ width: `${(unref(step) + 1) / questions.length * 100}%` })}" data-v-18b33c9b></div></div><div class="space-y-4" data-v-18b33c9b><label class="block text-2xl font-medium" data-v-18b33c9b>${ssrInterpolate(questions[unref(step)]?.label)}</label><input${ssrRenderDynamicModel(questions[unref(step)]?.type, unref(answers)[questions[unref(step)]?.id], null)}${ssrRenderAttr("type", questions[unref(step)]?.type)}${ssrRenderAttr("name", questions[unref(step)]?.id)} class="w-full bg-transparent border-b-2 border-white py-2 text-xl focus:border-blue-500 outline-none transition-colors" autofocus data-v-18b33c9b></div>`);
+        _push(`<div class="max-w-md w-full space-y-8" data-v-db625606><div class="h-1 bg-zinc-800 rounded-full" data-v-db625606><div class="h-1 bg-blue-500 transition-all duration-500" style="${ssrRenderStyle({ width: `${(unref(step) + 1) / questions.length * 100}%` })}" data-v-db625606></div></div><div class="space-y-4" data-v-db625606><label class="block text-2xl font-medium" data-v-db625606>${ssrInterpolate(questions[unref(step)]?.label)}</label><input${ssrRenderDynamicModel(questions[unref(step)]?.type, unref(answers)[questions[unref(step)]?.id], null)}${ssrRenderAttr("type", questions[unref(step)]?.type)}${ssrRenderAttr("name", questions[unref(step)]?.id)} class="w-full bg-transparent border-b-2 border-white py-2 text-xl focus:border-blue-500 outline-none transition-colors" autofocus data-v-db625606></div>`);
         if (unref(loading)) {
           _push(ssrRenderComponent(_component_baseLoading, { class: "z-10" }, null, _parent));
         } else {
           _push(`<!---->`);
         }
-        _push(`<div class="w-full" data-v-18b33c9b><div class="flex w-full justify-between gap-5" data-v-18b33c9b>`);
+        _push(`<div class="w-full" data-v-db625606><div class="flex w-full justify-between gap-5" data-v-db625606>`);
         _push(ssrRenderComponent(_component_baseButton, {
           text: unref(useUploadImage) ? "Cancel Upload" : "Upload an image",
           onClick: ($event) => useUploadImage.value = !unref(useUploadImage)
         }, null, _parent));
-        if (!unref(loading)) {
-          _push(ssrRenderComponent(_component_baseButton, {
-            onClick: nextStep,
-            text: unref(step) === questions.length - 1 ? "Finish" : "Next"
-          }, null, _parent));
-        } else {
-          _push(`<!---->`);
-        }
-        _push(`</div>`);
+        _push(`<div class="bg-blue-600 px-6 py-2 rounded-lg flex gap-2 items-center" data-v-db625606><button class="hover:bg-blue-500 transition" data-v-db625606> Back </button><span data-v-db625606>|</span><button class="hover:bg-blue-500 transition" data-v-db625606>${ssrInterpolate(unref(step) === questions.length - 1 ? "Finish" : "Next")}</button></div></div>`);
         if (unref(useUploadImage)) {
-          _push(`<div data-v-18b33c9b>`);
+          _push(`<div data-v-db625606>`);
           _push(ssrRenderComponent(_component_appImageUpload, { onFileSelected: handleImageSelection }, null, _parent));
           _push(`</div>`);
         } else {
           _push(`<!---->`);
         }
-        _push(`</div></div>`);
+        _push(`</div>`);
+        if (unref(setError)) {
+          _push(`<div data-v-db625606>`);
+          _push(ssrRenderComponent(_component_baseError, {
+            message: unref(errors)(unref(setError))
+          }, null, _parent));
+          _push(`</div>`);
+        } else {
+          _push(`<!---->`);
+        }
+        _push(`</div>`);
       } else {
-        _push(`<div class="p-8 rounded-2xl border border-zinc-800 max-w-lg" data-v-18b33c9b>`);
+        _push(`<div class="p-8 rounded-2xl border border-zinc-800 max-w-lg" data-v-db625606>`);
         _push(ssrRenderComponent(_component_appSuccess, {
           company: unref(useCompanyName),
           show: unref(showSuccess),
           email: unref(userEmail)
         }, null, _parent));
-        _push(`<h2 class="font-bold mb-2" data-v-18b33c9b>Thank you for your inquiry</h2><p class="mb-4 italic" data-v-18b33c9b>${ssrInterpolate(unref(useCompanyName))} will get back to you shortly!</p></div>`);
+        _push(`<h2 class="font-bold mb-2" data-v-db625606>Thank you for your inquiry</h2><p class="mb-4 italic" data-v-db625606>${ssrInterpolate(unref(useCompanyName))} will get back to you shortly!</p></div>`);
       }
       _push(`</div>`);
     };
@@ -318,7 +321,7 @@ _sfc_main$1.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("components/app/form.vue");
   return _sfc_setup$1 ? _sfc_setup$1(props, ctx) : void 0;
 };
-const __nuxt_component_0 = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$1, [["__scopeId", "data-v-18b33c9b"]]), { __name: "AppForm" });
+const __nuxt_component_0 = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$1, [["__scopeId", "data-v-db625606"]]), { __name: "AppForm" });
 const _sfc_main = /* @__PURE__ */ defineComponent({
   __name: "index",
   __ssrInlineRender: true,
@@ -343,4 +346,4 @@ _sfc_main.setup = (props, ctx) => {
 const index = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-1fd48a68"]]);
 
 export { index as default };
-//# sourceMappingURL=index-Bm3r_Ad_.mjs.map
+//# sourceMappingURL=index-B907KUoI.mjs.map
