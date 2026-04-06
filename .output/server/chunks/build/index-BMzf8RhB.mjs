@@ -270,22 +270,22 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
       const _component_appImageUpload = __nuxt_component_2;
       const _component_baseError = __nuxt_component_3;
       const _component_appSuccess = __nuxt_component_4;
-      _push(`<div${ssrRenderAttrs(mergeProps({ class: `max-w-105 h-135 flex items-center justify-center p-6 font-sans rounded-4xl drop-shadow-2xl` }, _attrs))} data-v-db625606>`);
+      _push(`<div${ssrRenderAttrs(mergeProps({ class: `max-w-105 h-135 flex items-center justify-center p-6 font-sans rounded-4xl drop-shadow-2xl` }, _attrs))} data-v-087479ac>`);
       if (!unref(aiResult)) {
-        _push(`<div class="max-w-md w-full space-y-8" data-v-db625606><div class="h-1 bg-zinc-800 rounded-full" data-v-db625606><div class="h-1 bg-blue-500 transition-all duration-500" style="${ssrRenderStyle({ width: `${(unref(step) + 1) / questions.length * 100}%` })}" data-v-db625606></div></div><div class="space-y-4" data-v-db625606><label class="block text-2xl font-medium" data-v-db625606>${ssrInterpolate(questions[unref(step)]?.label)}</label><input${ssrRenderDynamicModel(questions[unref(step)]?.type, unref(answers)[questions[unref(step)]?.id], null)}${ssrRenderAttr("type", questions[unref(step)]?.type)}${ssrRenderAttr("name", questions[unref(step)]?.id)} class="w-full bg-transparent border-b-2 border-white py-2 text-xl focus:border-blue-500 outline-none transition-colors" autofocus data-v-db625606></div>`);
+        _push(`<div class="max-w-md w-full space-y-4" data-v-087479ac><div class="h-1 bg-zinc-800 rounded-full" data-v-087479ac><div class="h-1 bg-blue-500 transition-all duration-500" style="${ssrRenderStyle({ width: `${(unref(step) + 1) / questions.length * 100}%` })}" data-v-087479ac></div></div><div class="space-y-4" data-v-087479ac><label class="block text-2xl font-medium" data-v-087479ac>${ssrInterpolate(questions[unref(step)]?.label)}</label><input${ssrRenderDynamicModel(questions[unref(step)]?.type, unref(answers)[questions[unref(step)]?.id], null)}${ssrRenderAttr("type", questions[unref(step)]?.type)}${ssrRenderAttr("name", questions[unref(step)]?.id)} class="w-full bg-transparent border-b-2 border-white py-2 text-xl focus:border-blue-500 outline-none transition-colors" autofocus data-v-087479ac></div>`);
         if (unref(loading)) {
           _push(ssrRenderComponent(_component_baseLoading, { class: "z-10" }, null, _parent));
         } else {
           _push(`<!---->`);
         }
-        _push(`<div class="w-full" data-v-db625606><div class="flex w-full justify-between gap-5" data-v-db625606>`);
+        _push(`<div class="w-full" data-v-087479ac><div class="flex w-full justify-between gap-5" data-v-087479ac>`);
         _push(ssrRenderComponent(_component_baseButton, {
           text: unref(useUploadImage) ? "Cancel Upload" : "Upload an image",
           onClick: ($event) => useUploadImage.value = !unref(useUploadImage)
         }, null, _parent));
-        _push(`<div class="bg-blue-600 px-6 py-2 rounded-lg flex gap-2 items-center" data-v-db625606><button class="hover:bg-blue-500 transition" data-v-db625606> Back </button><span data-v-db625606>|</span><button class="hover:bg-blue-500 transition" data-v-db625606>${ssrInterpolate(unref(step) === questions.length - 1 ? "Finish" : "Next")}</button></div></div>`);
+        _push(`<div class="bg-blue-600 px-6 py-2 rounded-lg flex gap-2 items-center" data-v-087479ac><button class="hover:bg-blue-500 transition" data-v-087479ac> Back </button><span data-v-087479ac>|</span><button class="hover:bg-blue-500 transition" data-v-087479ac>${ssrInterpolate(unref(step) === questions.length - 1 ? "Finish" : "Next")}</button></div></div>`);
         if (unref(useUploadImage)) {
-          _push(`<div data-v-db625606>`);
+          _push(`<div data-v-087479ac>`);
           _push(ssrRenderComponent(_component_appImageUpload, { onFileSelected: handleImageSelection }, null, _parent));
           _push(`</div>`);
         } else {
@@ -293,7 +293,7 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
         }
         _push(`</div>`);
         if (unref(setError)) {
-          _push(`<div data-v-db625606>`);
+          _push(`<div data-v-087479ac>`);
           _push(ssrRenderComponent(_component_baseError, {
             message: unref(errors)(unref(setError))
           }, null, _parent));
@@ -303,13 +303,13 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
         }
         _push(`</div>`);
       } else {
-        _push(`<div class="p-8 rounded-2xl border border-zinc-800 max-w-lg" data-v-db625606>`);
+        _push(`<div class="p-8 rounded-2xl border border-zinc-800 max-w-lg" data-v-087479ac>`);
         _push(ssrRenderComponent(_component_appSuccess, {
           company: unref(useCompanyName),
           show: unref(showSuccess),
           email: unref(userEmail)
         }, null, _parent));
-        _push(`<h2 class="font-bold mb-2" data-v-db625606>Thank you for your inquiry</h2><p class="mb-4 italic" data-v-db625606>${ssrInterpolate(unref(useCompanyName))} will get back to you shortly!</p></div>`);
+        _push(`<h2 class="font-bold mb-2" data-v-087479ac>Thank you for your inquiry</h2><p class="mb-4 italic" data-v-087479ac>${ssrInterpolate(unref(useCompanyName))} will get back to you shortly!</p></div>`);
       }
       _push(`</div>`);
     };
@@ -321,7 +321,7 @@ _sfc_main$1.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("components/app/form.vue");
   return _sfc_setup$1 ? _sfc_setup$1(props, ctx) : void 0;
 };
-const __nuxt_component_0 = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$1, [["__scopeId", "data-v-db625606"]]), { __name: "AppForm" });
+const __nuxt_component_0 = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$1, [["__scopeId", "data-v-087479ac"]]), { __name: "AppForm" });
 const _sfc_main = /* @__PURE__ */ defineComponent({
   __name: "index",
   __ssrInlineRender: true,
@@ -346,4 +346,4 @@ _sfc_main.setup = (props, ctx) => {
 const index = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-1fd48a68"]]);
 
 export { index as default };
-//# sourceMappingURL=index-B907KUoI.mjs.map
+//# sourceMappingURL=index-BMzf8RhB.mjs.map

@@ -105,7 +105,7 @@ const useCompanyName = computed(() => company_name ? company_name : 'We');
 <template>
     <div :class="`max-w-105 h-135 flex items-center justify-center p-6 font-sans rounded-4xl drop-shadow-2xl`">
 
-        <div v-if="!aiResult" class="max-w-md w-full space-y-8">
+        <div v-if="!aiResult" class="max-w-md w-full space-y-4">
             <div class="h-1 bg-zinc-800 rounded-full">
                 <div class="h-1 bg-blue-500 transition-all duration-500"
                     :style="{ width: `${((step + 1) / questions.length) * 100}%` }"></div>
