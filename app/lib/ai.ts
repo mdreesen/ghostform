@@ -1,7 +1,7 @@
 import { generateText } from 'ai';
 import { openai } from '@ai-sdk/openai';
 import { analyze_lead } from '~/utils/analyze/lead';
-import { construction_role } from '~/utils/prompts/category_role';
+import { use_ai_category_role } from '~/utils/prompts/roleAi';
 import type { LeadAndCompany } from '~/types/user';
 
 
@@ -28,7 +28,7 @@ export async function aiClient(data: LeadAndCompany) {
 
 export async function aiCompany(data: LeadAndCompany) {
     const useLeadAnalysis = analyze_lead(data);
-    const useRole = construction_role(data?.address);
+    const useRole = use_ai_category_role(data);
 
     const { text } = await generateText({
         model: openai('gpt-4o-mini'),

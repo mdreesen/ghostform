@@ -1,4 +1,12 @@
-export const role = `
+import { use_realtor } from "./realtor/ai_job";
+import { use_construction_contractor } from "./construction/ai_job";
+import lead from "~~/server/api/lead";
+
+export const use_ai_category_role = (leadData) => {
+    console.log(leadData);
+}
+
+export const roleAiConstruction = `
     Analyze the provided form data and categorize the lead into exactly one of these three labels: [Tier 1, Tier 2, Tier 3].
     Evaluation Rules:
 

@@ -1,0 +1,15 @@
+export const questionsRealtor = [
+    { id: 'name', label: "What's your name?", type: 'text' },
+    { id: 'age', label: "What's your age?", type: 'number' },
+    { id: 'email', label: "What's your email?", type: 'text' },
+    { id: 'phone', label: "What's your phone number?", type: 'text' },
+    { id: 'address', label: "What's your home address?", type: 'text' },
+    { id: 'move', label: "When would you want to move?", type: 'text' },
+    { id: 'looking to', label: "Are you looking to buy, sell, or both?", type: 'text' },
+    { id: 'price', label: "What do you think your home is worth?", type: 'number' },
+    { id: 'sqft', label: "What would be the square footage of the project needs?", type: 'number' },
+    { id: 'bedrooms', label: "How many bedrooms does your home have", type: 'number' },
+    { id: 'bathrooms', label: "How many bathrooms does your home have", type: 'number' },
+    { id: 'budget', label: "What is your estimated budget?", type: 'number' },
+    { id: 'message', label: "Are there any other details about your home?", type: 'text' },
+];

@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { leadData, testLeadData } from '~/utils/users/lead';
+import { leadData, testLeadData, leadDataRealtor } from '~/utils/users/lead';
 import { companyData, companyTestData } from '~/utils/users/company';
 import { compressImage } from '~/lib/compress';
 import { errors } from '~/lib/errors';
+import { questionsConstruction } from '~/utils/questions/construction';
+import { questionsRealtor } from '~/utils/questions/realtor';
 // http://localhost:3000/?category=construction&company_name=White+Raven+Development&company_email=whiteravendev90@gmail.com&background_color=#09090B&font_color=#FFFFFF
 
 const props = defineProps({
@@ -16,7 +18,7 @@ const { category, company_name, company_email, background_color, font_color } = 
 
 const step = ref(0);
 const answers = ref(leadData);
-const company = ref(companyTestData)
+const company = ref(companyTestData);
 const loading = ref(false);
 const setError = ref('')
 const aiResult = ref(null);
@@ -26,16 +28,15 @@ const userEmail = ref('');
 const showSuccess = ref(false);
 
 // Looking for project completion
-
-const questions = [
-    { id: 'name', label: "What's your name?", type: 'text' },
-    { id: 'email', label: "What's your email?", type: 'text' },
-    { id: 'address', label: "What's your address?", type: 'text' },
-    { id: 'goal', label: "What can we help you with?", type: 'text' },
-    { id: 'sqft', label: "What would be the square footage of the project needs?", type: 'number' },
-    { id: 'budget', label: "What is your estimated budget?", type: 'number' },
-    { id: 'message', label: "What are more details about your project?", type: 'text' },
-];
+console.log(category)
+const useQuestions = computed(() => {
+    switch (true) {
+        case category.includes('construction'):
+            return questionsConstruction;
+        case category.includes('realtor'):
+            return questionsRealtor;
+    }
+});
 
 // This function runs when the child "emits" the file
 const handleImageSelection = async (file: File) => {
@@ -60,7 +61,7 @@ const backStep = () => {
 }
 
 const nextStep = () => {
-    if (step.value < questions.length - 1) step.value++
+    if (step.value < useQuestions.value.length - 1) step.value++
     else submitForm()
 }
 
@@ -85,7 +86,7 @@ const submitForm = async () => {
 
         aiResult.value = await $fetch('/api/lead', {
             method: 'POST',
-            body: fd
+            body: { ...fd, category: category }
         });
 
         userEmail.value = answers.value.email;
@@ -108,14 +109,14 @@ const useCompanyName = computed(() => company_name ? company_name : 'We');
         <div v-if="!aiResult" class="max-w-md w-full space-y-4">
             <div class="h-1 bg-zinc-800 rounded-full">
                 <div class="h-1 bg-blue-500 transition-all duration-500"
-                    :style="{ width: `${((step + 1) / questions.length) * 100}%` }"></div>
+                    :style="{ width: `${((step + 1) / useQuestions.length) * 100}%` }"></div>
             </div>
 
             <transition name="fade" mode="out-in">
                 <div :key="step" class="space-y-4">
-                    <label class="block text-2xl font-medium">{{ questions[step]?.label }}</label>
-                    <input v-model="answers[questions[step]?.id]" :type="questions[step]?.type" @keyup.enter="nextStep"
-                        :name="questions[step]?.id"
+                    <label class="block text-2xl font-medium">{{ useQuestions[step]?.label }}</label>
+                    <input v-model="answers[useQuestions[step]?.id]" :type="useQuestions[step]?.type" @keyup.enter="nextStep"
+                        :name="useQuestions[step]?.id"
                         class="w-full bg-transparent border-b-2 border-white py-2 text-xl focus:border-blue-500 outline-none transition-colors"
                         autofocus />
                 </div>
@@ -137,7 +138,7 @@ const useCompanyName = computed(() => company_name ? company_name : 'We');
                         <span>|</span>
 
                         <button class="hover:bg-blue-500 transition" @click="nextStep">
-                            {{ step === questions.length - 1 ? 'Finish' : 'Next' }}
+                            {{ step === useQuestions.length - 1 ? 'Finish' : 'Next' }}
                         </button>
 
                     </div>

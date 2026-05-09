@@ -9,6 +9,7 @@ export default defineEventHandler(async (event) => {
 
     try {
         const formData = await readMultipartFormData(event);
+        console.log('testing', formData)
 
         const answersPart = formData?.find(item => item.name === 'answers');
         const companyPart = formData?.find(item => item.name === 'company');

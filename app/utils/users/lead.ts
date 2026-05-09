@@ -8,7 +8,7 @@ export const testLeadData = {
     message: 'I need a new deck with railings. The old one is going out and I need this asap.' 
 };
 
-export const leadData = { 
+export const leadData = {
     name: '', 
     email: '', 
     address: '', 
@@ -17,3 +17,19 @@ export const leadData = {
     budget: '', 
     message: '' 
 };
+
+export const leadDataRealtor = {
+    name: '', 
+    age: '', 
+    email: '', 
+    phone: '', 
+    address: '', 
+    move: '', 
+    lookingTo: '',
+    price: '',
+    sqft: '',
+    bedrooms: '',
+    bathrooms: '',
+    budget: '',
+    message: ''
+}
