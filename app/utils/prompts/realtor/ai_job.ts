@@ -1,4 +1,5 @@
-import { materials, materials_expanded } from '~/utils/prompts/construction/products';
+import { materials, materials_expanded } from '~/utils/prompts/realtor/products'
+import { date } from '~/lib/date';
 import type { LeadRealtor } from '~/types/user';
 
 export const ai_job = `
@@ -8,12 +9,10 @@ You are not just summarizing; you are calculating Conversion Velocity and Equity
 
 Expanded Analysis Parameters:
 Tier 1 (Immediate Acquisition):
-
 Indicators: Move timeline < 90 days. Budget is ≥ 15% of estimated home value (indicating serious intent or high equity).
 Focus: Immediate physical meeting/contracting.
 
 Tier 3 (Information Only / Low-Value):
-
 Indicators: Budget is < 5% of project scope (delusional expectations). Timeline is "Just exploring."
 Focus: Automated drip campaign; low-touch.
 `;
@@ -25,9 +24,7 @@ ${materials_expanded}
 
 Instructions:
 1. ${ai_job}
-2. Determine the area conditions for this project using their address ${data.address}
-3. Determine the project category (e.g., Deck, Remodel, New Build).
-4. Calculate an estimated price based on $200/sqft for interior and $50/sqft for exterior.
-5. Identify specific company needs (e.g., "Needs site visit," "Needs architectural plans").
-6. Constraint: Do not be conversational. Do not say "Thanks for reaching out." Only provide the analysis.
+2. Use their address ${data.address} to determine house rate and interest
+3. Calculate an estimated house price they could afford based off of the latest ${date()} intesting rate, where they are ${data.address}, and their budget ${data.budget}.
+4. Constraint: Do not be conversational. Do not say "Thanks for reaching out." Only provide the analysis.
 `;

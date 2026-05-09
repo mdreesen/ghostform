@@ -3,33 +3,20 @@ import { openai } from '@ai-sdk/openai';
 import { analyze_lead } from '~/utils/analyze/lead';
 import { use_ai_category_role } from '~/utils/prompts/roleAi';
 import type { LeadAndCompany } from '~/types/user';
-
+import { useLeadEmailFormatting, useCompanyEmailFormatting } from '~/utils/email/useEmailFormatting';
 
 export async function aiClient(data: LeadAndCompany) {
     const { text } = await generateText({
         model: openai('gpt-4o-mini'),
         system: `You are an assistant for a Construction Company. 
          Be professional and helpful`,
-        prompt: `A new lead named ${data?.name}. 
-         Write a 3-sentence email thanking them, 
-         mentioning one specific detail you see in the message, 
-         and telling them a human will call them shortly.
-
-        End the email with:
-        Best regards,
-        ${data?.company_name}
-         
-        Let new lines be wrapped in a <div></div> element
-        `,
+        prompt: useLeadEmailFormatting(data),
     });
 
     return text
 };
 
 export async function aiCompany(data: LeadAndCompany) {
-
-    console.log('ai data', aiCompany);
-    console.log('use_ai_category_role(data)', use_ai_category_role(data))
     const useLeadAnalysis = analyze_lead(data);
     const useRole = use_ai_category_role(data);
 
@@ -64,18 +51,7 @@ export async function aiCompany(data: LeadAndCompany) {
         ],
     });
 
-    const aiOutput = `
-    <h1>Lead Information</h1>
-    <div>Lead Name: ${data?.name}</div>
-    <div>Lead Email: ${data?.email}</div>
-    <div>Project Goal: ${data?.goal}</div>
-    <div>Square Footage: ${data?.sqft}</div>
-    <div>Budget: ${data?.budget}</div>
-    <div>Message Details: ${data?.message}</div>
-
-    <h2>AI Analysis:</h2>
-    ${text}
-`;
+    const aiOutput = useCompanyEmailFormatting(data, text);
 
     return aiOutput
 };

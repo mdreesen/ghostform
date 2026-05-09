@@ -1,13 +1,17 @@
-import { leadConstruction } from "./lead/leadConstruction";
-import { leadRealtor } from "./lead/leadRealtor";
-import { testDataConstruction } from "./lead/testData";
+import { leadConstruction, testDataConstruction } from "./lead/leadConstruction";
+import { leadRealtor, testLeadRealtor } from "./lead/leadRealtor";
 
-export const leadData = (category: any) => {
-    console.log(category)
+export function leadData(category: any) {
     switch(true) {
         case category.includes('realtor'):
-            return leadRealtor;
+            return {
+                data: leadRealtor,
+                test: testLeadRealtor
+            };
         case category.includes('construction'):
-            return leadConstruction;
+            return {
+                data: leadConstruction,
+                test: testDataConstruction
+            };
     }
 }

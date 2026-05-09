@@ -1,6 +1,5 @@
 import { use_realtor } from "./realtor/ai_job";
 import { use_construction_contractor } from "./construction/ai_job";
-import lead from "~~/server/api/lead";
 
 export const use_ai_category_role = (data: any) => {
     switch (true) {

@@ -1,9 +1,9 @@
 import { Resend } from 'resend';
-import type { Lead, Company } from '~/types/user';
+import type { Company } from '~/types/user';
 
 const resend = new Resend(`${process.env.RESEND_KEY}`);
 
-export async function emailLead(aiOutput: string, data: Lead) {
+export async function emailLead(aiOutput: string, data: any) {
     try {
 
         await resend.emails.send({

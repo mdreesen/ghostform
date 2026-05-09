@@ -19,9 +19,9 @@ Framing: Engineered lumber, Bamboo Plywood, and structural steel beams for wide-
 Walling: AAC (Autoclaved Aerated Concrete) Blocks for lightweight, fire-resistant, and soundproof interior partitions.
 
 2. High-Performance Building Envelope
-The "skin" of the building now requires integrated energy management. In this ${date}, TPO (Thermoplastic Polyolefin) is the preferred commercial roofing choice for its heat-reflective properties.
+The "skin" of the building now requires integrated energy management. In this ${date()}, TPO (Thermoplastic Polyolefin) is the preferred commercial roofing choice for its heat-reflective properties.
 Commercial Roofing: Weatherbond TPO White Membrane offers energy efficiency and a tough, leak-resistant seal. For edge details, TPO Coated Metal provides a seamless transition from roof to fascia.
-Insulation: Aerogel panels and high-R-value spray foams to meet the stricter ${date} energy codes.
+Insulation: Aerogel panels and high-R-value spray foams to meet the stricter ${date()} energy codes.
 
 3. Precision Equipment & Earthmoving
 Miniaturization and hybrid power are the key trends for site equipment. These units are essential for precision trenching and foundation work in confined residential or commercial sites.
