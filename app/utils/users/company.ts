@@ -1,5 +1,5 @@
 export const companyTestData = {
-    category: 'construction',
+    category: 'realtor',
     company_name: 'White Raven Development',
     company_email: 'michaeldreesen90@gmail.com', 
 };

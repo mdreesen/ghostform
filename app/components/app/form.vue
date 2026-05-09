@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { leadData, testLeadData, leadDataRealtor } from '~/utils/users/lead';
+import { leadData } from '~/utils/users/useLead';
 import { companyData, companyTestData } from '~/utils/users/company';
 import { compressImage } from '~/lib/compress';
 import { errors } from '~/lib/errors';
@@ -14,11 +14,11 @@ const props = defineProps({
     },
 })
 
-const { category, company_name, company_email, background_color, font_color } = props.routeData;
-
+const { category, company_name, company_email } = props.routeData;
 const step = ref(0);
-const answers = ref(leadData);
+const answers = ref(leadData(category));
 const company = ref(companyTestData);
+// const company = ref({ category: category, company_name: company_name, company_email: company_email}); // Testing Data
 const loading = ref(false);
 const setError = ref('')
 const aiResult = ref(null);
@@ -86,7 +86,7 @@ const submitForm = async () => {
 
         aiResult.value = await $fetch('/api/lead', {
             method: 'POST',
-            body: { ...fd, category: category }
+            body: fd
         });
 
         userEmail.value = answers.value.email;

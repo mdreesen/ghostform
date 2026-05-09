@@ -1,6 +1,17 @@
 import { Buffer } from 'node:buffer';
 
-export interface Lead {
+export interface LeadConstruction {
+  name: string;
+  email: string;
+  address: string;
+  goal: string;
+  sqft: string;
+  budget: string;
+  message: string;
+  imagePart?: ImagePart;
+}
+
+export interface LeadRealtor {
   name: string;
   email: string;
   address: string;

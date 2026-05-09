@@ -1,4 +1,5 @@
 import { materials, materials_expanded } from '~/utils/prompts/construction/products';
+import type { LeadConstruction } from '~/types/user';
 
 export const ai_job = `
     Analyze the provided form data and categorize the lead into exactly one of these three labels: [Tier 1, Tier 2, Tier 3].
@@ -14,14 +15,14 @@ export const ai_job = `
     Output Format: Provide the Label followed by a 1-sentence reasoning.
 `;
 
-export const use_construction_contractor = (address: string) => `You are a Senior Project Estimator. Your only job is to analyze lead data and output structured business intel.
+export const use_construction_contractor = (data: LeadConstruction) => `You are a Senior Project Estimator. Your only job is to analyze lead data and output structured business intel.
 Keep in mind a bunch of materials: 
 ${materials}
 ${materials_expanded}
 
 Instructions:
 1. ${ai_job}
-2. Determine the area conditions for this project using their address ${address}
+2. Determine the area conditions for this project using their address ${data.address}
 3. Determine the project category (e.g., Deck, Remodel, New Build).
 4. Calculate an estimated price based on $200/sqft for interior and $50/sqft for exterior.
 5. Identify specific company needs (e.g., "Needs site visit," "Needs architectural plans").

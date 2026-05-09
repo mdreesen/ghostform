@@ -27,6 +27,9 @@ export async function aiClient(data: LeadAndCompany) {
 };
 
 export async function aiCompany(data: LeadAndCompany) {
+
+    console.log('ai data', aiCompany);
+    console.log('use_ai_category_role(data)', use_ai_category_role(data))
     const useLeadAnalysis = analyze_lead(data);
     const useRole = use_ai_category_role(data);
 

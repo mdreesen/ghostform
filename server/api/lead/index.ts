@@ -1,7 +1,7 @@
 import { emailLead, emailCompany } from '~/lib/email';
 import { sms } from '~/lib/sms';
-import type { Lead, Company } from '~/types/user';
-import { leadData } from '~/utils/users/lead';
+import type { Company } from '~/types/user';
+import { leadData } from '~/utils/users/useLead';
 import { companyData } from '~/utils/users/company';
 import { aiClient, aiCompany } from '~/lib/ai';
 
@@ -9,12 +9,11 @@ export default defineEventHandler(async (event) => {
 
     try {
         const formData = await readMultipartFormData(event);
-        console.log('testing', formData)
 
         const answersPart = formData?.find(item => item.name === 'answers');
         const companyPart = formData?.find(item => item.name === 'company');
 
-        let answers: Lead = leadData;
+        let answers: any = leadData;
         let company: Company = companyData;
 
         if (answersPart) {
