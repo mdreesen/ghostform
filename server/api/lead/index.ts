@@ -29,7 +29,7 @@ export default defineEventHandler(async (event) => {
 
         // Ai For Client and Compnay
         const useAiClient = await aiClient({ ...answers, ...company })
-        const useAiCompany = await aiCompany({ ...imagePart, ...answers, ...company })
+        const useAiCompany = await aiCompany({ ...imagePart, ...answers, ...company }) as any
 
         if (!answers?.email) throw createError({ statusCode: 400, message: 'Missing data' });
 
