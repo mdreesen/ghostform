@@ -27,7 +27,7 @@ onMounted(() => {
 
 <template>
   <Transition name="ghost-modal">
-    <appForm :routeData="route.query" :id="formId" />
+    <appGhostForm :routeData="route.query" :id="formId" />
   </Transition>
 </template>
 
