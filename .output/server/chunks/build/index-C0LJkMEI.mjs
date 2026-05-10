@@ -179,7 +179,7 @@ _sfc_main$2.setup = (props, ctx) => {
   return _sfc_setup$2 ? _sfc_setup$2(props, ctx) : void 0;
 };
 const __nuxt_component_4 = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$2, [["__scopeId", "data-v-4c15b7ff"]]), { __name: "AppSuccess" });
-const leadData = {
+const leadConstruction = {
   name: "",
   email: "",
   address: "",
@@ -188,11 +188,59 @@ const leadData = {
   budget: "",
   message: ""
 };
-const companyTestData = {
-  category: "construction",
-  company_name: "White Raven Development",
-  company_email: "michaeldreesen90@gmail.com"
+const testDataConstruction = {
+  name: "Michael Dreesen",
+  email: "michaeldreesen90@gmail.com",
+  address: "412 3rd Ave E Kalispell, MT 59901",
+  goal: "New Deck",
+  sqft: "200",
+  budget: "20000",
+  message: "I need a new deck with railings. The old one is going out and I need this asap."
 };
+const leadRealtor = {
+  name: "",
+  age: "",
+  email: "",
+  phone: "",
+  address: "",
+  want_to_move: "",
+  buy_sell_both: "",
+  price: "",
+  sqft: "",
+  bedrooms: "",
+  bathrooms: "",
+  budget: "",
+  message: ""
+};
+const testLeadRealtor = {
+  name: "Michael Dreesen",
+  age: "33",
+  email: "michaeldreesen90@gmail.com",
+  phone: "4066072405",
+  address: "412 3rd ave E Kalispell MT, 59901",
+  want_to_move: "yes",
+  buy_sell_both: "Both",
+  price: "550000",
+  sqft: "2500",
+  bedrooms: "4",
+  bathrooms: "3",
+  budget: "10000",
+  message: ""
+};
+function leadData(category) {
+  switch (true) {
+    case category.includes("realtor"):
+      return {
+        data: leadRealtor,
+        test: testLeadRealtor
+      };
+    case category.includes("construction"):
+      return {
+        data: leadConstruction,
+        test: testDataConstruction
+      };
+  }
+}
 const compressImage = async (file) => {
   const maxWidth = 1600;
   const quality = 0.7;
@@ -219,8 +267,32 @@ function errors(error) {
       return "Error 500, something went wrong.";
   }
 }
+const questionsConstruction = [
+  { id: "name", label: "What's your name?", type: "text" },
+  { id: "email", label: "What's your email?", type: "text" },
+  { id: "address", label: "What's your address?", type: "text" },
+  { id: "goal", label: "What can we help you with?", type: "text" },
+  { id: "sqft", label: "What would be the square footage of the project needs?", type: "number" },
+  { id: "budget", label: "What is your estimated budget?", type: "number" },
+  { id: "message", label: "What are more details about your project?", type: "text" }
+];
+const questionsRealtor = [
+  { id: "name", label: "What's your name?", type: "text" },
+  { id: "age", label: "What's your age?", type: "number" },
+  { id: "email", label: "What's your email?", type: "text" },
+  { id: "phone", label: "What's your phone number?", type: "text" },
+  { id: "address", label: "What's your home address?", type: "text" },
+  { id: "want_to_move", label: "When would you want to move?", type: "text" },
+  { id: "buy_sell_both", label: "Are you looking to buy, sell, or both?", type: "text" },
+  { id: "price", label: "What do you think your home is worth?", type: "number" },
+  { id: "sqft", label: "What would be the square footage of the project needs?", type: "number" },
+  { id: "bedrooms", label: "How many bedrooms does your home have", type: "number" },
+  { id: "bathrooms", label: "How many bathrooms does your home have", type: "number" },
+  { id: "budget", label: "What is your estimated budget?", type: "number" },
+  { id: "message", label: "Are there any other details about your home?", type: "text" }
+];
 const _sfc_main$1 = /* @__PURE__ */ defineComponent({
-  __name: "form",
+  __name: "GhostForm",
   __ssrInlineRender: true,
   props: {
     routeData: {
@@ -230,10 +302,10 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
   },
   setup(__props) {
     const props = __props;
-    const { category, company_name, company_email, background_color, font_color } = props.routeData;
+    const { category, company_name, company_email } = props.routeData;
     const step = ref(0);
-    const answers = ref(leadData);
-    ref(companyTestData);
+    const answers = ref(leadData(category).data);
+    ref({ category, company_name, company_email });
     const loading = ref(false);
     const setError = ref("");
     const aiResult = ref(null);
@@ -241,15 +313,14 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
     const selectedFile = ref(null);
     const userEmail = ref("");
     const showSuccess = ref(false);
-    const questions = [
-      { id: "name", label: "What's your name?", type: "text" },
-      { id: "email", label: "What's your email?", type: "text" },
-      { id: "address", label: "What's your address?", type: "text" },
-      { id: "goal", label: "What can we help you with?", type: "text" },
-      { id: "sqft", label: "What would be the square footage of the project needs?", type: "number" },
-      { id: "budget", label: "What is your estimated budget?", type: "number" },
-      { id: "message", label: "What are more details about your project?", type: "text" }
-    ];
+    const useQuestions = computed(() => {
+      switch (true) {
+        case category.includes("construction"):
+          return questionsConstruction;
+        case category.includes("realtor"):
+          return questionsRealtor;
+      }
+    });
     const handleImageSelection = async (file) => {
       loading.value = true;
       try {
@@ -270,22 +341,22 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
       const _component_appImageUpload = __nuxt_component_2;
       const _component_baseError = __nuxt_component_3;
       const _component_appSuccess = __nuxt_component_4;
-      _push(`<div${ssrRenderAttrs(mergeProps({ class: `max-w-105 h-135 flex items-center justify-center p-6 font-sans rounded-4xl drop-shadow-2xl` }, _attrs))} data-v-087479ac>`);
+      _push(`<div${ssrRenderAttrs(mergeProps({ class: `max-w-105 h-135 flex items-center justify-center p-6 font-sans rounded-4xl drop-shadow-2xl` }, _attrs))} data-v-5253482a>`);
       if (!unref(aiResult)) {
-        _push(`<div class="max-w-md w-full space-y-4" data-v-087479ac><div class="h-1 bg-zinc-800 rounded-full" data-v-087479ac><div class="h-1 bg-blue-500 transition-all duration-500" style="${ssrRenderStyle({ width: `${(unref(step) + 1) / questions.length * 100}%` })}" data-v-087479ac></div></div><div class="space-y-4" data-v-087479ac><label class="block text-2xl font-medium" data-v-087479ac>${ssrInterpolate(questions[unref(step)]?.label)}</label><input${ssrRenderDynamicModel(questions[unref(step)]?.type, unref(answers)[questions[unref(step)]?.id], null)}${ssrRenderAttr("type", questions[unref(step)]?.type)}${ssrRenderAttr("name", questions[unref(step)]?.id)} class="w-full bg-transparent border-b-2 border-white py-2 text-xl focus:border-blue-500 outline-none transition-colors" autofocus data-v-087479ac></div>`);
+        _push(`<div class="max-w-md w-full space-y-4" data-v-5253482a><div class="h-1 bg-zinc-800 rounded-full" data-v-5253482a><div class="h-1 bg-blue-500 transition-all duration-500" style="${ssrRenderStyle({ width: `${(unref(step) + 1) / unref(useQuestions).length * 100}%` })}" data-v-5253482a></div></div><div class="space-y-4" data-v-5253482a><label class="block text-2xl font-medium" data-v-5253482a>${ssrInterpolate(unref(useQuestions)[unref(step)]?.label)}</label><input${ssrRenderDynamicModel(unref(useQuestions)[unref(step)]?.type, unref(answers)[unref(useQuestions)[unref(step)]?.id], null)}${ssrRenderAttr("type", unref(useQuestions)[unref(step)]?.type)}${ssrRenderAttr("name", unref(useQuestions)[unref(step)]?.id)} class="w-full bg-transparent border-b-2 border-white py-2 text-xl focus:border-blue-500 outline-none transition-colors" autofocus data-v-5253482a></div>`);
         if (unref(loading)) {
           _push(ssrRenderComponent(_component_baseLoading, { class: "z-10" }, null, _parent));
         } else {
           _push(`<!---->`);
         }
-        _push(`<div class="w-full" data-v-087479ac><div class="flex w-full justify-between gap-5" data-v-087479ac>`);
+        _push(`<div class="w-full" data-v-5253482a><div class="flex w-full justify-between gap-5" data-v-5253482a>`);
         _push(ssrRenderComponent(_component_baseButton, {
           text: unref(useUploadImage) ? "Cancel Upload" : "Upload an image",
           onClick: ($event) => useUploadImage.value = !unref(useUploadImage)
         }, null, _parent));
-        _push(`<div class="bg-blue-600 px-6 py-2 rounded-lg flex gap-2 items-center" data-v-087479ac><button class="hover:bg-blue-500 transition" data-v-087479ac> Back </button><span data-v-087479ac>|</span><button class="hover:bg-blue-500 transition" data-v-087479ac>${ssrInterpolate(unref(step) === questions.length - 1 ? "Finish" : "Next")}</button></div></div>`);
+        _push(`<div class="bg-blue-600 px-6 py-2 rounded-lg flex gap-2 items-center" data-v-5253482a><button class="hover:bg-blue-500 transition" data-v-5253482a> Back </button><span data-v-5253482a>|</span><button class="hover:bg-blue-500 transition" data-v-5253482a>${ssrInterpolate(unref(step) === unref(useQuestions).length - 1 ? "Finish" : "Next")}</button></div></div>`);
         if (unref(useUploadImage)) {
-          _push(`<div data-v-087479ac>`);
+          _push(`<div data-v-5253482a>`);
           _push(ssrRenderComponent(_component_appImageUpload, { onFileSelected: handleImageSelection }, null, _parent));
           _push(`</div>`);
         } else {
@@ -293,7 +364,7 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
         }
         _push(`</div>`);
         if (unref(setError)) {
-          _push(`<div data-v-087479ac>`);
+          _push(`<div data-v-5253482a>`);
           _push(ssrRenderComponent(_component_baseError, {
             message: unref(errors)(unref(setError))
           }, null, _parent));
@@ -303,13 +374,13 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
         }
         _push(`</div>`);
       } else {
-        _push(`<div class="p-8 rounded-2xl border border-zinc-800 max-w-lg" data-v-087479ac>`);
+        _push(`<div class="p-8 rounded-2xl border border-zinc-800 max-w-lg" data-v-5253482a>`);
         _push(ssrRenderComponent(_component_appSuccess, {
           company: unref(useCompanyName),
           show: unref(showSuccess),
           email: unref(userEmail)
         }, null, _parent));
-        _push(`<h2 class="font-bold mb-2" data-v-087479ac>Thank you for your inquiry</h2><p class="mb-4 italic" data-v-087479ac>${ssrInterpolate(unref(useCompanyName))} will get back to you shortly!</p></div>`);
+        _push(`<h2 class="font-bold mb-2" data-v-5253482a>Thank you for your inquiry</h2><p class="mb-4 italic" data-v-5253482a>${ssrInterpolate(unref(useCompanyName))} will get back to you shortly!</p></div>`);
       }
       _push(`</div>`);
     };
@@ -318,10 +389,10 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
 const _sfc_setup$1 = _sfc_main$1.setup;
 _sfc_main$1.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("components/app/form.vue");
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("components/app/GhostForm.vue");
   return _sfc_setup$1 ? _sfc_setup$1(props, ctx) : void 0;
 };
-const __nuxt_component_0 = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$1, [["__scopeId", "data-v-087479ac"]]), { __name: "AppForm" });
+const __nuxt_component_0 = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$1, [["__scopeId", "data-v-5253482a"]]), { __name: "AppGhostForm" });
 const _sfc_main = /* @__PURE__ */ defineComponent({
   __name: "index",
   __ssrInlineRender: true,
@@ -329,8 +400,8 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     const route = useRoute();
     const formId = route.params.id;
     return (_ctx, _push, _parent, _attrs) => {
-      const _component_appForm = __nuxt_component_0;
-      _push(ssrRenderComponent(_component_appForm, mergeProps({
+      const _component_appGhostForm = __nuxt_component_0;
+      _push(ssrRenderComponent(_component_appGhostForm, mergeProps({
         routeData: unref(route).query,
         id: unref(formId)
       }, _attrs), null, _parent));
@@ -343,7 +414,7 @@ _sfc_main.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("pages/index.vue");
   return _sfc_setup ? _sfc_setup(props, ctx) : void 0;
 };
-const index = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-1fd48a68"]]);
+const index = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-a69afbf2"]]);
 
 export { index as default };
-//# sourceMappingURL=index-BMzf8RhB.mjs.map
+//# sourceMappingURL=index-C0LJkMEI.mjs.map
