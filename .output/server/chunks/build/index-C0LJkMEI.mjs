@@ -99,7 +99,7 @@ const _sfc_main$4 = /* @__PURE__ */ defineComponent({
       }
       _push(`</div>`);
       if (unref(analysis)) {
-        _push(`<div class="bg-zinc-900 border border-zinc-800 p-6 rounded-2xl shadow-xl" data-v-a678dbc3><h3 class="text-blue-400 font-bold mb-3 flex items-center gap-2" data-v-a678dbc3><span data-v-a678dbc3>\u2728</span> Ghost AI Analysis </h3><p class="text-zinc-300 leading-relaxed" data-v-a678dbc3>${ssrInterpolate(unref(analysis))}</p></div>`);
+        _push(`<div class="bg-zinc-900 border border-zinc-800 p-6 rounded-2xl shadow-xl" data-v-a678dbc3><h3 class="text-blue-400 font-bold mb-3 flex items-center gap-2" data-v-a678dbc3><span data-v-a678dbc3>✨</span> Ghost AI Analysis </h3><p class="text-zinc-300 leading-relaxed" data-v-a678dbc3>${ssrInterpolate(unref(analysis))}</p></div>`);
       } else {
         _push(`<!---->`);
       }
@@ -336,7 +336,6 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
     computed(() => selectedFile.value);
     const useCompanyName = computed(() => company_name ? company_name : "We");
     return (_ctx, _push, _parent, _attrs) => {
-      var _a, _b, _c, _d, _e;
       const _component_baseLoading = __nuxt_component_0$1;
       const _component_baseButton = __nuxt_component_1;
       const _component_appImageUpload = __nuxt_component_2;
@@ -344,7 +343,7 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
       const _component_appSuccess = __nuxt_component_4;
       _push(`<div${ssrRenderAttrs(mergeProps({ class: `max-w-105 h-135 flex items-center justify-center p-6 font-sans rounded-4xl drop-shadow-2xl` }, _attrs))} data-v-5253482a>`);
       if (!unref(aiResult)) {
-        _push(`<div class="max-w-md w-full space-y-4" data-v-5253482a><div class="h-1 bg-zinc-800 rounded-full" data-v-5253482a><div class="h-1 bg-blue-500 transition-all duration-500" style="${ssrRenderStyle({ width: `${(unref(step) + 1) / unref(useQuestions).length * 100}%` })}" data-v-5253482a></div></div><div class="space-y-4" data-v-5253482a><label class="block text-2xl font-medium" data-v-5253482a>${ssrInterpolate((_a = unref(useQuestions)[unref(step)]) == null ? void 0 : _a.label)}</label><input${ssrRenderDynamicModel((_b = unref(useQuestions)[unref(step)]) == null ? void 0 : _b.type, unref(answers)[(_c = unref(useQuestions)[unref(step)]) == null ? void 0 : _c.id], null)}${ssrRenderAttr("type", (_d = unref(useQuestions)[unref(step)]) == null ? void 0 : _d.type)}${ssrRenderAttr("name", (_e = unref(useQuestions)[unref(step)]) == null ? void 0 : _e.id)} class="w-full bg-transparent border-b-2 border-white py-2 text-xl focus:border-blue-500 outline-none transition-colors" autofocus data-v-5253482a></div>`);
+        _push(`<div class="max-w-md w-full space-y-4" data-v-5253482a><div class="h-1 bg-zinc-800 rounded-full" data-v-5253482a><div class="h-1 bg-blue-500 transition-all duration-500" style="${ssrRenderStyle({ width: `${(unref(step) + 1) / unref(useQuestions).length * 100}%` })}" data-v-5253482a></div></div><div class="space-y-4" data-v-5253482a><label class="block text-2xl font-medium" data-v-5253482a>${ssrInterpolate(unref(useQuestions)[unref(step)]?.label)}</label><input${ssrRenderDynamicModel(unref(useQuestions)[unref(step)]?.type, unref(answers)[unref(useQuestions)[unref(step)]?.id], null)}${ssrRenderAttr("type", unref(useQuestions)[unref(step)]?.type)}${ssrRenderAttr("name", unref(useQuestions)[unref(step)]?.id)} class="w-full bg-transparent border-b-2 border-white py-2 text-xl focus:border-blue-500 outline-none transition-colors" autofocus data-v-5253482a></div>`);
         if (unref(loading)) {
           _push(ssrRenderComponent(_component_baseLoading, { class: "z-10" }, null, _parent));
         } else {
