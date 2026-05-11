@@ -16,7 +16,7 @@ const props = defineProps({
 
 const { category, company_name, company_email } = props.routeData;
 const step = ref(0);
-const answers = ref(leadData(category).test);
+const answers = ref(leadData(category).data);
 // const company = ref(companyTestData);
 const company = ref({ category: category, company_name: company_name, company_email: company_email }); // Testing Data
 const loading = ref(false);

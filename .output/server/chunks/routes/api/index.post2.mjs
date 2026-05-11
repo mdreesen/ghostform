@@ -301,12 +301,12 @@ Instructions:
 6. Constraint: Do not be conversational. Do not say "Thanks for reaching out." Only provide the analysis.
 `;
 
-const use_ai_category_role = (data) => {
+const use_ai_category_role = (answers) => {
   switch (true) {
-    case data.category.includes("realtor"):
-      return use_realtor(data);
-    case data.category.includes("construction"):
-      return use_construction_contractor(data);
+    case answers.category.includes("realtor"):
+      return use_realtor(answers);
+    case answers.category.includes("construction"):
+      return use_construction_contractor(answers);
   }
 };
 
@@ -361,7 +361,6 @@ async function aiClient(data) {
     `;
 }
 async function aiCompany(imagePart, answers, findCompany) {
-  console.log(answers);
   const useLeadAnalysis = analyze_lead(answers);
   const useRole = use_ai_category_role(answers);
   const { text } = await generateText({
