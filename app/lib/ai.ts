@@ -15,6 +15,7 @@ export async function aiClient(data: LeadAndCompany) {
 };
 
 export async function aiCompany(imagePart, answers, findCompany) {
+    console.log(answers)
     const useLeadAnalysis = analyze_lead(answers);
     const useRole = use_ai_category_role(findCompany);
 
@@ -49,7 +50,7 @@ export async function aiCompany(imagePart, answers, findCompany) {
         ],
     });
 
-    const aiOutput = useCompanyEmailFormatting(findCompany, text);
+    const aiOutput = useCompanyEmailFormatting(answers, text);
 
     return aiOutput
 };

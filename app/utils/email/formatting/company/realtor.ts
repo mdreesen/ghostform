@@ -16,5 +16,4 @@ export const useRealtorCompanyEmailFormatting = (data, text) => `
 
     <h2>AI Analysis:</h2>
     ${text}
-    Let new lines be wrapped in a <div></div> element
 `;

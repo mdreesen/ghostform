@@ -151,32 +151,32 @@ Please wrap each seperated section with <div></div> as this uses resend email.
 Also have it have an extra space per each section.
 `;
 
-const lead_realtor = (data) => `
+const lead_realtor = (answers) => `
 If there is a picture attached:
-Based on the attached photo analyze the image of their home along with where the house is located ${data.address}.
+Based on the attached photo analyze the image of their home along with where the house is located ${answers.address}.
 If no picture do not analyze a photo and do not do that step.
 
-Analyze the following lead data:
-Address: ${data.address}
-Lead wants to move: ${data.want_to_move}
-Lead wants to buy, sell, buy and sell: ${data.buy_sell_both}
-Lead's estimated home price: ${data.price}
-Lead's estimated home sqft: ${data.sqft}
-Leads's bedrooms count: ${data.bedrooms}
-Lead's bathroom count: ${data.bathrooms}
-Budget: $${data.budget}
-Message: ${data.message}
+Analyze the following lead answers:
+Address: ${answers.address}
+Lead wants to move: ${answers.want_to_move}
+Lead wants to buy, sell, buy and sell: ${answers.buy_sell_both}
+Lead's estimated home price: ${answers.price}
+Lead's estimated home sqft: ${answers.sqft}
+Leads's bedrooms count: ${answers.bedrooms}
+Lead's bathroom count: ${answers.bathrooms}
+Budget: $${answers.budget}
+Message: ${answers.message}
 
 Please wrap each seperated section with <div></div> as this uses resend email.
 Also have it have an extra space per each section.
 `;
 
-function analyze_lead(data) {
+function analyze_lead(answers) {
   switch (true) {
-    case data.category.includes("realtor"):
-      return lead_realtor(data);
-    case data.category.includes("construction"):
-      return lead_construction(data);
+    case answers.category.includes("realtor"):
+      return lead_realtor(answers);
+    case answers.category.includes("construction"):
+      return lead_construction(answers);
   }
 }
 
@@ -328,7 +328,6 @@ const useRealtorCompanyEmailFormatting = (data, text) => `
 
     <h2>AI Analysis:</h2>
     ${text}
-    Let new lines be wrapped in a <div></div> element
 `;
 
 const useConstructionCompanyEmailFormatting = (data, text) => `
@@ -362,6 +361,7 @@ async function aiClient(data) {
     `;
 }
 async function aiCompany(imagePart, answers, findCompany) {
+  console.log(answers);
   const useLeadAnalysis = analyze_lead(answers);
   const useRole = use_ai_category_role(findCompany);
   const { text } = await generateText({
@@ -394,7 +394,7 @@ async function aiCompany(imagePart, answers, findCompany) {
       }
     ]
   });
-  const aiOutput = useCompanyEmailFormatting(findCompany, text);
+  const aiOutput = useCompanyEmailFormatting(answers, text);
   return aiOutput;
 }
 
@@ -424,19 +424,20 @@ const lead = new Schema(
     name: String || void 0,
     email: String || void 0,
     phone: String || void 0,
-    age: String || void 0,
+    age: Number || void 0,
     address: String || void 0,
     ai_analysis: String || void 0,
+    // Construction Data
+    goal: String || void 0,
     // Realtor Data
     want_to_move: String || void 0,
     buy_sell_both: String || void 0,
-    home_price: String || void 0,
-    home_sqft: String || void 0,
-    home_bedrooms: String || void 0,
-    home_bathrooms: String || void 0,
-    budget: String || void 0,
+    price: Number || void 0,
+    sqft: Number || void 0,
+    bedrooms: Number || void 0,
+    bathrooms: Number || void 0,
+    budget: Number || void 0,
     message: String || void 0
-    //
   },
   { timestamps: false }
 );
@@ -468,17 +469,31 @@ const userSchema = new Schema(
   },
   { timestamps: true }
 );
-const User$1 = mongoose.models.User || mongoose.model("User", userSchema);
+const User$2 = mongoose.models.User || mongoose.model("User", userSchema);
 
-const User = User$1;
+const User$1 = User$2;
 async function useUser(data) {
   try {
     await connectDB();
-    const findUser = await User.find({ email_hashed: data.company_email }).lean();
+    const findUser = await User$1.find({ email_hashed: data.company_email }).lean();
     if (findUser[0]) {
       return findUser[0];
     }
     ;
+  } catch (error) {
+    console.log(error);
+    throw createError({
+      statusCode: 500,
+      statusMessage: "Something went wrong."
+    });
+  }
+}
+
+const User = User$2;
+async function useLead(useAiCompany, findCompany, answers) {
+  try {
+    await connectDB();
+    await User.findOneAndUpdate({ email: findCompany == null ? void 0 : findCompany.email }, { $addToSet: { leads: { ...answers, ai_analysis: useAiCompany } } });
   } catch (error) {
     console.log(error);
     throw createError({
@@ -507,12 +522,12 @@ const index_post = defineEventHandler(async (event) => {
     ;
     const imagePart = formData == null ? void 0 : formData.find((item) => item.name === "image");
     const findCompany = await useUser(company);
-    console.log("findCompany", findCompany);
     const useAiClient = await aiClient({ ...answers, ...findCompany });
     const useAiCompany = await aiCompany(imagePart, answers, findCompany);
     if (!(answers == null ? void 0 : answers.email)) throw createError({ statusCode: 400, message: "Missing data" });
     await emailLead(useAiClient, answers);
     await emailCompany(useAiCompany, findCompany, imagePart);
+    await useLead(useAiCompany, findCompany, answers);
     return { status: "success", aiResponse: useAiCompany };
   } catch (error) {
     if (error instanceof Error) {

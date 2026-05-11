@@ -5,7 +5,7 @@ import { leadData } from '~/utils/users/useLead';
 import { companyData } from '~/utils/users/company';
 import { aiClient, aiCompany } from '~/lib/ai';
 import { useUser } from '~/lib/user';
-
+import { useLead } from '~/lib/lead';
 export default defineEventHandler(async (event) => {
 
     try {
@@ -29,8 +29,6 @@ export default defineEventHandler(async (event) => {
         const imagePart = formData?.find((item) => item.name === 'image');
         const findCompany = await useUser(company);
 
-        console.log('findCompany', findCompany)
-
         // Ai For Client and Compnay
         const useAiClient = await aiClient({ ...answers, ...findCompany })
         const useAiCompany = await aiCompany(imagePart, answers, findCompany) as any
@@ -42,6 +40,9 @@ export default defineEventHandler(async (event) => {
 
         // // Email Company
         await emailCompany(useAiCompany, findCompany, imagePart);
+
+        // After emails are send, we send the lead data to the db
+        await useLead(useAiCompany, findCompany, answers);
 
         // await sms();
 

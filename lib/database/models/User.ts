@@ -9,20 +9,22 @@ const lead = new Schema(
         name: String || undefined,
         email: String || undefined,
         phone: String || undefined,
-        age: String || undefined,
+        age: Number || undefined,
         address: String || undefined,
         ai_analysis: String || undefined,
+
+        // Construction Data
+        goal: String || undefined,
 
         // Realtor Data
         want_to_move: String || undefined,
         buy_sell_both: String || undefined,
-        home_price: String || undefined,
-        home_sqft: String || undefined,
-        home_bedrooms: String || undefined,
-        home_bathrooms: String || undefined,
-        budget: String || undefined,
+        price: Number || undefined,
+        sqft: Number || undefined,
+        bedrooms: Number || undefined,
+        bathrooms: Number || undefined,
+        budget: Number || undefined,
         message: String || undefined,
-        //
     }, { timestamps: false });
 
 const userSchema = new Schema(

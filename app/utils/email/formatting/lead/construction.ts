@@ -7,6 +7,4 @@ export const useConstructionLeadEmailFormatting = (data) => `
     End the email with:
     Best regards,
     ${data?.company_name}
-
-    Let new lines be wrapped in a <div></div> element
 `;
