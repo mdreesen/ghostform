@@ -12,6 +12,7 @@ const lead = new Schema(
         age: Number || undefined,
         address: String || undefined,
         ai_analysis: String || undefined,
+        status: String || undefined,
 
         // Construction Data
         goal: String || undefined,
