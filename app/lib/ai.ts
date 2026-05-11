@@ -17,7 +17,7 @@ export async function aiClient(data: LeadAndCompany) {
 export async function aiCompany(imagePart, answers, findCompany) {
     console.log(answers)
     const useLeadAnalysis = analyze_lead(answers);
-    const useRole = use_ai_category_role(findCompany);
+    const useRole = use_ai_category_role(answers);
 
     const { text } = await generateText({
         model: openai('gpt-4o-mini'),

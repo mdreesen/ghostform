@@ -363,7 +363,7 @@ async function aiClient(data) {
 async function aiCompany(imagePart, answers, findCompany) {
   console.log(answers);
   const useLeadAnalysis = analyze_lead(answers);
-  const useRole = use_ai_category_role(findCompany);
+  const useRole = use_ai_category_role(answers);
   const { text } = await generateText({
     model: openai("gpt-4o-mini"),
     system: useRole,
@@ -427,6 +427,7 @@ const lead = new Schema(
     age: Number || void 0,
     address: String || void 0,
     ai_analysis: String || void 0,
+    status: String || void 0,
     // Construction Data
     goal: String || void 0,
     // Realtor Data
