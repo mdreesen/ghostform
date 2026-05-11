@@ -308,32 +308,6 @@ const use_ai_category_role = (data) => {
   }
 };
 
-const useRealtorLeadEmailFormatting = (data) => `
-    A new lead named ${data == null ? void 0 : data.name}. 
-    Write a 3-sentence email thanking them, 
-    mentioning one specific detail you see in the message, 
-    and telling them a human will call them shortly.
-
-    End the email with:
-    Best regards,
-    ${data == null ? void 0 : data.company_name}
-
-    Let new lines be wrapped in a <div></div> element
-`;
-
-const useConstructionLeadEmailFormatting = (data) => `
-    A new lead named ${data == null ? void 0 : data.name}. 
-    Write a 3-sentence email thanking them, 
-    mentioning one specific detail you see in the message, 
-    and telling them a human will call them shortly.
-
-    End the email with:
-    Best regards,
-    ${data == null ? void 0 : data.company_name}
-
-    Let new lines be wrapped in a <div></div> element
-`;
-
 const useRealtorCompanyEmailFormatting = (data, text) => `
     <h1>Lead Information</h1>
     <div>Lead Name: ${data.name}</div>
@@ -368,14 +342,6 @@ const useConstructionCompanyEmailFormatting = (data, text) => `
     ${text}
 `;
 
-function useLeadEmailFormatting(data) {
-  switch (true) {
-    case data.category.includes("realtor"):
-      return useRealtorLeadEmailFormatting(data);
-    case data.category.includes("construction"):
-      return useConstructionLeadEmailFormatting(data);
-  }
-}
 function useCompanyEmailFormatting(data, text) {
   switch (true) {
     case data.category.includes("realtor"):
@@ -386,13 +352,10 @@ function useCompanyEmailFormatting(data, text) {
 }
 
 async function aiClient(data) {
-  const { text } = await generateText({
-    model: openai("gpt-4o-mini"),
-    system: `You are an assistant for a Construction Company. 
-         Be professional and helpful`,
-    prompt: useLeadEmailFormatting(data)
-  });
-  return text;
+  return `
+    <div>Thank you for your inquery.</div>
+    <div>We will get back to you shortly</>
+    `;
 }
 async function aiCompany(data) {
   var _a;

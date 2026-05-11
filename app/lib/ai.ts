@@ -6,14 +6,10 @@ import type { LeadAndCompany } from '~/types/user';
 import { useLeadEmailFormatting, useCompanyEmailFormatting } from '~/utils/email/useEmailFormatting';
 
 export async function aiClient(data: LeadAndCompany) {
-    const { text } = await generateText({
-        model: openai('gpt-4o-mini'),
-        system: `You are an assistant for a Construction Company. 
-         Be professional and helpful`,
-        prompt: useLeadEmailFormatting(data),
-    });
-
-    return text
+    return `
+    <div>Thank you for your inquery.</div>
+    <div>We will get back to you shortly</>
+    `
 };
 
 export async function aiCompany(data: LeadAndCompany) {
