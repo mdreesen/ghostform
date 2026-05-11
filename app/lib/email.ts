@@ -9,7 +9,7 @@ export async function emailLead(aiOutput: string, data: any) {
         await resend.emails.send({
             from: 'NoReply@ascendpod.com',
             to: [data?.email],
-            subject: "Your Job Inquiry",
+            subject: "Your Inquiry",
             html: aiOutput
         });
 
@@ -22,12 +22,12 @@ export async function emailLead(aiOutput: string, data: any) {
     };
 };
 
-export async function emailCompany(aiOutput: string, data: Company, image) {
+export async function emailCompany(aiOutput: string, findCompany, image) {
     try {
         await resend.emails.send({
             from: 'NoReply@ascendpod.com',
-            to: [data?.company_email],
-            subject: "Your Lead Inquiry",
+            to: [findCompany?.email],
+            subject: "New Lead Inquiry",
             html: aiOutput,
             attachments: image?.filename ? [
                 {

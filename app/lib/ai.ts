@@ -7,19 +7,21 @@ import { useLeadEmailFormatting, useCompanyEmailFormatting } from '~/utils/email
 
 export async function aiClient(data: LeadAndCompany) {
     return `
-    <div>Thank you for your inquery.</div>
-    <div>We will get back to you shortly</>
+    <div>Inquiry received.</div>
+    <div>A specialist is currently reviewing your specifications and will provide a status update shortly.</div>
+    <br>
+    <div>${data.company_name}</div>
     `
 };
 
-export async function aiCompany(data: LeadAndCompany) {
-    const useLeadAnalysis = analyze_lead(data);
-    const useRole = use_ai_category_role(data);
+export async function aiCompany(imagePart, answers, findCompany) {
+    const useLeadAnalysis = analyze_lead(answers);
+    const useRole = use_ai_category_role(findCompany);
 
     const { text } = await generateText({
         model: openai('gpt-4o-mini'),
         system: useRole,
-        messages: data?.imagePart?.data ? [
+        messages: imagePart?.data ? [
             {
                 role: 'user',
                 content: [
@@ -29,8 +31,8 @@ export async function aiCompany(data: LeadAndCompany) {
                     },
                     {
                         type: 'image',
-                        image: new Uint8Array(data.imagePart.data),
-                        mediaType: data.imagePart.type || 'image/jpeg'
+                        image: new Uint8Array(imagePart.data),
+                        mediaType: imagePart.type || 'image/jpeg'
                     }
                 ],
             },
@@ -47,7 +49,7 @@ export async function aiCompany(data: LeadAndCompany) {
         ],
     });
 
-    const aiOutput = useCompanyEmailFormatting(data, text);
+    const aiOutput = useCompanyEmailFormatting(findCompany, text);
 
     return aiOutput
 };

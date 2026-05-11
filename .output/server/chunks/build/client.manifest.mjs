@@ -4,7 +4,7 @@ const client_manifest = {
     "module": true,
     "prefetch": true,
     "preload": true,
-    "file": "C0vXWhtF.js",
+    "file": "CgWQTuXK.js",
     "name": "entry",
     "src": "../node_modules/nuxt/dist/app/entry.js",
     "isEntry": true,
@@ -12,12 +12,12 @@ const client_manifest = {
       "layouts/default.vue"
     ],
     "css": [
-      "entry.L2-ya_QZ.css"
+      "entry.ExpfloO8.css"
     ],
     "assets": []
   },
-  "entry.L2-ya_QZ.css": {
-    "file": "entry.L2-ya_QZ.css",
+  "entry.ExpfloO8.css": {
+    "file": "entry.ExpfloO8.css",
     "resourceType": "style",
     "prefetch": true,
     "preload": true
@@ -47,7 +47,7 @@ const client_manifest = {
     "module": true,
     "prefetch": true,
     "preload": true,
-    "file": "CdU91DqA.js",
+    "file": "CfdEPNPX.js",
     "name": "index",
     "src": "pages/index.vue",
     "isDynamicEntry": true,
@@ -56,8 +56,8 @@ const client_manifest = {
     ],
     "css": []
   },
-  "index.BWR6Ea-o.css": {
-    "file": "index.BWR6Ea-o.css",
+  "index.BlJB05R-.css": {
+    "file": "index.BlJB05R-.css",
     "resourceType": "style",
     "prefetch": true,
     "preload": true

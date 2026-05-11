@@ -2,7 +2,6 @@
 const route = useRoute();
 const { background_color, font_color } = route.query;
 
-
 // Application design
 const useBackgroundColor = computed(() => background_color ? `#${background_color.toString()}` : '#0f0b0b');
 const useFontColor = computed(() => font_color ? `#${font_color.toString()}` : 'white');

@@ -16,7 +16,7 @@ const props = defineProps({
 
 const { category, company_name, company_email } = props.routeData;
 const step = ref(0);
-const answers = ref(leadData(category).data);
+const answers = ref(leadData(category).test);
 // const company = ref(companyTestData);
 const company = ref({ category: category, company_name: company_name, company_email: company_email }); // Testing Data
 const loading = ref(false);
@@ -69,7 +69,7 @@ const submitForm = async () => {
     try {
         const fd = new FormData();
 
-        const jsonLeadBlob = new Blob([JSON.stringify(answers.value)], {
+        const jsonLeadBlob = new Blob([JSON.stringify({...answers.value, category: category})], {
             type: 'application/json'
         });
         const jsonCompanyBlob = new Blob([JSON.stringify(company.value)], {
@@ -153,11 +153,8 @@ const useCompanyName = computed(() => company_name ? company_name : 'We');
             </div>
         </div>
 
-        <div v-else class="p-8 rounded-2xl border border-zinc-800 max-w-lg">
+        <div v-else class="w-[280px]">
             <appSuccess :company="useCompanyName as string" :show="showSuccess" :email="userEmail" />
-
-            <h2 class="font-bold mb-2">Thank you for your inquiry</h2>
-            <p class="mb-4 italic">{{ useCompanyName }} will get back to you shortly!</p>
         </div>
     </div>
 </template>

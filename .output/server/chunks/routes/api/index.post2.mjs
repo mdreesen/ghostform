@@ -2,6 +2,8 @@ import { c as createError, d as defineEventHandler, r as readMultipartFormData }
 import { Resend } from 'resend';
 import { generateText } from 'ai';
 import { openai } from '@ai-sdk/openai';
+import mongoose, { Schema } from 'mongoose';
+import { z } from 'zod';
 import 'node:http';
 import 'node:https';
 import 'node:events';
@@ -20,7 +22,7 @@ async function emailLead(aiOutput, data) {
     await resend.emails.send({
       from: "NoReply@ascendpod.com",
       to: [data == null ? void 0 : data.email],
-      subject: "Your Job Inquiry",
+      subject: "Your Inquiry",
       html: aiOutput
     });
   } catch (error) {
@@ -31,12 +33,12 @@ async function emailLead(aiOutput, data) {
     });
   }
 }
-async function emailCompany(aiOutput, data, image) {
+async function emailCompany(aiOutput, findCompany, image) {
   try {
     await resend.emails.send({
       from: "NoReply@ascendpod.com",
-      to: [data == null ? void 0 : data.company_email],
-      subject: "Your Lead Inquiry",
+      to: [findCompany == null ? void 0 : findCompany.email],
+      subject: "New Lead Inquiry",
       html: aiOutput,
       attachments: (image == null ? void 0 : image.filename) ? [
         {
@@ -342,29 +344,30 @@ const useConstructionCompanyEmailFormatting = (data, text) => `
     ${text}
 `;
 
-function useCompanyEmailFormatting(data, text) {
+function useCompanyEmailFormatting(findCompany, text) {
   switch (true) {
-    case data.category.includes("realtor"):
-      return useRealtorCompanyEmailFormatting(data, text);
-    case data.category.includes("construction"):
-      return useConstructionCompanyEmailFormatting(data, text);
+    case findCompany.category.includes("realtor"):
+      return useRealtorCompanyEmailFormatting(findCompany, text);
+    case findCompany.category.includes("construction"):
+      return useConstructionCompanyEmailFormatting(findCompany, text);
   }
 }
 
 async function aiClient(data) {
   return `
-    <div>Thank you for your inquery.</div>
-    <div>We will get back to you shortly</>
+    <div>Inquiry received.</div>
+    <div>A specialist is currently reviewing your specifications and will provide a status update shortly.</div>
+    <br>
+    <div>${data.company_name}</div>
     `;
 }
-async function aiCompany(data) {
-  var _a;
-  const useLeadAnalysis = analyze_lead(data);
-  const useRole = use_ai_category_role(data);
+async function aiCompany(imagePart, answers, findCompany) {
+  const useLeadAnalysis = analyze_lead(answers);
+  const useRole = use_ai_category_role(findCompany);
   const { text } = await generateText({
     model: openai("gpt-4o-mini"),
     system: useRole,
-    messages: ((_a = data == null ? void 0 : data.imagePart) == null ? void 0 : _a.data) ? [
+    messages: (imagePart == null ? void 0 : imagePart.data) ? [
       {
         role: "user",
         content: [
@@ -374,8 +377,8 @@ async function aiCompany(data) {
           },
           {
             type: "image",
-            image: new Uint8Array(data.imagePart.data),
-            mediaType: data.imagePart.type || "image/jpeg"
+            image: new Uint8Array(imagePart.data),
+            mediaType: imagePart.type || "image/jpeg"
           }
         ]
       }
@@ -391,11 +394,101 @@ async function aiCompany(data) {
       }
     ]
   });
-  const aiOutput = useCompanyEmailFormatting(data, text);
+  const aiOutput = useCompanyEmailFormatting(findCompany, text);
   return aiOutput;
 }
 
-const index = defineEventHandler(async (event) => {
+const { MONGO_URI } = process.env;
+const connectDB = async () => {
+  try {
+    const { connection } = await mongoose.connect(MONGO_URI);
+    if (connection.readyState === 1) {
+      return Promise.resolve(true);
+    }
+  } catch (error) {
+    console.error(error);
+    return Promise.reject(error);
+  }
+};
+
+const EnvSchema = z.object({
+  MONGO_URI: z.string(),
+  RESEND_KEY: z.string()
+});
+const env = EnvSchema.parse(process.env);
+
+mongoose.connect(`${env.MONGO_URI}`);
+mongoose.Promise = global.Promise;
+const lead = new Schema(
+  {
+    name: String || void 0,
+    email: String || void 0,
+    phone: String || void 0,
+    age: String || void 0,
+    address: String || void 0,
+    ai_analysis: String || void 0,
+    // Realtor Data
+    want_to_move: String || void 0,
+    buy_sell_both: String || void 0,
+    home_price: String || void 0,
+    home_sqft: String || void 0,
+    home_bedrooms: String || void 0,
+    home_bathrooms: String || void 0,
+    budget: String || void 0,
+    message: String || void 0
+    //
+  },
+  { timestamps: false }
+);
+const userSchema = new Schema(
+  {
+    company: String,
+    company_hashed: String,
+    role: String,
+    category: String,
+    category_hashed: String,
+    qr_code_slug: String,
+    total_scans: Number,
+    leads_captured: Number,
+    first_name: String,
+    last_name: String,
+    email: String,
+    email_hashed: String,
+    phone: String,
+    leads: [lead],
+    password: String,
+    street_address: String,
+    city: String,
+    country: String,
+    postal_code: String,
+    reset_password_token: String,
+    privacy_policy: Boolean,
+    createdAt: String,
+    updatedAt: String
+  },
+  { timestamps: true }
+);
+const User$1 = mongoose.models.User || mongoose.model("User", userSchema);
+
+const User = User$1;
+async function useUser(data) {
+  try {
+    await connectDB();
+    const findUser = await User.find({ email_hashed: data.company_email }).lean();
+    if (findUser[0]) {
+      return findUser[0];
+    }
+    ;
+  } catch (error) {
+    console.log(error);
+    throw createError({
+      statusCode: 500,
+      statusMessage: "Something went wrong."
+    });
+  }
+}
+
+const index_post = defineEventHandler(async (event) => {
   try {
     const formData = await readMultipartFormData(event);
     const answersPart = formData == null ? void 0 : formData.find((item) => item.name === "answers");
@@ -413,11 +506,13 @@ const index = defineEventHandler(async (event) => {
     }
     ;
     const imagePart = formData == null ? void 0 : formData.find((item) => item.name === "image");
-    const useAiClient = await aiClient({ ...answers, ...company });
-    const useAiCompany = await aiCompany({ ...imagePart, ...answers, ...company });
+    const findCompany = await useUser(company);
+    console.log("findCompany", findCompany);
+    const useAiClient = await aiClient({ ...answers, ...findCompany });
+    const useAiCompany = await aiCompany(imagePart, answers, findCompany);
     if (!(answers == null ? void 0 : answers.email)) throw createError({ statusCode: 400, message: "Missing data" });
     await emailLead(useAiClient, answers);
-    await emailCompany(useAiCompany, company, imagePart);
+    await emailCompany(useAiCompany, findCompany, imagePart);
     return { status: "success", aiResponse: useAiCompany };
   } catch (error) {
     if (error instanceof Error) {
@@ -429,5 +524,5 @@ const index = defineEventHandler(async (event) => {
   }
 });
 
-export { index as default };
-//# sourceMappingURL=index.mjs.map
+export { index_post as default };
+//# sourceMappingURL=index.post2.mjs.map

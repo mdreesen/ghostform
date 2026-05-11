@@ -34,7 +34,7 @@ watch(() => props.show, (newVal) => {
 <template>
   <Transition name="ghost-modal">
     <div class="fixed inset-0 z-100 flex items-center justify-center p-6 bg-black/80 backdrop-blur-sm">
-      <div class="relative max-w-sm w-full bg-zinc-900 border border-white/10 p-8 rounded-[2.5rem] text-center shadow-2xl">
+      <div class="relative w-full bg-zinc-900 border border-white/10 p-8 rounded-[2.5rem] text-center shadow-2xl">
         
         <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-cyan-500/20 blur-2xl rounded-full"></div>
         
@@ -44,7 +44,7 @@ watch(() => props.show, (newVal) => {
 
         <h3 class="text-2xl font-black mb-2">Submission Sent!</h3>
         <p class="text-zinc-400 text-sm mb-8 leading-relaxed">
-          Your inquiry has been sent {{ company ? `to ${company}` : '' }}. We've sent a confirmation to <span class="text-cyan-400 font-bold">{{ email }}</span>.
+          Your inquiry has been sent! We've sent a confirmation to <span class="text-cyan-400 font-bold">{{ email }}</span>.
         </p>
       </div>
     </div>

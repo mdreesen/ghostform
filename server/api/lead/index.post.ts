@@ -4,6 +4,7 @@ import type { Company } from '~/types/user';
 import { leadData } from '~/utils/users/useLead';
 import { companyData } from '~/utils/users/company';
 import { aiClient, aiCompany } from '~/lib/ai';
+import { useUser } from '~/lib/user';
 
 export default defineEventHandler(async (event) => {
 
@@ -26,10 +27,13 @@ export default defineEventHandler(async (event) => {
         };
 
         const imagePart = formData?.find((item) => item.name === 'image');
+        const findCompany = await useUser(company);
+
+        console.log('findCompany', findCompany)
 
         // Ai For Client and Compnay
-        const useAiClient = await aiClient({ ...answers, ...company })
-        const useAiCompany = await aiCompany({ ...imagePart, ...answers, ...company }) as any
+        const useAiClient = await aiClient({ ...answers, ...findCompany })
+        const useAiCompany = await aiCompany(imagePart, answers, findCompany) as any
 
         if (!answers?.email) throw createError({ statusCode: 400, message: 'Missing data' });
 
@@ -37,7 +41,7 @@ export default defineEventHandler(async (event) => {
         await emailLead(useAiClient, answers);
 
         // // Email Company
-        await emailCompany(useAiCompany, company, imagePart);
+        await emailCompany(useAiCompany, findCompany, imagePart);
 
         // await sms();
 

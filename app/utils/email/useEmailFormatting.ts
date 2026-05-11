@@ -12,11 +12,11 @@ export function useLeadEmailFormatting(data) {
     }
 };
 
-export function useCompanyEmailFormatting(data, text) {
+export function useCompanyEmailFormatting(findCompany, text) {
     switch (true) {
-        case data.category.includes('realtor'):
-            return useRealtorCompanyEmailFormatting(data, text)
-        case data.category.includes('construction'):
-            return useConstructionCompanyEmailFormatting(data, text)
+        case findCompany.category.includes('realtor'):
+            return useRealtorCompanyEmailFormatting(findCompany, text)
+        case findCompany.category.includes('construction'):
+            return useConstructionCompanyEmailFormatting(findCompany, text)
     }
 }
