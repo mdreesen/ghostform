@@ -13,6 +13,7 @@ const lead = new Schema(
         address: String || undefined,
         ai_analysis: String || undefined,
         status: String || undefined,
+        date: String || undefined,
 
         // Construction Data
         goal: String || undefined,
