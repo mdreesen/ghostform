@@ -427,6 +427,7 @@ const lead = new Schema(
     address: String || void 0,
     ai_analysis: String || void 0,
     status: String || void 0,
+    date: String || void 0,
     // Construction Data
     goal: String || void 0,
     // Realtor Data
@@ -493,7 +494,7 @@ const User = User$2;
 async function useLead(useAiCompany, findCompany, answers) {
   try {
     await connectDB();
-    await User.findOneAndUpdate({ email: findCompany == null ? void 0 : findCompany.email }, { $addToSet: { leads: { ...answers, ai_analysis: useAiCompany } } });
+    await User.findOneAndUpdate({ email: findCompany == null ? void 0 : findCompany.email }, { $addToSet: { leads: { ...answers, ai_analysis: useAiCompany, date: date(), status: "new" } } });
   } catch (error) {
     console.log(error);
     throw createError({
