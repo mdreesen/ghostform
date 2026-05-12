@@ -6,7 +6,7 @@ export const questionsRealtor = [
     { id: 'address', label: "What's your home address?", type: 'text' },
     { id: 'want_to_move', label: "Are you thinking about moving, if so when?", type: 'text' },
     { id: 'buy_sell_both', label: "Are you looking to buy, sell, or both?", type: 'text' },
-    { id: 'price', label: "What do you think your home is worth?", type: 'number' },
+    { id: 'price', label: "If you are selling hour home, what do you think your home is worth?", type: 'number' },
     { id: 'sqft', label: "What would be the square footage of your home?", type: 'number' },
     { id: 'bedrooms', label: "How many bedrooms does your home have", type: 'number' },
     { id: 'bathrooms', label: "How many bathrooms does your home have", type: 'number' },
