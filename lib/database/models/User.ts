@@ -44,7 +44,6 @@ const userSchema = new Schema(
         email: String,
         email_hashed: String,
         phone: String,
-        leads: [lead],
         password: String,
         street_address: String,
         city: String,
@@ -52,6 +51,9 @@ const userSchema = new Schema(
         postal_code: String,
         reset_password_token: String,
         privacy_policy: Boolean,
+        paid: Boolean,
+        paid_tier: String,
+        leads: [lead],
         createdAt: String,
         updatedAt: String
     }, { timestamps: true });
