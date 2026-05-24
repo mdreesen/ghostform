@@ -3,7 +3,7 @@ import { openai } from '@ai-sdk/openai';
 import { analyze_lead } from '~/utils/analyze/lead';
 import { use_ai_category_role } from '~/utils/prompts/roleAi';
 import type { LeadAndCompany } from '~/types/user';
-import { useLeadEmailFormatting, useCompanyEmailFormatting } from '~/utils/email/useEmailFormatting';
+import { useCompanyEmailFormatting } from '~/utils/email/useEmailFormatting';
 
 export async function aiClient(data: LeadAndCompany) {
     return `
