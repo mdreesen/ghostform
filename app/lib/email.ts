@@ -1,5 +1,4 @@
 import { Resend } from 'resend';
-import type { Company } from '~/types/user';
 
 const resend = new Resend(`${process.env.RESEND_KEY}`);
 

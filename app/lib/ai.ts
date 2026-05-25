@@ -8,9 +8,7 @@ import { useCompanyEmailFormatting } from '~/utils/email/useEmailFormatting';
 export async function aiClient(data: LeadAndCompany) {
     return `
     <div>Inquiry received.</div>
-    <div>A specialist is currently reviewing your specifications and will provide a status update shortly.</div>
-    <br>
-    <div>${data.company_name}</div>
+    <div>Thank you ${data.name}, a specialist is currently reviewing your specifications and will provide a status update shortly.</div>
     `
 };
 

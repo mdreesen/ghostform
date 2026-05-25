@@ -153,7 +153,7 @@ const useCompanyName = computed(() => company_name ? company_name : 'We');
             </div>
         </div>
 
-        <div v-else class="w-[280px]">
+        <div v-else class="w-70">
             <appSuccess :company="useCompanyName as string" :show="showSuccess" :email="userEmail" />
         </div>
     </div>

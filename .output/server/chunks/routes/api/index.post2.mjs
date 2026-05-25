@@ -368,9 +368,7 @@ function useCompanyEmailFormatting(findCompany, text) {
 async function aiClient(data) {
   return `
     <div>Inquiry received.</div>
-    <div>A specialist is currently reviewing your specifications and will provide a status update shortly.</div>
-    <br>
-    <div>${data.company_name}</div>
+    <div>Thank you ${data.name}, a specialist is currently reviewing your specifications and will provide a status update shortly.</div>
     `;
 }
 async function aiCompany(imagePart, answers, findCompany) {
@@ -465,20 +463,18 @@ const userSchema = new Schema(
     qr_code_slug: String,
     total_scans: Number,
     leads_captured: Number,
-    first_name: String,
-    last_name: String,
+    name: String,
     email: String,
     email_hashed: String,
     phone: String,
     password: String,
-    street_address: String,
-    city: String,
+    region: String,
     country: String,
-    postal_code: String,
     reset_password_token: String,
     privacy_policy: Boolean,
     paid: Boolean,
     paid_tier: String,
+    calendar_link: String,
     leads: [lead],
     createdAt: String,
     updatedAt: String
