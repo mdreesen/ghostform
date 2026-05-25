@@ -14,6 +14,9 @@ const props = defineProps({
         type: String,
         default: '',
     },
+    calendar: {
+        type: String,
+    },
 })
 
 const emit = defineEmits(['close']);
@@ -46,6 +49,8 @@ watch(() => props.show, (newVal) => {
         <p class="text-zinc-400 text-sm mb-8 leading-relaxed">
           Your inquiry has been sent! We've sent a confirmation to <span class="text-cyan-400 font-bold">{{ email }}</span>.
         </p>
+
+        <a v-if="calendar" :href="calendar">Book an appointment here.</a>
       </div>
     </div>
   </Transition>

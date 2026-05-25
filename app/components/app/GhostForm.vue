@@ -5,7 +5,7 @@ import { compressImage } from '~/lib/compress';
 import { errors } from '~/lib/errors';
 import { questionsConstruction } from '~/utils/questions/construction';
 import { questionsRealtor } from '~/utils/questions/realtor';
-// http://localhost:3000/?category=construction&company_name=White+Raven+Development&company_email=whiteravendev90@gmail.com&background_color=#09090B&font_color=#FFFFFF
+// http://localhost:3000/?category=construction&company_name=White+Raven+Development&company_email=whiteravendev90@gmail.com&calendar=https://calendly.com/whiteravendev90/30min&background_color=#09090B&font_color=#FFFFFF
 
 const props = defineProps({
     routeData: {
@@ -14,7 +14,7 @@ const props = defineProps({
     },
 })
 
-const { category, company_name, company_email } = props.routeData;
+const { category, company_name, company_email, calendar } = props.routeData;
 const step = ref(0);
 const answers = ref(leadData(category).data);
 // const company = ref(companyTestData);
@@ -154,7 +154,7 @@ const useCompanyName = computed(() => company_name ? company_name : 'We');
         </div>
 
         <div v-else class="w-70">
-            <appSuccess :company="useCompanyName as string" :show="showSuccess" :email="userEmail" />
+            <appSuccess :company="useCompanyName as string" :show="showSuccess" :email="userEmail" :calendar="calendar"/>
         </div>
     </div>
 </template>
