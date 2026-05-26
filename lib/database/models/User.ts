@@ -8,18 +8,11 @@ const lead = new Schema(
     {
         source: String || undefined,
         name: String || undefined,
+        age: Number || undefined,
         email: String || undefined,
         phone: String || undefined,
-        age: Number || undefined,
+        best_communication_method: String || undefined,
         address: String || undefined,
-        ai_analysis: String || undefined,
-        status: String || undefined,
-        date: String || undefined,
-
-        // Construction Data
-        goal: String || undefined,
-
-        // Realtor Data
         want_to_move: String || undefined,
         buy_sell_both: String || undefined,
         price: Number || undefined,
@@ -28,6 +21,10 @@ const lead = new Schema(
         bathrooms: Number || undefined,
         budget: Number || undefined,
         notes: String || undefined,
+        seeing_an_agent: String || undefined,
+        ai_analysis: String || undefined,
+        status: String || undefined,
+        date: String || undefined,
     }, { timestamps: false });
 
 const userSchema = new Schema(

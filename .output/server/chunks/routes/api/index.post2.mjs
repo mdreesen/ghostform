@@ -178,16 +178,11 @@ const lead = new Schema(
   {
     source: String || void 0,
     name: String || void 0,
+    age: Number || void 0,
     email: String || void 0,
     phone: String || void 0,
-    age: Number || void 0,
+    best_communication_method: String || void 0,
     address: String || void 0,
-    ai_analysis: String || void 0,
-    status: String || void 0,
-    date: String || void 0,
-    // Construction Data
-    goal: String || void 0,
-    // Realtor Data
     want_to_move: String || void 0,
     buy_sell_both: String || void 0,
     price: Number || void 0,
@@ -195,7 +190,11 @@ const lead = new Schema(
     bedrooms: Number || void 0,
     bathrooms: Number || void 0,
     budget: Number || void 0,
-    notes: String || void 0
+    notes: String || void 0,
+    seeing_an_agent: String || void 0,
+    ai_analysis: String || void 0,
+    status: String || void 0,
+    date: String || void 0
   },
   { timestamps: false }
 );
