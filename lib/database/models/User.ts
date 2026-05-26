@@ -10,7 +10,7 @@ const lead = new Schema(
         name: String || undefined,
         age: Number || undefined,
         email: String || undefined,
-        phone: String || undefined,
+        phone: Number || undefined,
         best_communication_method: String || undefined,
         address: String || undefined,
         want_to_move: String || undefined,

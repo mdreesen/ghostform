@@ -184,7 +184,7 @@ const lead = new Schema(
     name: String || void 0,
     age: Number || void 0,
     email: String || void 0,
-    phone: String || void 0,
+    phone: Number || void 0,
     best_communication_method: String || void 0,
     address: String || void 0,
     want_to_move: String || void 0,
