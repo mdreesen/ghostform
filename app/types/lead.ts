@@ -1,21 +1,25 @@
 import type { ImagePart } from "~/types/image";
 
-export interface Lead {
+  export interface Lead {
+    _id?: string;
+    status: string;
     source?: string;
     name: string;
-    age?: string;
+    age?: number;
     email: string;
-    phone?: string;
-    best_communication_method?: string;
+    phone?: number;
     address?: string;
+    date?: string;
+    best_communication_method?: string;
     want_to_move?: string;
     buy_sell_both?: string;
-    price?: string;
-    sqft?: string;
-    bedrooms?: string;
-    bathrooms?: string;
-    budget?: string;
-    notes?: string;
+    price?: number;
+    sqft?: number;
+    bedrooms?: number;
+    bathrooms?: number;
+    budget?: number;
     seeing_an_agent?: string;
+    notes?: string;
+    ai_analysis: string;
     imagePart?: ImagePart;
-  }
+}
