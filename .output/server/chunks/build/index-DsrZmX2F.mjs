@@ -1,6 +1,6 @@
 import { defineComponent, mergeProps, unref, ref, computed, watch, useSSRContext } from 'vue';
 import { ssrRenderComponent, ssrRenderAttrs, ssrRenderStyle, ssrInterpolate, ssrRenderDynamicModel, ssrRenderAttr } from 'vue/server-renderer';
-import { _ as _export_sfc, u as useRoute, a as __nuxt_component_0$2 } from './server.mjs';
+import { _ as _export_sfc, u as useRoute, a as __nuxt_component_0$2$1 } from './server.mjs';
 import confetti from 'canvas-confetti';
 import '../nitro/nitro.mjs';
 import 'node:http';
@@ -30,18 +30,18 @@ import 'unhead/server';
 import 'devalue';
 import 'unhead/utils';
 
-const _sfc_main$6 = {};
+const _sfc_main$7 = {};
 function _sfc_ssrRender(_ctx, _push, _parent, _attrs) {
   _push(`<div${ssrRenderAttrs(mergeProps({ class: "absolute inset-0 bg-zinc-950/80 rounded-2xl flex items-center justify-center" }, _attrs))}><div class="animate-spin rounded-full h-8 w-8 border-t-2 border-blue-500"></div></div>`);
 }
-const _sfc_setup$6 = _sfc_main$6.setup;
-_sfc_main$6.setup = (props, ctx) => {
+const _sfc_setup$7 = _sfc_main$7.setup;
+_sfc_main$7.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("components/base/Loading.vue");
-  return _sfc_setup$6 ? _sfc_setup$6(props, ctx) : void 0;
+  return _sfc_setup$7 ? _sfc_setup$7(props, ctx) : void 0;
 };
-const __nuxt_component_0$1 = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$6, [["ssrRender", _sfc_ssrRender]]), { __name: "BaseLoading" });
-const _sfc_main$5 = /* @__PURE__ */ defineComponent({
+const __nuxt_component_0$2 = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$7, [["ssrRender", _sfc_ssrRender]]), { __name: "BaseLoading" });
+const _sfc_main$6 = /* @__PURE__ */ defineComponent({
   __name: "Button",
   __ssrInlineRender: true,
   props: {
@@ -58,14 +58,14 @@ const _sfc_main$5 = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const _sfc_setup$5 = _sfc_main$5.setup;
-_sfc_main$5.setup = (props, ctx) => {
+const _sfc_setup$6 = _sfc_main$6.setup;
+_sfc_main$6.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("components/base/Button.vue");
-  return _sfc_setup$5 ? _sfc_setup$5(props, ctx) : void 0;
+  return _sfc_setup$6 ? _sfc_setup$6(props, ctx) : void 0;
 };
-const __nuxt_component_1 = Object.assign(_sfc_main$5, { __name: "BaseButton" });
-const _sfc_main$4 = /* @__PURE__ */ defineComponent({
+const __nuxt_component_1 = Object.assign(_sfc_main$6, { __name: "BaseButton" });
+const _sfc_main$5 = /* @__PURE__ */ defineComponent({
   __name: "ImageUpload",
   __ssrInlineRender: true,
   emits: ["file-selected"],
@@ -75,8 +75,8 @@ const _sfc_main$4 = /* @__PURE__ */ defineComponent({
     const isUploading = ref(false);
     const analysis = ref(null);
     return (_ctx, _push, _parent, _attrs) => {
-      const _component_NuxtImg = __nuxt_component_0$2;
-      const _component_baseLoading = __nuxt_component_0$1;
+      const _component_NuxtImg = __nuxt_component_0$2$1;
+      const _component_baseLoading = __nuxt_component_0$2;
       _push(`<div${ssrRenderAttrs(mergeProps({ class: "max-w-xl mx-auto p-6 space-y-6" }, _attrs))} data-v-a678dbc3><div class="group relative border-2 border-dashed border-zinc-800 rounded-2xl p-6 text-center hover:border-blue-500/50 transition-all cursor-pointer bg-zinc-900/50" data-v-a678dbc3><input type="file" class="hidden" accept="image/*" data-v-a678dbc3>`);
       if (!unref(previewUrl)) {
         _push(`<div class="space-y-2" data-v-a678dbc3><div class="text-4xl" data-v-a678dbc3></div><p class="text-zinc-400 font-medium text-lg" data-v-a678dbc3>Drop your project photo here</p><p class="text-zinc-600 text-sm italic" data-v-a678dbc3>or click to browse</p>`);
@@ -107,14 +107,14 @@ const _sfc_main$4 = /* @__PURE__ */ defineComponent({
     };
   }
 });
-const _sfc_setup$4 = _sfc_main$4.setup;
-_sfc_main$4.setup = (props, ctx) => {
+const _sfc_setup$5 = _sfc_main$5.setup;
+_sfc_main$5.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("components/app/ImageUpload.vue");
-  return _sfc_setup$4 ? _sfc_setup$4(props, ctx) : void 0;
+  return _sfc_setup$5 ? _sfc_setup$5(props, ctx) : void 0;
 };
-const __nuxt_component_2 = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$4, [["__scopeId", "data-v-a678dbc3"]]), { __name: "AppImageUpload" });
-const _sfc_main$3 = /* @__PURE__ */ defineComponent({
+const __nuxt_component_2 = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$5, [["__scopeId", "data-v-a678dbc3"]]), { __name: "AppImageUpload" });
+const _sfc_main$4 = /* @__PURE__ */ defineComponent({
   __name: "Error",
   __ssrInlineRender: true,
   props: {
@@ -130,13 +130,44 @@ const _sfc_main$3 = /* @__PURE__ */ defineComponent({
     };
   }
 });
+const _sfc_setup$4 = _sfc_main$4.setup;
+_sfc_main$4.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("components/base/Error.vue");
+  return _sfc_setup$4 ? _sfc_setup$4(props, ctx) : void 0;
+};
+const __nuxt_component_3 = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$4, [["__scopeId", "data-v-c28b9695"]]), { __name: "BaseError" });
+const _sfc_main$3 = /* @__PURE__ */ defineComponent({
+  __name: "ButtonNavigate",
+  __ssrInlineRender: true,
+  props: {
+    text: {
+      type: String,
+      required: true,
+      default: ""
+    },
+    href: {
+      type: String,
+      required: true
+    }
+  },
+  setup(__props) {
+    const props = __props;
+    return (_ctx, _push, _parent, _attrs) => {
+      _push(`<a${ssrRenderAttrs(mergeProps({
+        href: __props.href,
+        class: "inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 gap-1.5 ring ring-inset ring-accented hover:bg-accented/75 active:bg-accented/75 disabled:bg-elevated aria-disabled:bg-elevated focus:outline-none focus-visible:ring-2 focus-visible:ring-inverted bg-cyan-400 text-black px-6 py-3 rounded-xl text-xs font-bold hover:shadow-[0_0_20px_rgba(48,207,67,0.4)] transition-all"
+      }, _attrs))}>${ssrInterpolate(props.text)}</a>`);
+    };
+  }
+});
 const _sfc_setup$3 = _sfc_main$3.setup;
 _sfc_main$3.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("components/base/Error.vue");
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("components/base/ButtonNavigate.vue");
   return _sfc_setup$3 ? _sfc_setup$3(props, ctx) : void 0;
 };
-const __nuxt_component_3 = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$3, [["__scopeId", "data-v-c28b9695"]]), { __name: "BaseError" });
+const __nuxt_component_0$1 = Object.assign(_sfc_main$3, { __name: "BaseButtonNavigate" });
 const _sfc_main$2 = /* @__PURE__ */ defineComponent({
   __name: "success",
   __ssrInlineRender: true,
@@ -167,9 +198,13 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
       }
     });
     return (_ctx, _push, _parent, _attrs) => {
-      _push(`<div${ssrRenderAttrs(mergeProps({ class: "fixed inset-0 z-100 flex items-center justify-center p-6 bg-black/80 backdrop-blur-sm" }, _attrs))} data-v-d58edc59><div class="relative w-full bg-zinc-900 border border-white/10 p-8 rounded-[2.5rem] text-center shadow-2xl" data-v-d58edc59><div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-cyan-500/20 blur-2xl rounded-full" data-v-d58edc59></div><div class="relative w-20 h-20 bg-linear-to-br from-cyan-400 to-blue-600 rounded-2xl mx-auto mb-6 flex items-center justify-center shadow-lg rotate-3" data-v-d58edc59><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" data-v-d58edc59><path d="M20 6 9 17l-5-5" data-v-d58edc59></path></svg></div><h3 class="text-2xl font-black mb-2" data-v-d58edc59>Submission Sent!</h3><p class="text-zinc-400 text-sm mb-8 leading-relaxed" data-v-d58edc59> Your inquiry has been sent! We&#39;ve sent a confirmation to <span class="text-cyan-400 font-bold" data-v-d58edc59>${ssrInterpolate(__props.email)}</span>. </p>`);
+      const _component_baseButtonNavigate = __nuxt_component_0$1;
+      _push(`<div${ssrRenderAttrs(mergeProps({ class: "fixed inset-0 z-100 flex items-center justify-center p-6 bg-black/80 backdrop-blur-sm" }, _attrs))} data-v-85d60bfb><div class="relative w-full bg-zinc-900 border border-white/10 p-8 rounded-[2.5rem] text-center shadow-2xl" data-v-85d60bfb><div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-cyan-500/20 blur-2xl rounded-full" data-v-85d60bfb></div><div class="relative w-20 h-20 bg-linear-to-br from-cyan-400 to-blue-600 rounded-2xl mx-auto mb-6 flex items-center justify-center shadow-lg rotate-3" data-v-85d60bfb><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" data-v-85d60bfb><path d="M20 6 9 17l-5-5" data-v-85d60bfb></path></svg></div><h3 class="text-2xl font-black mb-2" data-v-85d60bfb>Submission Sent!</h3><p class="text-zinc-400 text-sm mb-8 leading-relaxed" data-v-85d60bfb> Your inquiry has been sent! We&#39;ve sent a confirmation to <span class="text-cyan-400 font-bold" data-v-85d60bfb>${ssrInterpolate(__props.email)}</span>. </p>`);
       if (__props.calendar) {
-        _push(`<a${ssrRenderAttr("href", __props.calendar)} data-v-d58edc59>Book an appointment here.</a>`);
+        _push(ssrRenderComponent(_component_baseButtonNavigate, {
+          href: __props.calendar,
+          text: "Book an appointment here."
+        }, null, _parent));
       } else {
         _push(`<!---->`);
       }
@@ -183,7 +218,7 @@ _sfc_main$2.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("components/app/success.vue");
   return _sfc_setup$2 ? _sfc_setup$2(props, ctx) : void 0;
 };
-const __nuxt_component_4 = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$2, [["__scopeId", "data-v-d58edc59"]]), { __name: "AppSuccess" });
+const __nuxt_component_4 = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$2, [["__scopeId", "data-v-85d60bfb"]]), { __name: "AppSuccess" });
 const leadConstruction = {
   name: "",
   email: "",
@@ -341,7 +376,7 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
     };
     computed(() => selectedFile.value);
     return (_ctx, _push, _parent, _attrs) => {
-      const _component_baseLoading = __nuxt_component_0$1;
+      const _component_baseLoading = __nuxt_component_0$2;
       const _component_baseButton = __nuxt_component_1;
       const _component_appImageUpload = __nuxt_component_2;
       const _component_baseError = __nuxt_component_3;
@@ -426,4 +461,4 @@ _sfc_main.setup = (props, ctx) => {
 const index = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-a69afbf2"]]);
 
 export { index as default };
-//# sourceMappingURL=index-BFDoUwhJ.mjs.map
+//# sourceMappingURL=index-DsrZmX2F.mjs.map

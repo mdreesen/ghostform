@@ -46,7 +46,7 @@ watch(() => props.show, (newVal) => {
           Your inquiry has been sent! We've sent a confirmation to <span class="text-cyan-400 font-bold">{{ email }}</span>.
         </p>
 
-        <a v-if="calendar" :href="calendar">Book an appointment here.</a>
+        <baseButtonNavigate v-if="calendar" :href="calendar" text="Book an appointment here." />
       </div>
     </div>
   </Transition>
