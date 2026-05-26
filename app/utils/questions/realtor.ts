@@ -18,7 +18,7 @@ export const questionsRealtor = [
 export const on_market = [
     { id: 'name', label: "What's your name?", type: 'text' },
     { id: 'email', label: "What's your email?", type: 'text' },
-    { id: 'phone', label: "What's your phone number?", type: 'text' },
+    { id: 'phone', label: "What's your phone number?", type: 'number' },
     { id: 'address', label: "What's your home address?", type: 'text' },
     { id: 'notes', label: "Other things to note?", type: 'text' },
 ]
@@ -27,7 +27,7 @@ export const data_entry = [
     { id: 'source', label: "How did you discover our business?", type: 'text' },
     { id: 'name', label: "What's your name?", type: 'text' },
     { id: 'email', label: "What's your email?", type: 'text' },
-    { id: 'phone', label: "What's your phone number?", type: 'text' },
+    { id: 'phone', label: "What's your phone number?", type: 'number' },
     { id: 'address', label: "What's your home address?", type: 'text' },
     { id: 'notes', label: "Other things to note?", type: 'text' },
 ];
@@ -35,7 +35,7 @@ export const data_entry = [
 export const open_house = [
     { id: 'seeing_an_agent', label: "Are you currently seeing an agent?", type: 'text' },
     { id: 'email', label: "What's your email?", type: 'text' },
-    { id: 'phone', label: "What's your phone number?", type: 'text' },
+    { id: 'phone', label: "What's your phone number?", type: 'number' },
     { id: 'best_communication_method', label: "Best way to contact you?", type: 'text' },
     { id: 'notes', label: "Other things to note?", type: 'text' },
 ]
