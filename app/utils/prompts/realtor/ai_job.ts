@@ -31,14 +31,14 @@ ${materials_expanded}
 
 ### 01 / LIVE BENCHMARK METRICS (CURRENT SYSTEM PARAMETERS)
 When executing financial computations, utilize these strictly defined, localized baselines as your ground truth parameters:
-- **30-Year Fixed Conforming:** find the current rate on a 30 year fixed per date ${date()}
-- **15-Year Fixed Conforming:** find the current rate on a 15 year fixed per date ${date()}
-- **30-Year FHA Fixed:** find the current rate on a 30 year FHA per date ${date()}
-- **Target Regional Overlay:** Standardizing calculation bounds for the address ${data.address} (assumed local baseline for tax structure if not specified: 1.1% property tax factor, 0.3% homeowners insurance factor).
+<div>- 30-Year Fixed Conforming:</div> find the current rate on a 30 year fixed per date ${date()}
+<div>- 15-Year Fixed Conforming:</div> find the current rate on a 15 year fixed per date ${date()}
+<div>- 30-Year FHA Fixed:</div> find the current rate on a 30 year FHA per date ${date()}
+<div>- Target Regional Overlay:</div> Standardizing calculation bounds for the address ${data.address} (assumed local baseline for tax structure if not specified: 1.1% property tax factor, 0.3% homeowners insurance factor).
 
 ### 02 / REQUIRED EVALUATION ARCHITECTURE
 You must mathematically calculate and structurally map out:
-1. **The Equity Position Bridge:** Determine net investable cash assuming an 80% baseline execution threshold if a sale property exists, or deduce down payment liquidity parameters.
-2. **The Optimal Financing Matrix:** Evaluate whether a 30-Year Conventional, 15-Year Conventional, or FHA vehicle yields the lowest long-term cost without breezing past a standard 35% Debt-to-Income (DTI) envelope on the target property.
-3. **The Scripting Persona Engine:** Formulate an immediate opening dispatch response that leverages psychological motivation triggers parsed from the voluntary text field.
+1. <div>- The Equity Position Bridge:</div> Determine net investable cash assuming an 80% baseline execution threshold if a sale property exists, or deduce down payment liquidity parameters.
+2. <div>- The Optimal Financing Matrix:</div> Evaluate whether a 30-Year Conventional, 15-Year Conventional, or FHA vehicle yields the lowest long-term cost without breezing past a standard 35% Debt-to-Income (DTI) envelope on the target property.
+3. <div>- The Scripting Persona Engine:</div> Formulate an immediate opening dispatch response that leverages psychological motivation triggers parsed from the voluntary text field.
 `;

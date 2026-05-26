@@ -1,11 +1,8 @@
 import { emailLead, emailCompany } from '~/lib/email';
-import { sms } from '~/lib/sms';
 import type { Company } from '~/types/user';
 import { leadData } from '~/utils/users/useLead';
 import { companyData } from '~/utils/users/company';
-import { aiClient, aiCompany } from '~/lib/ai';
 import { useUser } from '~/lib/user';
-import { useLead } from '~/lib/lead';
 export default defineEventHandler(async (event) => {
 
     try {
@@ -26,27 +23,19 @@ export default defineEventHandler(async (event) => {
             company = JSON.parse(jsonString);
         };
 
-        const imagePart = formData?.find((item) => item.name === 'image');
-        const findCompany = await useUser(company);
-
-        // Ai For Client and Compnay
-        const useAiClient = await aiClient({ ...answers, ...findCompany })
-        const useAiCompany = await aiCompany(imagePart, answers, findCompany) as any
-
+        // Need lead's email to create email and use database
         if (!answers?.email) throw createError({ statusCode: 400, message: 'Missing data' });
+        const findCompany = await useUser(company);
+        const imagePart = formData?.find((item) => item.name === 'image');
 
-        // // Email lead
-        await emailLead(useAiClient, answers);
+        const companyEmail = findCompany?.email;
+        const companyName = findCompany?.company ?? 'NoReply';
+        const leadEmail = answers?.email;
 
-        // // Email Company
-        await emailCompany(useAiCompany, findCompany, imagePart);
+        await emailLead(companyName, leadEmail);
+        await emailCompany(answers, companyEmail, imagePart);
 
-        // After emails are send, we send the lead data to the db
-        await useLead(useAiCompany, findCompany, answers);
-
-        // await sms();
-
-        return { status: 'success', aiResponse: useAiCompany };
+        return { status: 'success' };
         } catch (error) {
         if (error instanceof Error) {
             console.error('Validation Details:', JSON.stringify(error.cause, null, 2));

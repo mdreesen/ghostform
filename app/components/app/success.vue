@@ -10,10 +10,6 @@ const props = defineProps({
         type: String,
         default: '',
     },
-    company: {
-        type: String,
-        default: '',
-    },
     calendar: {
         type: String,
     },

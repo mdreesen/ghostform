@@ -6,6 +6,7 @@ mongoose.Promise = global.Promise;
 
 const lead = new Schema(
     {
+        source: String || undefined,
         name: String || undefined,
         email: String || undefined,
         phone: String || undefined,
@@ -26,7 +27,7 @@ const lead = new Schema(
         bedrooms: Number || undefined,
         bathrooms: Number || undefined,
         budget: Number || undefined,
-        message: String || undefined,
+        notes: String || undefined,
     }, { timestamps: false });
 
 const userSchema = new Schema(

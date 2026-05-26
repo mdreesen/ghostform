@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { leadData } from '~/utils/users/useLead';
-import { companyData, companyTestData } from '~/utils/users/company';
-import { compressImage } from '~/lib/compress';
+import { useImageCompression } from '~/composables/useImageCompression';
 import { errors } from '~/lib/errors';
-import { questionsConstruction } from '~/utils/questions/construction';
-import { questionsRealtor } from '~/utils/questions/realtor';
-// http://localhost:3000/?category=construction&company_name=White+Raven+Development&company_email=whiteravendev90@gmail.com&calendar=https://calendly.com/whiteravendev90/30min&background_color=#09090B&font_color=#FFFFFF
+import { useQuestions } from '~/composables/useQuestions';
+// http://localhost:3000/?category=realtor&source=default&company_name=$2b$15$eXsdK5TP.TC/M8QXsUuwh.bddChSOn8vckNGoWzXljfIktJ9Zs80y&company_email=$2b$15$8kJfxGFr8anR5xLRxFSIeO8KnG2zH4asf27ZpRjz1X6xhFcmFORCq&calendar=https://calendly.com/whiteravendev90/30min&background_color=#09090B&font_color=#FFFFFF
 
 const props = defineProps({
     routeData: {
@@ -14,10 +12,9 @@ const props = defineProps({
     },
 })
 
-const { category, company_name, company_email, calendar } = props.routeData;
+const { category, source, company_name, company_email, calendar, use_image_upload } = props.routeData;
 const step = ref(0);
 const answers = ref(leadData(category).data);
-// const company = ref(companyTestData);
 const company = ref({ category: category, company_name: company_name, company_email: company_email }); // Testing Data
 const loading = ref(false);
 const setError = ref('')
@@ -28,21 +25,13 @@ const userEmail = ref('');
 const showSuccess = ref(false);
 
 // Looking for project completion
-const useQuestions = computed(() => {
-    switch (true) {
-        case category.includes('construction'):
-            return questionsConstruction;
-        case category.includes('realtor'):
-            return questionsRealtor;
-    }
-});
+const questions = computed(() => useQuestions(source));
 
-// This function runs when the child "emits" the file
+// Handle images that are selected
 const handleImageSelection = async (file: File) => {
-    loading.value = true; // Optional: show loading if it's a huge file
+    loading.value = true;
     try {
-        // Shrink it before it even touches the 'selectedFile' ref
-        const compressed = await compressImage(file);
+        const compressed = await useImageCompression(file);
         selectedFile.value = compressed;
 
     } catch (err) {
@@ -60,7 +49,7 @@ const backStep = () => {
 }
 
 const nextStep = () => {
-    if (step.value < useQuestions.value.length - 1) step.value++
+    if (step.value < questions.value.length - 1) step.value++
     else submitForm()
 }
 
@@ -97,25 +86,22 @@ const submitForm = async () => {
         loading.value = false;
     }
 };
-
-// Company Information
-const useCompanyName = computed(() => company_name ? company_name : 'We');
 </script>
 
 <template>
-    <div :class="`max-w-105 h-135 flex items-center justify-center p-6 font-sans rounded-4xl drop-shadow-2xl`">
+    <div :class="`w-105 h-135 flex items-center justify-center p-6 font-sans rounded-4xl drop-shadow-2xl`">
 
         <div v-if="!aiResult" class="max-w-md w-full space-y-4">
             <div class="h-1 bg-zinc-800 rounded-full">
                 <div class="h-1 bg-blue-500 transition-all duration-500"
-                    :style="{ width: `${((step + 1) / useQuestions.length) * 100}%` }"></div>
+                    :style="{ width: `${((step + 1) / questions.length) * 100}%` }"></div>
             </div>
 
             <transition name="fade" mode="out-in">
                 <div :key="step" class="space-y-4">
-                    <label class="block text-2xl font-medium">{{ useQuestions[step]?.label }}</label>
-                    <input v-model="answers[useQuestions[step]?.id]" :type="useQuestions[step]?.type" @keyup.enter="nextStep"
-                        :name="useQuestions[step]?.id"
+                    <label class="block text-2xl font-medium">{{ questions[step]?.label }}</label>
+                    <input v-model="answers[questions[step]?.id]" :type="questions[step]?.type" @keyup.enter="nextStep"
+                        :name="questions[step]?.id"
                         class="w-full bg-transparent border-b-2 border-white py-2 text-xl focus:border-blue-500 outline-none transition-colors"
                         autofocus />
                 </div>
@@ -126,10 +112,10 @@ const useCompanyName = computed(() => company_name ? company_name : 'We');
             <div class="w-full">
 
                 <div class="flex w-full justify-between gap-5">
-                    <baseButton :text="useUploadImage ? 'Cancel Upload' : 'Upload an image'"
+                    <baseButton v-if="use_image_upload" :text="useUploadImage ? 'Cancel Upload' : 'Upload an image'"
                         @click="useUploadImage = !useUploadImage" />
 
-                    <div class="bg-blue-600 px-6 py-2 rounded-lg flex gap-2 items-center">
+                    <div class="bg-blue-600 w-full justify-evenly px-6 py-2 rounded-lg flex gap-2 items-center">
                         <button class="hover:bg-blue-500 transition" @click="backStep">
                             Back
                         </button>
@@ -137,7 +123,7 @@ const useCompanyName = computed(() => company_name ? company_name : 'We');
                         <span>|</span>
 
                         <button class="hover:bg-blue-500 transition" @click="nextStep">
-                            {{ step === useQuestions.length - 1 ? 'Finish' : 'Next' }}
+                            {{ step === questions.length - 1 ? 'Finish' : 'Next' }}
                         </button>
 
                     </div>
@@ -154,7 +140,7 @@ const useCompanyName = computed(() => company_name ? company_name : 'We');
         </div>
 
         <div v-else class="w-70">
-            <appSuccess :company="useCompanyName as string" :show="showSuccess" :email="userEmail" :calendar="calendar"/>
+            <appSuccess :show="showSuccess" :email="userEmail" :calendar="calendar" />
         </div>
     </div>
 </template>

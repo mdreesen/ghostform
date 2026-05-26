@@ -2,10 +2,9 @@ import { generateText } from 'ai';
 import { openai } from '@ai-sdk/openai';
 import { analyze_lead } from '~/utils/analyze/lead';
 import { use_ai_category_role } from '~/utils/prompts/roleAi';
-import type { LeadAndCompany } from '~/types/user';
 import { useCompanyEmailFormatting } from '~/utils/email/useEmailFormatting';
 
-export async function aiClient(data: LeadAndCompany) {
+export async function aiClient(data) {
     return `
     <div>Inquiry received.</div>
     <div>Thank you ${data.name}, a specialist is currently reviewing your specifications and will provide a status update shortly.</div>

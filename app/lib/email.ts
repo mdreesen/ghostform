@@ -1,15 +1,20 @@
 import { Resend } from 'resend';
-
+import { useRealtorCompanyEmailFormatting } from '~/utils/email/formatting/company/realtor'
+import type { Lead } from '~/types/lead';
 const resend = new Resend(`${process.env.RESEND_KEY}`);
 
-export async function emailLead(aiOutput: string, data: any) {
+export async function emailLead(companyName: string, leadEmail: string) {
     try {
+        // Transform Company name to no spaces or it will not work
+        const useCompanyName = companyName.split(" ").join("");
 
         await resend.emails.send({
-            from: 'NoReply@ascendpod.com',
-            to: [data?.email],
-            subject: "Your Inquiry",
-            html: aiOutput
+            from: `${useCompanyName}@ascendpod.com`,
+            to: [leadEmail],
+            subject: "Your Inquiry Has Been Received!",
+            html:  `<div>Inquiry received.</div>
+                    <div>Thank you, a specialist is currently reviewing your specifications and will provide a status update shortly.</div>
+                    <div>${companyName}</div>`
         });
 
     } catch (error) {
@@ -21,17 +26,17 @@ export async function emailLead(aiOutput: string, data: any) {
     };
 };
 
-export async function emailCompany(aiOutput: string, findCompany, image) {
+export async function emailCompany(answers: Lead, companyEmail: string, imagePart) {
     try {
         await resend.emails.send({
             from: 'NoReply@ascendpod.com',
-            to: [findCompany?.email],
-            subject: "New Lead Inquiry",
-            html: aiOutput,
-            attachments: image?.filename ? [
+            to: [companyEmail],
+            subject: "🔥 New Lead Inquiry 🔥",
+            html: useRealtorCompanyEmailFormatting(answers),
+            attachments: imagePart?.filename ? [
                 {
-                    filename: image?.filename,
-                    content: image?.data, // Resend handles the Buffer automatically
+                    filename: imagePart?.filename,
+                    content: imagePart?.data, // Resend handles the Buffer automatically
                 },
             ] : [],
         });

@@ -1,4 +1,4 @@
-export const compressImage = async (file: File): Promise<File> => {
+export const useImageCompression = async (file: File): Promise<File> => {
     const maxWidth = 1600; // Standard HD-ish width
     const quality = 0.7;   // 70% quality is usually indistinguishable but 1/10th the size
 
