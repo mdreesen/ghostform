@@ -1,12 +1,13 @@
 import { Resend } from 'resend';
 import { useRealtorCompanyEmailFormatting } from '~/utils/email/formatting/company/realtor'
 import type { Lead } from '~/types/lead';
+import { useCleanString } from '~/composables/useCleanString';
 const resend = new Resend(`${process.env.RESEND_KEY}`);
 
 export async function emailLead(companyName: string, leadEmail: string) {
     try {
         // Transform Company name to no spaces or it will not work
-        const useCompanyName = companyName.split(" ").join("");
+        const useCompanyName = useCleanString(companyName)
 
         await resend.emails.send({
             from: `${useCompanyName}@ascendpod.com`,

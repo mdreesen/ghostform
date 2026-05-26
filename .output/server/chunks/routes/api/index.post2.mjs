@@ -38,10 +38,14 @@ const useRealtorCompanyEmailFormatting = (data) => {
 `;
 };
 
+function useCleanString(str) {
+  return str.replace(/[^a-zA-Z0-9]/g, "");
+}
+
 const resend = new Resend(`${process.env.RESEND_KEY}`);
 async function emailLead(companyName, leadEmail) {
   try {
-    const useCompanyName = companyName.split(" ").join("");
+    const useCompanyName = useCleanString(companyName);
     await resend.emails.send({
       from: `${useCompanyName}@ascendpod.com`,
       to: [leadEmail],
@@ -226,17 +230,35 @@ const userSchema = new Schema(
   },
   { timestamps: true }
 );
-const User$1 = mongoose.models.User || mongoose.model("User", userSchema);
+const User$2 = mongoose.models.User || mongoose.model("User", userSchema);
 
-const User = User$1;
+const User$1 = User$2;
 async function useUser(data) {
   try {
     await connectDB();
-    const findUser = await User.find({ email_hashed: data.company_email }).lean();
+    const findUser = await User$1.find({ email_hashed: data.company_email }).lean();
     if (findUser[0]) {
       return findUser[0];
     }
     ;
+  } catch (error) {
+    console.log(error);
+    throw createError({
+      statusCode: 500,
+      statusMessage: "Something went wrong."
+    });
+  }
+}
+
+function date() {
+  return (/* @__PURE__ */ new Date()).toISOString();
+}
+
+const User = User$2;
+async function useLead(companyEmail, answers) {
+  try {
+    await connectDB();
+    await User.findOneAndUpdate({ email: companyEmail }, { $addToSet: { leads: { ...answers, date: date(), status: "new" } } });
   } catch (error) {
     console.log(error);
     throw createError({
@@ -270,6 +292,7 @@ const index_post = defineEventHandler(async (event) => {
     const companyEmail = findCompany == null ? void 0 : findCompany.email;
     const companyName = (_a = findCompany == null ? void 0 : findCompany.company) != null ? _a : "NoReply";
     const leadEmail = answers == null ? void 0 : answers.email;
+    await useLead(companyEmail, answers);
     await emailLead(companyName, leadEmail);
     await emailCompany(answers, companyEmail, imagePart);
     return { status: "success" };

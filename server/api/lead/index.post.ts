@@ -3,6 +3,7 @@ import type { Company } from '~/types/user';
 import { leadData } from '~/utils/users/useLead';
 import { companyData } from '~/utils/users/company';
 import { useUser } from '~/lib/user';
+import { useLead } from '~/lib/lead';
 export default defineEventHandler(async (event) => {
 
     try {
@@ -31,10 +32,11 @@ export default defineEventHandler(async (event) => {
         const companyEmail = findCompany?.email;
         const companyName = findCompany?.company ?? 'NoReply';
         const leadEmail = answers?.email;
-
+    
+        await useLead(companyEmail, answers);
         await emailLead(companyName, leadEmail);
         await emailCompany(answers, companyEmail, imagePart);
-
+        
         return { status: 'success' };
         } catch (error) {
         if (error instanceof Error) {
