@@ -29,11 +29,12 @@ export default defineEventHandler(async (event) => {
         const findCompany = await useUser(company);
         const imagePart = formData?.find((item) => item.name === 'image');
 
+        const companyId = findCompany?._id;
         const companyEmail = findCompany?.email;
         const companyName = findCompany?.company ?? 'NoReply';
         const leadEmail = answers?.email;
     
-        await useLead(companyEmail, answers);
+        await useLead(companyId, answers);
         await emailLead(companyName, leadEmail);
         await emailCompany(answers, companyEmail, imagePart);
         

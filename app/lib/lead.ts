@@ -1,17 +1,17 @@
 import { connectDB } from "../../lib/database/mongodb";
-import { Model } from 'mongoose';
-import UserModel from '../../lib/database/models/User';
 import { date } from "~/lib/date";
-import type { Lead } from "~/types/lead";
+import { Model } from 'mongoose';
+import LeadModel from '../../lib/database/models/Lead';
+import type { Lead } from '~/types/lead';
 
-const User = UserModel as Model<any>;
+const Lead = LeadModel as Model<Lead>;
 
-export async function useLead(companyEmail: string, answers: Lead) {
+export async function useLead(companyId: string, answers: Lead) {
 
     try {
         await connectDB();
 
-        await User.findOneAndUpdate({ email: companyEmail }, { $addToSet: { leads: { ...answers, date: date(), status: 'new' } } });
+        await Lead.create({ userId: companyId, ...answers, date: date() });
 
     } catch (error) {
         console.log(error);

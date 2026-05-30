@@ -2,6 +2,7 @@ import type { ImagePart } from "~/types/image";
 
   export interface Lead {
     _id?: string;
+    userId: string;
     status: string;
     source?: string;
     name: string;

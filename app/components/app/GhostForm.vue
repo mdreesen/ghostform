@@ -3,7 +3,7 @@ import { leadData } from '~/utils/users/useLead';
 import { useImageCompression } from '~/composables/useImageCompression';
 import { errors } from '~/lib/errors';
 import { useQuestions } from '~/composables/useQuestions';
-// http://localhost:3000/?category=realtor&source=default&company_name=$2b$15$eXsdK5TP.TC/M8QXsUuwh.bddChSOn8vckNGoWzXljfIktJ9Zs80y&company_email=$2b$15$8kJfxGFr8anR5xLRxFSIeO8KnG2zH4asf27ZpRjz1X6xhFcmFORCq&calendar=https://calendly.com/whiteravendev90/30min&background_color=#09090B&font_color=#FFFFFF
+// http://localhost:3000/?category=realtor&source=default&id=6a037a5ef945b9b2ca73a93d&company_name=$2b$15$eXsdK5TP.TC/M8QXsUuwh.bddChSOn8vckNGoWzXljfIktJ9Zs80y&company_email=$2b$15$8kJfxGFr8anR5xLRxFSIeO8KnG2zH4asf27ZpRjz1X6xhFcmFORCq&calendar=https://calendly.com/whiteravendev90/30min&background_color=#09090B&font_color=#FFFFFF
 
 const props = defineProps({
     routeData: {
@@ -12,10 +12,10 @@ const props = defineProps({
     },
 })
 
-const { category, source, company_name, company_email, calendar, use_image_upload } = props.routeData;
+const { category, source, id, company_name, company_email, calendar, use_image_upload } = props.routeData;
 const step = ref(0);
 const answers = ref(leadData(category).data);
-const company = ref({ category: category, company_name: company_name, company_email: company_email }); // Testing Data
+const company = ref({ category: category, id: id, company_name: company_name, company_email: company_email }); // Testing Data
 const loading = ref(false);
 const setError = ref('')
 const aiResult = ref(null);
