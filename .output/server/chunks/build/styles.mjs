@@ -7,11 +7,11 @@ const styles = {
   "components/app/GhostForm.vue": () => import('./GhostForm-styles.CY9nGVFZ.mjs').then(interopDefault),
   "components/app/GhostForm.vue?vue&type=style&index=0&scoped=d16fa3d0&lang.css": () => import('./GhostForm-styles.CY9nGVFZ.mjs').then(interopDefault),
   "components/app/success.vue": () => import('./success-styles.CXMe0cE0.mjs').then(interopDefault),
-  "components/base/Error.vue": () => import('./Error-styles.6imztLL9.mjs').then(interopDefault),
   "components/app/ImageUpload.vue": () => import('./ImageUpload-styles.92PAbSf0.mjs').then(interopDefault),
+  "components/base/Error.vue": () => import('./Error-styles.6imztLL9.mjs').then(interopDefault),
   "components/app/success.vue?vue&type=style&index=0&scoped=85d60bfb&lang.css": () => import('./success-styles.CXMe0cE0.mjs').then(interopDefault),
-  "components/base/Error.vue?vue&type=style&index=0&scoped=c28b9695&lang.css": () => import('./Error-styles.6imztLL9.mjs').then(interopDefault),
-  "components/app/ImageUpload.vue?vue&type=style&index=0&scoped=a678dbc3&lang.css": () => import('./ImageUpload-styles.92PAbSf0.mjs').then(interopDefault)
+  "components/app/ImageUpload.vue?vue&type=style&index=0&scoped=a678dbc3&lang.css": () => import('./ImageUpload-styles.92PAbSf0.mjs').then(interopDefault),
+  "components/base/Error.vue?vue&type=style&index=0&scoped=c28b9695&lang.css": () => import('./Error-styles.6imztLL9.mjs').then(interopDefault)
 };
 
 export { styles as default };

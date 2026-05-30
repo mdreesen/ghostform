@@ -310,7 +310,7 @@ function errors(error) {
 const on_market = [
   { id: "name", label: "What's your name?", type: "text" },
   { id: "email", label: "What's your email?", type: "text" },
-  { id: "phone", label: "What's your phone number?", type: "number" },
+  { id: "phone", label: "What's your phone number?", type: "text" },
   { id: "address", label: "What's your home address?", type: "text" },
   { id: "notes", label: "Other things to note?", type: "text" }
 ];
@@ -318,14 +318,14 @@ const data_entry = [
   { id: "source", label: "How did you discover our business?", type: "text" },
   { id: "name", label: "What's your name?", type: "text" },
   { id: "email", label: "What's your email?", type: "text" },
-  { id: "phone", label: "What's your phone number?", type: "number" },
+  { id: "phone", label: "What's your phone number?", type: "text" },
   { id: "address", label: "What's your home address?", type: "text" },
   { id: "notes", label: "Other things to note?", type: "text" }
 ];
 const open_house = [
   { id: "seeing_an_agent", label: "Are you currently seeing an agent?", type: "text" },
   { id: "email", label: "What's your email?", type: "text" },
-  { id: "phone", label: "What's your phone number?", type: "number" },
+  { id: "phone", label: "What's your phone number?", type: "text" },
   { id: "best_communication_method", label: "Best way to contact you?", type: "text" },
   { id: "notes", label: "Other things to note?", type: "text" }
 ];
@@ -461,4 +461,4 @@ _sfc_main.setup = (props, ctx) => {
 const index = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-a69afbf2"]]);
 
 export { index as default };
-//# sourceMappingURL=index-UyWgM_EJ.mjs.map
+//# sourceMappingURL=index-TzxH8Kzf.mjs.map

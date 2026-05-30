@@ -8,7 +8,7 @@ import type { ImagePart } from "~/types/image";
     name: string;
     age?: number;
     email: string;
-    phone?: number;
+    phone?: string;
     address?: string;
     date?: string;
     best_communication_method?: string;
