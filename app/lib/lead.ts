@@ -6,12 +6,12 @@ import type { Lead } from '~/types/lead';
 
 const Lead = LeadModel as Model<Lead>;
 
-export async function useLead(companyId: string, answers: Lead) {
+export async function useLead(companyId: string, companyEmail: string, companyName: string, answers: Lead) {
 
     try {
         await connectDB();
 
-        await Lead.create({ userId: companyId, ...answers, date: date() });
+        await Lead.create({ userId: companyId, company_email: companyEmail, company_name: companyName, ...answers, date: date() });
 
     } catch (error) {
         console.log(error);
