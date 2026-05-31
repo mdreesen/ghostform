@@ -2,6 +2,8 @@ import type { ImagePart } from "~/types/image";
 
   export interface Lead {
     _id?: string;
+    company_name?: string;
+    company_email?: string;
     userId: string;
     status: string;
     source?: string;
@@ -21,6 +23,6 @@ import type { ImagePart } from "~/types/image";
     budget?: number;
     seeing_an_agent?: string;
     notes?: string;
-    ai_analysis: string;
+    ai_analysis?: string;
     imagePart?: ImagePart;
 }

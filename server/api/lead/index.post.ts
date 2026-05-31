@@ -34,7 +34,7 @@ export default defineEventHandler(async (event) => {
         const companyName = findCompany?.company ?? 'NoReply';
         const leadEmail = answers?.email;
     
-        await useLead(companyId, answers);
+        await useLead(companyId, companyEmail, companyName, answers);
         await emailLead(companyName, leadEmail);
         await emailCompany(answers, companyEmail, imagePart);
         
