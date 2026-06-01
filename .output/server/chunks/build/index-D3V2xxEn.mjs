@@ -302,7 +302,7 @@ const useImageCompression = async (file) => {
 function errors(error) {
   switch (true) {
     case error.includes("400"):
-      return "Missing Data";
+      return "Missing Data: Need email";
     default:
       return "Error 500, something went wrong.";
   }
@@ -461,4 +461,4 @@ _sfc_main.setup = (props, ctx) => {
 const index = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-a69afbf2"]]);
 
 export { index as default };
-//# sourceMappingURL=index-TzxH8Kzf.mjs.map
+//# sourceMappingURL=index-D3V2xxEn.mjs.map

@@ -262,10 +262,10 @@ const leadSchema = new Schema({
 const LeadModel = mongoose.models.Lead || mongoose.model("Lead", leadSchema);
 
 const Lead = LeadModel;
-async function useLead(companyId, answers) {
+async function useLead(companyId, companyEmail, companyName, answers) {
   try {
     await connectDB();
-    await Lead.create({ userId: companyId, ...answers, date: date() });
+    await Lead.create({ userId: companyId, company_email: companyEmail, company_name: companyName, ...answers, date: date() });
   } catch (error) {
     console.log(error);
     throw createError({
@@ -293,7 +293,7 @@ const index_post = defineEventHandler(async (event) => {
       company = JSON.parse(jsonString);
     }
     ;
-    if (!(answers == null ? void 0 : answers.email)) throw createError({ statusCode: 400, message: "Missing data" });
+    if (!(answers == null ? void 0 : answers.email)) throw createError({ statusCode: 400, message: "Missing data: Need email" });
     const findCompany = await useUser(company);
     const imagePart = formData == null ? void 0 : formData.find((item) => item.name === "image");
     const companyId = findCompany == null ? void 0 : findCompany._id;

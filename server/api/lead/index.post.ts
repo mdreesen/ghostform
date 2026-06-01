@@ -25,7 +25,7 @@ export default defineEventHandler(async (event) => {
         };
 
         // Need lead's email to create email and use database
-        if (!answers?.email) throw createError({ statusCode: 400, message: 'Missing data' });
+        if (!answers?.email) throw createError({ statusCode: 400, message: 'Missing data: Need email' });
         const findCompany = await useUser(company);
         const imagePart = formData?.find((item) => item.name === 'image');
 

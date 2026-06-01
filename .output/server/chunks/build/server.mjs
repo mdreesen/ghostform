@@ -490,7 +490,7 @@ const _routes = [
     name: "index",
     path: "/",
     meta: __nuxt_page_meta || {},
-    component: () => import('./index-TzxH8Kzf.mjs')
+    component: () => import('./index-D3V2xxEn.mjs')
   }
 ];
 const _wrapInTransition = (props, children) => {
