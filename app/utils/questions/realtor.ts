@@ -34,6 +34,7 @@ export const data_entry = [
 
 export const open_house = [
     { id: 'seeing_an_agent', label: "Are you currently seeing an agent?", type: 'text' },
+    { id: 'name', label: "What's your name?", type: 'text' },
     { id: 'email', label: "What's your email?", type: 'text' },
     { id: 'phone', label: "What's your phone number?", type: 'text' },
     { id: 'best_communication_method', label: "Best way to contact you?", type: 'text' },

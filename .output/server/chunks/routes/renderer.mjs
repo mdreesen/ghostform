@@ -256,7 +256,7 @@ async function renderInlineStyles(usedModules) {
 
 const renderSSRHeadOptions = {"omitLineBreaks":true};
 
-const entryFileName = "CN3Na_g1.js";
+const entryFileName = "Ckc2BkwE.js";
 
 globalThis.__buildAssetsURL = buildAssetsURL;
 globalThis.__publicAssetsURL = publicAssetsURL;

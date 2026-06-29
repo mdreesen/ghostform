@@ -324,6 +324,7 @@ const data_entry = [
 ];
 const open_house = [
   { id: "seeing_an_agent", label: "Are you currently seeing an agent?", type: "text" },
+  { id: "name", label: "What's your name?", type: "text" },
   { id: "email", label: "What's your email?", type: "text" },
   { id: "phone", label: "What's your phone number?", type: "text" },
   { id: "best_communication_method", label: "Best way to contact you?", type: "text" },
@@ -461,4 +462,4 @@ _sfc_main.setup = (props, ctx) => {
 const index = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-a69afbf2"]]);
 
 export { index as default };
-//# sourceMappingURL=index-D3V2xxEn.mjs.map
+//# sourceMappingURL=index-lm4D7yck.mjs.map
