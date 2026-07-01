@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
 import { leadData } from '~/utils/users/useLead';
 import { useImageCompression } from '~/composables/useImageCompression';
 import { errors } from '~/lib/errors';
 import { useQuestions } from '~/composables/useQuestions';
+import { useFormOffline } from '~/composables/useOffline';
 // http://localhost:3000/?category=realtor&source=default&id=6a037a5ef945b9b2ca73a93d&company_name=$2b$15$eXsdK5TP.TC/M8QXsUuwh.bddChSOn8vckNGoWzXljfIktJ9Zs80y&company_email=$2b$15$8kJfxGFr8anR5xLRxFSIeO8KnG2zH4asf27ZpRjz1X6xhFcmFORCq&calendar=https://calendly.com/whiteravendev90/30min&background_color=#09090B&font_color=#FFFFFF
 
 const props = defineProps({
@@ -15,25 +17,51 @@ const props = defineProps({
 const { category, source, id, company_name, company_email, calendar, use_image_upload } = props.routeData;
 const step = ref(0);
 const answers = ref(leadData(category).data);
-const company = ref({ category: category, id: id, company_name: company_name, company_email: company_email }); // Testing Data
+const company = ref({ category: category, id: id, company_name: company_name, company_email: company_email });
 const loading = ref(false);
 const setError = ref('')
-const aiResult = ref(null);
+const aiResult = ref<any>(null);
 const useUploadImage = ref(false);
 const selectedFile = ref<File | null>(null);
 const userEmail = ref('');
 const showSuccess = ref(false);
 
-// Looking for project completion
+// Modern Network Connection Listener 
+const isOnline = ref(true)
+const { stageFormOffline, processOfflineQueue } = useFormOffline()
+
+function checkNetwork() {
+    isOnline.value = navigator.onLine
+    if (isOnline.value) {
+        processOfflineQueue() // Instantly attempt to fire queued requests on link up
+    }
+}
+
+onMounted(() => {
+    if (process.client) {
+        isOnline.value = navigator.onLine
+        window.addEventListener('online', checkNetwork)
+        window.addEventListener('offline', checkNetwork)
+        
+        // Initial clean sweep run on load context
+        if (isOnline.value) processOfflineQueue()
+    }
+})
+
+onBeforeUnmount(() => {
+    if (process.client) {
+        window.removeEventListener('online', checkNetwork)
+        window.removeEventListener('offline', checkNetwork)
+    }
+})
+
 const questions = computed(() => useQuestions(source));
 
-// Handle images that are selected
 const handleImageSelection = async (file: File) => {
     loading.value = true;
     try {
         const compressed = await useImageCompression(file);
-        selectedFile.value = compressed;
-
+        selectedFile.value = compressed as File;
     } catch (err) {
         console.error("Compression failed, using original file", err);
         selectedFile.value = file;
@@ -55,9 +83,27 @@ const nextStep = () => {
 
 const submitForm = async () => {
     loading.value = true
+    setError.value = ''
+
+    // 📵 INTERCEPT & LOG LOCALLY IF DEVICE IS OFFLINE
+    if (!navigator.onLine) {
+        const stagedSuccess = await stageFormOffline(category, answers.value, company.value, useFile.value)
+        if (stagedSuccess) {
+            userEmail.value = answers.value.email || 'your registered address';
+            
+            // Build out a synthetic success notification so the user experience doesn't break
+            aiResult.value = { offline: true, message: "Cached successfully" }
+            showSuccess.value = true
+        } else {
+            setError.value = "Local cache registration broken."
+        }
+        loading.value = false
+        return
+    }
+
+    // 🌐 STANDARD LIVE NETWORK PIPELINE DISPATCH
     try {
         const fd = new FormData();
-
         const jsonLeadBlob = new Blob([JSON.stringify({...answers.value, category: category})], {
             type: 'application/json'
         });
@@ -79,10 +125,10 @@ const submitForm = async () => {
 
         userEmail.value = answers.value.email;
         showSuccess.value = true;
-        loading.value = false;
-    } catch (error) {
+    } catch (error: any) {
         console.log(error);
         setError.value = error.message;
+    } finally {
         loading.value = false;
     }
 };

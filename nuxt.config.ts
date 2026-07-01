@@ -34,5 +34,23 @@ export default defineNuxtConfig({
   colorMode: {
     dataValue: 'theme',
     classSuffix: '', // Important for Tailwind CSS integration
+  },
+
+  pwa: {
+    // Basic manifest for your PWA
+    manifest: {
+      name: 'GhostForm',
+      short_name: 'GhostForm',
+      description: '',
+      theme_color: '#080B11',
+    },
+    workbox: {
+      globPatterns: ['**/*.{js,css,html,svg,png,ico}']
+    },
+    // Helpful in development so PWA features don't block Hot Module Replacement (HMR)
+    devOptions: {
+      enabled: false, 
+      suppressWarnings: true
+    }
   }
 })
