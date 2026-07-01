@@ -10,7 +10,7 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxtjs/color-mode',
     '@nuxt/ui',
-    '@vite-pwa/nuxt',
+    '@vite-pwa/nuxt'
   ],
   app: {
     head: {
@@ -44,6 +44,7 @@ export default defineNuxtConfig({
       description: 'Automated offline-capable lead generation and check-in portal',
       theme_color: '#09090B', // Matches your background_color layout variables
       background_color: '#09090B',
+      display: 'standalone', // Essential for forcing native mobile-app view wrapper
       icons: [
         {
           src: '/images/maskable-icon.png',
@@ -71,10 +72,15 @@ export default defineNuxtConfig({
       ],
     },
     workbox: {
-      // 📦 Cache all generated HTML, JS, CSS components, and static web routing layers
-      globPatterns: ['**/*.{js,css,html,png,svg,ico,woff2}'],
-      // Fallback strategies for custom dynamic endpoints or layouts if needed
-      navigateFallback: '/'
+      // Clean up outdated caches automatically across site iterations
+      cleanupOutdatedCaches: true,
+      clientsClaim: true,
+      skipWaiting: true,
+      globPatterns: ['**/*.{js,css,html,png,svg,ico,woff2}']
+    },
+    devOptions: {
+      enabled: true,
+      type: 'module'
     }
   }
 })

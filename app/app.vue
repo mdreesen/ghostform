@@ -6,6 +6,7 @@
     <UApp>
       <NuxtLayout>
         <VitePwaManifest/>
+        <NuxtPwaManifest />
         <NuxtPage />
       </NuxtLayout>
     </UApp>

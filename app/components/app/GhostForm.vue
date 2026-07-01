@@ -77,7 +77,7 @@ const backStep = () => {
 }
 
 const nextStep = () => {
-    if (step.value < questions.value.length - 1) step.value++
+    if (step.value < questions?.value?.length - 1) step.value++
     else submitForm()
 }
 
@@ -150,7 +150,7 @@ const submitForm = async () => {
         <div v-if="!aiResult" class="max-w-md w-full space-y-4">
             <div class="h-1 bg-zinc-800 rounded-full">
                 <div class="h-1 bg-blue-500 transition-all duration-500"
-                    :style="{ width: `${((step + 1) / questions.length) * 100}%` }"></div>
+                    :style="{ width: `${((step + 1) / questions?.length) * 100}%` }"></div>
             </div>
 
             <transition name="fade" mode="out-in">
@@ -179,7 +179,7 @@ const submitForm = async () => {
                         <span>|</span>
 
                         <button class="hover:bg-blue-500 transition w-full h-7.5" @click="nextStep">
-                            {{ step === questions.length - 1 ? 'Finish' : 'Next' }}
+                            {{ step === questions?.length - 1 ? 'Finish' : 'Next' }}
                         </button>
 
                     </div>
