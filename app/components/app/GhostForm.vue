@@ -42,7 +42,7 @@ onMounted(() => {
         isOnline.value = navigator.onLine
         window.addEventListener('online', checkNetwork)
         window.addEventListener('offline', checkNetwork)
-        
+
         // Initial clean sweep run on load context
         if (isOnline.value) processOfflineQueue()
     }
@@ -90,10 +90,21 @@ const submitForm = async () => {
         const stagedSuccess = await stageFormOffline(category, answers.value, company.value, useFile.value)
         if (stagedSuccess) {
             userEmail.value = answers.value.email || 'your registered address';
-            
+
             // Build out a synthetic success notification so the user experience doesn't break
             aiResult.value = { offline: true, message: "Cached successfully" }
             showSuccess.value = true
+
+            setTimeout(() => {
+                answers.value = leadData(category).data;
+                selectedFile.value = null;
+                useUploadImage.value = false;
+                step.value = 0;
+
+                aiResult.value = null;
+                showSuccess.value = false;
+            }, 5000);
+
         } else {
             setError.value = "Local cache registration broken."
         }
@@ -101,10 +112,9 @@ const submitForm = async () => {
         return
     }
 
-    // 🌐 STANDARD LIVE NETWORK PIPELINE DISPATCH
     try {
         const fd = new FormData();
-        const jsonLeadBlob = new Blob([JSON.stringify({...answers.value, category: category})], {
+        const jsonLeadBlob = new Blob([JSON.stringify({ ...answers.value, category: category })], {
             type: 'application/json'
         });
         const jsonCompanyBlob = new Blob([JSON.stringify(company.value)], {
