@@ -4,12 +4,13 @@ const client_manifest = {
     "module": true,
     "prefetch": true,
     "preload": true,
-    "file": "ozpDIzjv.js",
+    "file": "HJ8dYSGc.js",
     "name": "entry",
     "src": "../node_modules/nuxt/dist/app/entry.js",
     "isEntry": true,
     "dynamicImports": [
-      "layouts/default.vue"
+      "layouts/default.vue",
+      "../node_modules/workbox-window/build/workbox-window.prod.es5.mjs"
     ],
     "css": [
       "entry.CtLS5nSB.css"
@@ -21,6 +22,16 @@ const client_manifest = {
     "resourceType": "style",
     "prefetch": true,
     "preload": true
+  },
+  "../node_modules/workbox-window/build/workbox-window.prod.es5.mjs": {
+    "resourceType": "script",
+    "module": true,
+    "prefetch": true,
+    "preload": true,
+    "file": "BBnX5xw4.js",
+    "name": "workbox-window.prod.es5",
+    "src": "../node_modules/workbox-window/build/workbox-window.prod.es5.mjs",
+    "isDynamicEntry": true
   },
   "layouts/default.vue": {
     "resourceType": "script",

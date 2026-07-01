@@ -858,6 +858,19 @@ const components_plugin_4kY4pyzJIYX99vmMAAIorFf3CnAaptHitJgf7JxiED8 = /* @__PURE
     }
   }
 });
+const pwa_icons_plugin_OtOZ6CGly_Vz5_PCGGLA9qHLz2Y5_d5czYAX7q_3Lug = /* @__PURE__ */ defineNuxtPlugin(() => {
+  return {
+    provide: {
+      pwaIcons: {
+        transparent: {},
+        maskable: {},
+        favicon: {},
+        apple: {},
+        appleSplashScreen: {}
+      }
+    }
+  };
+});
 const inlineConfig = {
   "nuxt": {},
   "ui": {
@@ -3113,6 +3126,7 @@ const plugins = [
   plugin,
   revive_payload_server_MVtmlZaQpj6ApFmshWfUWl5PehCebzaBf2NuRMiIbms,
   components_plugin_4kY4pyzJIYX99vmMAAIorFf3CnAaptHitJgf7JxiED8,
+  pwa_icons_plugin_OtOZ6CGly_Vz5_PCGGLA9qHLz2Y5_d5czYAX7q_3Lug,
   colors_E7kSti5pGZ28QhUUurq6gGRU3l65WuXO_KJC3GQgzFo,
   plugin_MeUvTuoKUi51yb_kBguab6hdcExVXeTtZtTg9TZZBB8,
   plugin_server_9Ca9_HhnjAGwBWpwAydRauMHxWoxTDY60BrArRnXN_A,
@@ -7669,6 +7683,26 @@ const LayoutProvider = defineComponent({
     };
   }
 });
+const pwaInfo = { "webManifest": { "href": "/manifest.webmanifest" } };
+const __nuxt_component_2 = defineComponent({
+  async setup() {
+    if (pwaInfo) {
+      const meta = ref({ link: [] });
+      useHead(meta);
+      const { webManifest } = pwaInfo;
+      if (webManifest) {
+        const { href } = webManifest;
+        {
+          meta.value.link.push({
+            rel: "manifest",
+            href
+          });
+        }
+      }
+    }
+    return () => null;
+  }
+});
 const defineRouteProvider = (name = "RouteProvider") => defineComponent({
   name,
   props: {
@@ -7701,7 +7735,7 @@ const defineRouteProvider = (name = "RouteProvider") => defineComponent({
   }
 });
 const RouteProvider = defineRouteProvider();
-const __nuxt_component_2 = defineComponent({
+const __nuxt_component_3 = defineComponent({
   name: "NuxtPage",
   inheritAttrs: false,
   props: {
@@ -7763,7 +7797,8 @@ const _sfc_main$2 = {};
 function _sfc_ssrRender(_ctx, _push, _parent, _attrs) {
   const _component_UApp = __nuxt_component_0;
   const _component_NuxtLayout = __nuxt_component_1;
-  const _component_NuxtPage = __nuxt_component_2;
+  const _component_VitePwaManifest = __nuxt_component_2;
+  const _component_NuxtPage = __nuxt_component_3;
   _push(`<div${ssrRenderAttrs(_attrs)}>`);
   _push(ssrRenderComponent(_component_UApp, null, {
     default: withCtx((_, _push2, _parent2, _scopeId) => {
@@ -7771,9 +7806,11 @@ function _sfc_ssrRender(_ctx, _push, _parent, _attrs) {
         _push2(ssrRenderComponent(_component_NuxtLayout, null, {
           default: withCtx((_2, _push3, _parent3, _scopeId2) => {
             if (_push3) {
+              _push3(ssrRenderComponent(_component_VitePwaManifest, null, null, _parent3, _scopeId2));
               _push3(ssrRenderComponent(_component_NuxtPage, null, null, _parent3, _scopeId2));
             } else {
               return [
+                createVNode(_component_VitePwaManifest),
                 createVNode(_component_NuxtPage)
               ];
             }
@@ -7784,6 +7821,7 @@ function _sfc_ssrRender(_ctx, _push, _parent, _attrs) {
         return [
           createVNode(_component_NuxtLayout, null, {
             default: withCtx(() => [
+              createVNode(_component_VitePwaManifest),
               createVNode(_component_NuxtPage)
             ]),
             _: 1

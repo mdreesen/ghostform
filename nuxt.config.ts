@@ -37,20 +37,31 @@ export default defineNuxtConfig({
   },
 
   pwa: {
-    // Basic manifest for your PWA
+    registerType: 'autoUpdate',
     manifest: {
-      name: 'GhostForm',
+      name: 'GhostForm Lead Capture',
       short_name: 'GhostForm',
-      description: '',
-      theme_color: '#080B11',
+      description: 'Automated offline-capable lead generation and check-in portal',
+      theme_color: '#09090B', // Matches your background_color layout variables
+      background_color: '#09090B',
+      icons: [
+        {
+          src: 'icons/logo-icon.png',
+          sizes: '192x192',
+          type: 'image/png'
+        },
+        {
+          src: 'icons/logo-icon.png',
+          sizes: '512x512',
+          type: 'image/png'
+        }
+      ]
     },
     workbox: {
-      globPatterns: ['**/*.{js,css,html,svg,png,ico}']
-    },
-    // Helpful in development so PWA features don't block Hot Module Replacement (HMR)
-    devOptions: {
-      enabled: false, 
-      suppressWarnings: true
+      // 📦 Cache all generated HTML, JS, CSS components, and static web routing layers
+      globPatterns: ['**/*.{js,css,html,png,svg,ico,woff2}'],
+      // Fallback strategies for custom dynamic endpoints or layouts if needed
+      navigateFallback: '/'
     }
   }
 })
