@@ -2,6 +2,7 @@ import { defineComponent, mergeProps, unref, ref, computed, watch, useSSRContext
 import { ssrRenderComponent, ssrRenderAttrs, ssrRenderStyle, ssrInterpolate, ssrRenderDynamicModel, ssrRenderAttr } from 'vue/server-renderer';
 import { _ as _export_sfc, u as useRoute, a as __nuxt_component_0$2$1 } from './server.mjs';
 import confetti from 'canvas-confetti';
+import Dexie from 'dexie';
 import '../nitro/nitro.mjs';
 import 'node:http';
 import 'node:https';
@@ -340,6 +341,66 @@ function useQuestions(source) {
       return data_entry;
   }
 }
+class GhostFormQueueDB extends Dexie {
+  queue;
+  constructor() {
+    super("GhostFormQueueDB");
+    this.version(1).stores({
+      queue: "++id, createdAt"
+    });
+  }
+}
+const db = new GhostFormQueueDB();
+function useFormOffline() {
+  const isSyncing = ref(false);
+  async function stageFormOffline(category, answers, company, imageFile) {
+    try {
+      await db.queue.add({
+        category,
+        answersJson: JSON.stringify({ ...answers, category }),
+        companyJson: JSON.stringify(company),
+        imageBlob: imageFile ? new Blob([imageFile], { type: imageFile.type }) : null,
+        createdAt: Date.now()
+      });
+      return true;
+    } catch (err) {
+      console.error("❌ IndexedDB staging pipeline broken:", err);
+      return false;
+    }
+  }
+  async function processOfflineQueue() {
+    if (isSyncing.value || !(void 0).onLine) return;
+    const items = await db.queue.orderBy("createdAt").toArray();
+    if (items.length === 0) return;
+    isSyncing.value = true;
+    console.log(`🔄 Flushing local storage: ${items.length} items staged for delivery...`);
+    for (const record of items) {
+      try {
+        const fd = new FormData();
+        fd.append("answers", new Blob([record.answersJson], { type: "application/json" }));
+        fd.append("company", new Blob([record.companyJson], { type: "application/json" }));
+        if (record.imageBlob) {
+          fd.append("image", record.imageBlob, "offline_capture.jpg");
+        }
+        await $fetch("/api/lead", {
+          method: "POST",
+          body: fd
+        });
+        await db.queue.delete(record.id);
+        console.log(`✅ Cached entry index #${record.id} securely transferred to database.`);
+      } catch (err) {
+        console.error(`❌ Dispatch block failed for record #${record.id}:`, err);
+        break;
+      }
+    }
+    isSyncing.value = false;
+  }
+  return {
+    stageFormOffline,
+    processOfflineQueue,
+    isSyncing
+  };
+}
 const _sfc_main$1 = /* @__PURE__ */ defineComponent({
   __name: "GhostForm",
   __ssrInlineRender: true,
@@ -362,6 +423,8 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
     const selectedFile = ref(null);
     const userEmail = ref("");
     const showSuccess = ref(false);
+    ref(true);
+    useFormOffline();
     const questions = computed(() => useQuestions(source));
     const handleImageSelection = async (file) => {
       loading.value = true;
@@ -382,36 +445,36 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
       const _component_appImageUpload = __nuxt_component_2;
       const _component_baseError = __nuxt_component_3;
       const _component_appSuccess = __nuxt_component_4;
-      _push(`<div${ssrRenderAttrs(mergeProps({ class: `w-105 h-135 flex items-center justify-center p-6 font-sans rounded-4xl drop-shadow-2xl` }, _attrs))} data-v-4bcde775>`);
-      if (!unref(aiResult)) {
-        _push(`<div class="max-w-md w-full space-y-4" data-v-4bcde775><div class="h-1 bg-zinc-800 rounded-full" data-v-4bcde775><div class="h-1 bg-blue-500 transition-all duration-500" style="${ssrRenderStyle({ width: `${(unref(step) + 1) / unref(questions).length * 100}%` })}" data-v-4bcde775></div></div><div class="space-y-4" data-v-4bcde775><label class="block text-2xl font-medium" data-v-4bcde775>${ssrInterpolate(unref(questions)[unref(step)]?.label)}</label><input${ssrRenderDynamicModel(unref(questions)[unref(step)]?.type, unref(answers)[unref(questions)[unref(step)]?.id], null)}${ssrRenderAttr("type", unref(questions)[unref(step)]?.type)}${ssrRenderAttr("name", unref(questions)[unref(step)]?.id)} class="w-full bg-transparent border-b-2 border-white py-2 text-xl focus:border-blue-500 outline-none transition-colors" autofocus data-v-4bcde775></div>`);
-        if (unref(loading)) {
+      _push(`<div${ssrRenderAttrs(mergeProps({ class: `w-105 h-135 flex items-center justify-center p-6 font-sans rounded-4xl drop-shadow-2xl` }, _attrs))} data-v-36c0ba53>`);
+      if (!aiResult.value) {
+        _push(`<div class="max-w-md w-full space-y-4" data-v-36c0ba53><div class="h-1 bg-zinc-800 rounded-full" data-v-36c0ba53><div class="h-1 bg-blue-500 transition-all duration-500" style="${ssrRenderStyle({ width: `${(step.value + 1) / questions.value.length * 100}%` })}" data-v-36c0ba53></div></div><div class="space-y-4" data-v-36c0ba53><label class="block text-2xl font-medium" data-v-36c0ba53>${ssrInterpolate(questions.value[step.value]?.label)}</label><input${ssrRenderDynamicModel(questions.value[step.value]?.type, answers.value[questions.value[step.value]?.id], null)}${ssrRenderAttr("type", questions.value[step.value]?.type)}${ssrRenderAttr("name", questions.value[step.value]?.id)} class="w-full bg-transparent border-b-2 border-white py-2 text-xl focus:border-blue-500 outline-none transition-colors" autofocus data-v-36c0ba53></div>`);
+        if (loading.value) {
           _push(ssrRenderComponent(_component_baseLoading, { class: "z-10" }, null, _parent));
         } else {
           _push(`<!---->`);
         }
-        _push(`<div class="w-full" data-v-4bcde775><div class="flex w-full justify-between gap-5" data-v-4bcde775>`);
+        _push(`<div class="w-full" data-v-36c0ba53><div class="flex w-full justify-between gap-5" data-v-36c0ba53>`);
         if (unref(use_image_upload)) {
           _push(ssrRenderComponent(_component_baseButton, {
-            text: unref(useUploadImage) ? "Cancel Upload" : "Upload an image",
-            onClick: ($event) => useUploadImage.value = !unref(useUploadImage)
+            text: useUploadImage.value ? "Cancel Upload" : "Upload an image",
+            onClick: ($event) => useUploadImage.value = !useUploadImage.value
           }, null, _parent));
         } else {
           _push(`<!---->`);
         }
-        _push(`<div class="bg-blue-600 w-full justify-evenly px-6 py-2 rounded-lg flex gap-2 items-center" data-v-4bcde775><button class="hover:bg-blue-500 transition w-full h-7.5" data-v-4bcde775> Back </button><span data-v-4bcde775>|</span><button class="hover:bg-blue-500 transition w-full h-7.5" data-v-4bcde775>${ssrInterpolate(unref(step) === unref(questions).length - 1 ? "Finish" : "Next")}</button></div></div>`);
-        if (unref(useUploadImage)) {
-          _push(`<div data-v-4bcde775>`);
+        _push(`<div class="bg-blue-600 w-full justify-evenly px-6 py-2 rounded-lg flex gap-2 items-center" data-v-36c0ba53><button class="hover:bg-blue-500 transition w-full h-7.5" data-v-36c0ba53> Back </button><span data-v-36c0ba53>|</span><button class="hover:bg-blue-500 transition w-full h-7.5" data-v-36c0ba53>${ssrInterpolate(step.value === questions.value.length - 1 ? "Finish" : "Next")}</button></div></div>`);
+        if (useUploadImage.value) {
+          _push(`<div data-v-36c0ba53>`);
           _push(ssrRenderComponent(_component_appImageUpload, { onFileSelected: handleImageSelection }, null, _parent));
           _push(`</div>`);
         } else {
           _push(`<!---->`);
         }
         _push(`</div>`);
-        if (unref(setError)) {
-          _push(`<div data-v-4bcde775>`);
+        if (setError.value) {
+          _push(`<div data-v-36c0ba53>`);
           _push(ssrRenderComponent(_component_baseError, {
-            message: unref(errors)(unref(setError))
+            message: unref(errors)(setError.value)
           }, null, _parent));
           _push(`</div>`);
         } else {
@@ -419,10 +482,10 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
         }
         _push(`</div>`);
       } else {
-        _push(`<div class="w-70" data-v-4bcde775>`);
+        _push(`<div class="w-70" data-v-36c0ba53>`);
         _push(ssrRenderComponent(_component_appSuccess, {
-          show: unref(showSuccess),
-          email: unref(userEmail),
+          show: showSuccess.value,
+          email: userEmail.value,
           calendar: unref(calendar)
         }, null, _parent));
         _push(`</div>`);
@@ -437,7 +500,7 @@ _sfc_main$1.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("components/app/GhostForm.vue");
   return _sfc_setup$1 ? _sfc_setup$1(props, ctx) : void 0;
 };
-const __nuxt_component_0 = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$1, [["__scopeId", "data-v-4bcde775"]]), { __name: "AppGhostForm" });
+const __nuxt_component_0 = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$1, [["__scopeId", "data-v-36c0ba53"]]), { __name: "AppGhostForm" });
 const _sfc_main = /* @__PURE__ */ defineComponent({
   __name: "index",
   __ssrInlineRender: true,
@@ -462,4 +525,4 @@ _sfc_main.setup = (props, ctx) => {
 const index = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-a69afbf2"]]);
 
 export { index as default };
-//# sourceMappingURL=index-Bsy_H0-l.mjs.map
+//# sourceMappingURL=index-BaVH5_I0.mjs.map

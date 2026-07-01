@@ -72,7 +72,7 @@ export function useFormOffline() {
 
         // Purge successfully resolved payloads from the browser storage matrix
         await db.queue.delete(record.id!)
-        console.log(`✅ Cached entry index #${record.id} securely transferred to MongoDB.`)
+        console.log(`✅ Cached entry index #${record.id} securely transferred to database.`)
       } catch (err) {
         console.error(`❌ Dispatch block failed for record #${record.id}:`, err)
         break // Halt loop sequence if connection goes spotty again midway
