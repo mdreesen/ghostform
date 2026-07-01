@@ -382,15 +382,15 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
       const _component_appImageUpload = __nuxt_component_2;
       const _component_baseError = __nuxt_component_3;
       const _component_appSuccess = __nuxt_component_4;
-      _push(`<div${ssrRenderAttrs(mergeProps({ class: `w-105 h-135 flex items-center justify-center p-6 font-sans rounded-4xl drop-shadow-2xl` }, _attrs))} data-v-d16fa3d0>`);
+      _push(`<div${ssrRenderAttrs(mergeProps({ class: `w-105 h-135 flex items-center justify-center p-6 font-sans rounded-4xl drop-shadow-2xl` }, _attrs))} data-v-4bcde775>`);
       if (!unref(aiResult)) {
-        _push(`<div class="max-w-md w-full space-y-4" data-v-d16fa3d0><div class="h-1 bg-zinc-800 rounded-full" data-v-d16fa3d0><div class="h-1 bg-blue-500 transition-all duration-500" style="${ssrRenderStyle({ width: `${(unref(step) + 1) / unref(questions).length * 100}%` })}" data-v-d16fa3d0></div></div><div class="space-y-4" data-v-d16fa3d0><label class="block text-2xl font-medium" data-v-d16fa3d0>${ssrInterpolate(unref(questions)[unref(step)]?.label)}</label><input${ssrRenderDynamicModel(unref(questions)[unref(step)]?.type, unref(answers)[unref(questions)[unref(step)]?.id], null)}${ssrRenderAttr("type", unref(questions)[unref(step)]?.type)}${ssrRenderAttr("name", unref(questions)[unref(step)]?.id)} class="w-full bg-transparent border-b-2 border-white py-2 text-xl focus:border-blue-500 outline-none transition-colors" autofocus data-v-d16fa3d0></div>`);
+        _push(`<div class="max-w-md w-full space-y-4" data-v-4bcde775><div class="h-1 bg-zinc-800 rounded-full" data-v-4bcde775><div class="h-1 bg-blue-500 transition-all duration-500" style="${ssrRenderStyle({ width: `${(unref(step) + 1) / unref(questions).length * 100}%` })}" data-v-4bcde775></div></div><div class="space-y-4" data-v-4bcde775><label class="block text-2xl font-medium" data-v-4bcde775>${ssrInterpolate(unref(questions)[unref(step)]?.label)}</label><input${ssrRenderDynamicModel(unref(questions)[unref(step)]?.type, unref(answers)[unref(questions)[unref(step)]?.id], null)}${ssrRenderAttr("type", unref(questions)[unref(step)]?.type)}${ssrRenderAttr("name", unref(questions)[unref(step)]?.id)} class="w-full bg-transparent border-b-2 border-white py-2 text-xl focus:border-blue-500 outline-none transition-colors" autofocus data-v-4bcde775></div>`);
         if (unref(loading)) {
           _push(ssrRenderComponent(_component_baseLoading, { class: "z-10" }, null, _parent));
         } else {
           _push(`<!---->`);
         }
-        _push(`<div class="w-full" data-v-d16fa3d0><div class="flex w-full justify-between gap-5" data-v-d16fa3d0>`);
+        _push(`<div class="w-full" data-v-4bcde775><div class="flex w-full justify-between gap-5" data-v-4bcde775>`);
         if (unref(use_image_upload)) {
           _push(ssrRenderComponent(_component_baseButton, {
             text: unref(useUploadImage) ? "Cancel Upload" : "Upload an image",
@@ -399,9 +399,9 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
         } else {
           _push(`<!---->`);
         }
-        _push(`<div class="bg-blue-600 w-full justify-evenly px-6 py-2 rounded-lg flex gap-2 items-center" data-v-d16fa3d0><button class="hover:bg-blue-500 transition" data-v-d16fa3d0> Back </button><span data-v-d16fa3d0>|</span><button class="hover:bg-blue-500 transition" data-v-d16fa3d0>${ssrInterpolate(unref(step) === unref(questions).length - 1 ? "Finish" : "Next")}</button></div></div>`);
+        _push(`<div class="bg-blue-600 w-full justify-evenly px-6 py-2 rounded-lg flex gap-2 items-center" data-v-4bcde775><button class="hover:bg-blue-500 transition w-full h-7.5" data-v-4bcde775> Back </button><span data-v-4bcde775>|</span><button class="hover:bg-blue-500 transition w-full h-7.5" data-v-4bcde775>${ssrInterpolate(unref(step) === unref(questions).length - 1 ? "Finish" : "Next")}</button></div></div>`);
         if (unref(useUploadImage)) {
-          _push(`<div data-v-d16fa3d0>`);
+          _push(`<div data-v-4bcde775>`);
           _push(ssrRenderComponent(_component_appImageUpload, { onFileSelected: handleImageSelection }, null, _parent));
           _push(`</div>`);
         } else {
@@ -409,7 +409,7 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
         }
         _push(`</div>`);
         if (unref(setError)) {
-          _push(`<div data-v-d16fa3d0>`);
+          _push(`<div data-v-4bcde775>`);
           _push(ssrRenderComponent(_component_baseError, {
             message: unref(errors)(unref(setError))
           }, null, _parent));
@@ -419,7 +419,7 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
         }
         _push(`</div>`);
       } else {
-        _push(`<div class="w-70" data-v-d16fa3d0>`);
+        _push(`<div class="w-70" data-v-4bcde775>`);
         _push(ssrRenderComponent(_component_appSuccess, {
           show: unref(showSuccess),
           email: unref(userEmail),
@@ -437,7 +437,7 @@ _sfc_main$1.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("components/app/GhostForm.vue");
   return _sfc_setup$1 ? _sfc_setup$1(props, ctx) : void 0;
 };
-const __nuxt_component_0 = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$1, [["__scopeId", "data-v-d16fa3d0"]]), { __name: "AppGhostForm" });
+const __nuxt_component_0 = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$1, [["__scopeId", "data-v-4bcde775"]]), { __name: "AppGhostForm" });
 const _sfc_main = /* @__PURE__ */ defineComponent({
   __name: "index",
   __ssrInlineRender: true,
@@ -462,4 +462,4 @@ _sfc_main.setup = (props, ctx) => {
 const index = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-a69afbf2"]]);
 
 export { index as default };
-//# sourceMappingURL=index-lm4D7yck.mjs.map
+//# sourceMappingURL=index-Bsy_H0-l.mjs.map

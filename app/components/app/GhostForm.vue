@@ -116,13 +116,13 @@ const submitForm = async () => {
                         @click="useUploadImage = !useUploadImage" />
 
                     <div class="bg-blue-600 w-full justify-evenly px-6 py-2 rounded-lg flex gap-2 items-center">
-                        <button class="hover:bg-blue-500 transition" @click="backStep">
+                        <button class="hover:bg-blue-500 transition w-full h-7.5" @click="backStep">
                             Back
                         </button>
 
                         <span>|</span>
 
-                        <button class="hover:bg-blue-500 transition" @click="nextStep">
+                        <button class="hover:bg-blue-500 transition w-full h-7.5" @click="nextStep">
                             {{ step === questions.length - 1 ? 'Finish' : 'Next' }}
                         </button>
 

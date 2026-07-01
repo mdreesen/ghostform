@@ -1,4 +1,4 @@
-import process from 'node:process';globalThis._importMeta_=globalThis._importMeta_||{url:"file:///_entry.js",env:process.env};import { hasInjectionContext, inject, defineComponent, useAttrs, ref, computed, mergeProps, unref, getCurrentInstance, defineAsyncComponent, useSlots, h, Fragment, createElementBlock, shallowRef, provide, cloneVNode, useSSRContext, shallowReactive, Suspense, createApp, reactive, toRaw, onServerPrefetch, useModel, withCtx, renderSlot, createVNode, openBlock, createBlock, createTextVNode, toDisplayString, createCommentVNode, mergeModels, watch, resolveDynamicComponent, toRef as toRef$1, renderList, useId, resolveComponent, onErrorCaptured, effectScope, toValue, useTemplateRef, withModifiers, getCurrentScope, isRef, nextTick, onScopeDispose, isReadonly, toRefs, isShallow, isReactive, readonly, customRef, markRaw } from 'vue';
+import process from 'node:process';globalThis._importMeta_=globalThis._importMeta_||{url:"file:///_entry.js",env:process.env};import { hasInjectionContext, inject, defineComponent, useAttrs, ref, computed, mergeProps, unref, getCurrentInstance, defineAsyncComponent, useSlots, h, Fragment, createElementBlock, shallowRef, provide, cloneVNode, useSSRContext, shallowReactive, Suspense, createApp, reactive, toRaw, onServerPrefetch, useModel, withCtx, renderSlot, createVNode, openBlock, createBlock, createTextVNode, toDisplayString, createCommentVNode, mergeModels, watch, resolveDynamicComponent, toRef as toRef$1, renderList, useId, onErrorCaptured, effectScope, toValue, useTemplateRef, withModifiers, getCurrentScope, resolveComponent, isRef, nextTick, onScopeDispose, isReadonly, toRefs, isShallow, isReactive, readonly, customRef, markRaw } from 'vue';
 import { s as serialize, m as getContext, n as defu, o as hasProtocol, w as withLeadingSlash, q as joinURL, t as parseURL, $ as $fetch$1, v as baseURL, x as defuFn, y as klona, z as createHooks, c as createError$1, A as encodeParam, B as encodePath, C as isEqual, D as parseQuery, E as hasProtocol$1, k as joinURL$1, F as withQuery, G as isScriptProtocol, H as withTrailingSlash, I as withoutTrailingSlash, J as sanitizeStatusCode, K as executeAsync, L as toRouteMatcher, M as createRouter$1 } from '../nitro/nitro.mjs';
 import { useRoute as useRoute$1, RouterView, createMemoryHistory, createRouter, START_LOCATION } from 'vue-router';
 import colors from 'tailwindcss/colors';
@@ -490,7 +490,7 @@ const _routes = [
     name: "index",
     path: "/",
     meta: __nuxt_page_meta || {},
-    component: () => import('./index-lm4D7yck.mjs')
+    component: () => import('./index-Bsy_H0-l.mjs')
   }
 ];
 const _wrapInTransition = (props, children) => {
@@ -7809,14 +7809,9 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
     error: {}
   },
   setup(__props) {
-    const props = __props;
     return (_ctx, _push, _parent, _attrs) => {
-      const _component_baseHeader = resolveComponent("baseHeader");
       const _component_NuxtLink = __nuxt_component_0$1;
       _push(`<div${ssrRenderAttrs(mergeProps({ class: "w-full text-center" }, _attrs))}>`);
-      _push(ssrRenderComponent(_component_baseHeader, {
-        text: props.error?.status?.toString()
-      }, null, _parent));
       _push(ssrRenderComponent(_component_NuxtLink, {
         to: "/",
         class: "text-blue-400 hover:underline transition-colors"
