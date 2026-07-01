@@ -46,16 +46,29 @@ export default defineNuxtConfig({
       background_color: '#09090B',
       icons: [
         {
-          src: 'icons/logo-icon.png',
-          sizes: '192x192',
-          type: 'image/png'
+          src: '/images/maskable-icon.png',
+          sizes: '445x445',
+          type: 'image/png',
+          purpose: "any"
         },
         {
-          src: 'icons/logo-icon.png',
-          sizes: '512x512',
-          type: 'image/png'
+          src: '/images/maskable-icon.png',
+          sizes: '445x445',
+          type: 'image/webp',
+          purpose: "png"
+        },
+        {
+          src: '/images/maskable-icon.png',
+          sizes: '445x445',
+          type: 'image/png',
+          purpose: "maskable"
+        },
+        {
+          src: '/images/maskable-icon.png',
+          sizes: '445x445',
+          type: 'image/png',
         }
-      ]
+      ],
     },
     workbox: {
       // 📦 Cache all generated HTML, JS, CSS components, and static web routing layers
