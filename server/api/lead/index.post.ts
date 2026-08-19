@@ -4,47 +4,65 @@ import { leadData } from '~/utils/users/useLead';
 import { companyData } from '~/utils/users/company';
 import { useUser } from '~/lib/user';
 import { useLead } from '~/lib/lead';
+
 export default defineEventHandler(async (event) => {
+    const formData = await readMultipartFormData(event);
+
+    const answersPart = formData?.find(item => item.name === 'answers');
+    const companyPart = formData?.find(item => item.name === 'company');
+    const imagePart = formData?.find((item) => item.name === 'image');
+
+    let answers: any = leadData;
+    let company: Company = companyData;
 
     try {
-        const formData = await readMultipartFormData(event);
-
-        const answersPart = formData?.find(item => item.name === 'answers');
-        const companyPart = formData?.find(item => item.name === 'company');
-
-        let answers: any = leadData;
-        let company: Company = companyData;
-
-        if (answersPart) {
-            const jsonString = answersPart.data.toString('utf-8');
-            answers = JSON.parse(jsonString);
-        };
-        if (companyPart) {
-            const jsonString = companyPart.data.toString('utf-8');
-            company = JSON.parse(jsonString);
-        };
-
-        // Need lead's email to create email and use database
-        if (!answers?.email) throw createError({ statusCode: 400, message: 'Missing data: Need email' });
-        const findCompany = await useUser(company);
-        const imagePart = formData?.find((item) => item.name === 'image');
-
-        const companyId = findCompany?._id;
-        const companyEmail = findCompany?.email;
-        const companyName = findCompany?.company ?? 'NoReply';
-        const leadEmail = answers?.email;
-    
-        await useLead(companyId, companyEmail, companyName, answers);
-        await emailLead(companyName, leadEmail);
-        await emailCompany(answers, companyEmail, imagePart);
-        
-        return { status: 'success' };
-        } catch (error) {
-        if (error instanceof Error) {
-            console.error('Validation Details:', JSON.stringify(error.cause, null, 2));
-        } else {
-            console.log("An unknown error occurred");
-        }
-        throw error;
+        if (answersPart) answers = JSON.parse(answersPart.data.toString('utf-8'));
+        if (companyPart) company = JSON.parse(companyPart.data.toString('utf-8'));
+    } catch (error) {
+        throw createError({ statusCode: 400, message: 'Malformed form payload.' });
     }
+
+    if (!answers?.email) {
+        throw createError({ statusCode: 400, message: 'Missing data: Need email' });
+    }
+
+    // Resolve the realtor. Throws a specific 400/404/503 if this fails, rather
+    // than returning undefined and blowing up later with a generic 500.
+    const findCompany = await useUser(company);
+
+    const companyId = findCompany?._id;
+    const companyEmail = findCompany?.email;
+    const companyName = findCompany?.company ?? 'NoReply';
+    const leadEmail = answers?.email;
+
+    // 1. SAVE FIRST. This is the only step that must succeed — everything
+    //    below is notification, and a notification failure must never make the
+    //    realtor think the lead was lost.
+    const savedLead = await useLead(companyId, companyEmail, companyName, answers);
+
+    // 2. Notifications are best-effort. Failures are logged, not thrown:
+    //    previously a Resend hiccup returned a 500 even though the lead was
+    //    already safely in the database.
+    const notifications = await Promise.allSettled([
+        emailLead(companyName, leadEmail),
+        emailCompany(answers, companyEmail, imagePart)
+    ]);
+
+    notifications.forEach((result, i) => {
+        if (result.status === 'rejected') {
+            console.error(
+                `[lead] Notification ${i === 0 ? 'to lead' : 'to company'} failed:`,
+                result.reason?.message || result.reason
+            );
+        }
+    });
+
+    const emailsFailed = notifications.some(n => n.status === 'rejected');
+
+    return {
+        status: 'success',
+        leadId: String(savedLead?._id ?? ''),
+        // Surfaced so the UI could warn if desired; the capture itself is safe.
+        emailsFailed
+    };
 });

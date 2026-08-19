@@ -5,6 +5,9 @@ import { useImageCompression } from '~/composables/useImageCompression';
 import { errors } from '~/lib/errors';
 import { useQuestions } from '~/composables/useQuestions';
 import { useFormOffline } from '~/composables/useOffline';
+import { useFormConfig } from '~/composables/useFormConfig';
+// Example configured link:
+// /?category=realtor&source=default&id=<userId>&company_name=<hash>&company_email=<hash>&calendar=<url>&background_color=#09090B&font_color=#FFFFFF
 // http://localhost:3000/?category=realtor&source=default&id=6a037a5ef945b9b2ca73a93d&company_name=$2b$15$eXsdK5TP.TC/M8QXsUuwh.bddChSOn8vckNGoWzXljfIktJ9Zs80y&company_email=$2b$15$8kJfxGFr8anR5xLRxFSIeO8KnG2zH4asf27ZpRjz1X6xhFcmFORCq&calendar=https://calendly.com/whiteravendev90/30min&background_color=#09090B&font_color=#FFFFFF
 
 const props = defineProps({
@@ -14,7 +17,22 @@ const props = defineProps({
     },
 })
 
-const { category, source, id, company_name, company_email, calendar, use_image_upload } = props.routeData;
+// Resolve config from the URL, or fall back to what we saved on a previous
+// online visit. This is what lets the form open with NO query params at all —
+// from a home-screen icon, or offline where the link can't be re-fetched.
+const { resolveConfig, listConfigs } = useFormConfig();
+const { config, fromCache } = resolveConfig(props.routeData);
+
+const notConfigured = computed(() => !config);
+
+const category = config?.category ?? 'realtor';
+const source = config?.source ?? 'default';
+const id = config?.id ?? '';
+const company_name = config?.company_name ?? '';
+const company_email = config?.company_email ?? '';
+const calendar = config?.calendar;
+const use_image_upload = config?.use_image_upload;
+const usingSavedConfig = fromCache;
 const step = ref(0);
 const answers = ref(leadData(category).data);
 const company = ref({ category: category, id: id, company_name: company_name, company_email: company_email });
@@ -147,7 +165,29 @@ const submitForm = async () => {
 <template>
     <div :class="`w-105 h-135 flex items-center justify-center p-6 font-sans rounded-4xl drop-shadow-2xl`">
 
-        <div v-if="!aiResult" class="max-w-md w-full space-y-4">
+        <!-- First-ever open with no link and nothing saved: we genuinely can't
+             tell which realtor this lead belongs to, so say so plainly rather
+             than collecting a lead we'd have to throw away. -->
+        <div v-if="notConfigured" class="max-w-md w-full text-center space-y-3">
+            <p class="text-xl font-medium">This form isn't set up yet</p>
+            <p class="text-sm opacity-70 leading-relaxed">
+                Open your GhostForm link once while you have signal. After that it
+                works offline, and you can add it to your home screen.
+            </p>
+        </div>
+
+        <div v-else-if="!aiResult" class="max-w-md w-full space-y-4">
+            <!-- Connection state: reassures the realtor BEFORE they lose signal
+                 that captures will still be saved. -->
+            <div class="flex items-center gap-2 text-[11px] tracking-wide opacity-70">
+                <span
+                    class="w-1.5 h-1.5 rounded-full"
+                    :class="isOnline ? 'bg-emerald-400' : 'bg-amber-400'"
+                />
+                <span v-if="isOnline">Online{{ usingSavedConfig ? ' · saved setup' : '' }}</span>
+                <span v-else>Offline — leads are saved and sent when signal returns</span>
+            </div>
+
             <div class="h-1 bg-zinc-800 rounded-full">
                 <div class="h-1 bg-blue-500 transition-all duration-500"
                     :style="{ width: `${((step + 1) / questions?.length) * 100}%` }"></div>
