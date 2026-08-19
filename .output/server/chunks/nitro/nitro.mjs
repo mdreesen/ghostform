@@ -4373,7 +4373,7 @@ function _expandFromEnv(value) {
 const _inlineRuntimeConfig = {
   "app": {
     "baseURL": "/",
-    "buildId": "32ad95e6-d971-40e5-80aa-9a2294894091",
+    "buildId": "b152b887-805f-41c9-a3b1-84b90c5a84f1",
     "buildAssetsDir": "/_nuxt/",
     "cdnURL": ""
   },
@@ -5111,148 +5111,148 @@ async function errorHandler(error, event) {
 
 const script = "\"use strict\";(()=>{const t=window,e=document.documentElement,c=[\"dark\",\"light\"],n=getStorageValue(\"localStorage\",\"nuxt-color-mode\")||\"system\";let i=n===\"system\"?u():n;const r=e.getAttribute(\"data-color-mode-forced\");r&&(i=r),l(i),t[\"__NUXT_COLOR_MODE__\"]={preference:n,value:i,getColorScheme:u,addColorScheme:l,removeColorScheme:d};function l(o){const s=\"\"+o+\"\",a=\"theme\";e.classList?e.classList.add(s):e.className+=\" \"+s,a&&e.setAttribute(\"data-\"+a,o)}function d(o){const s=\"\"+o+\"\",a=\"theme\";e.classList?e.classList.remove(s):e.className=e.className.replace(new RegExp(s,\"g\"),\"\"),a&&e.removeAttribute(\"data-\"+a)}function f(o){return t.matchMedia(\"(prefers-color-scheme\"+o+\")\")}function u(){if(t.matchMedia&&f(\"\").media!==\"not all\"){for(const o of c)if(f(\":\"+o).matches)return o}return\"light\"}})();function getStorageValue(t,e){switch(t){case\"localStorage\":return window.localStorage.getItem(e);case\"sessionStorage\":return window.sessionStorage.getItem(e);case\"cookie\":return getCookie(e);default:return null}}function getCookie(t){const c=(\"; \"+window.document.cookie).split(\"; \"+t+\"=\");if(c.length===2)return c.pop()?.split(\";\").shift()}";
 
-const _X_ytM2W8zLCu472UZtGFA5mgq1AYn7XVCL37rNk0pc = (function(nitro) {
+const _Rj5w4lEnccefL0la9wmPqMANyRheV7cZmJldjwwNKs = (function(nitro) {
   nitro.hooks.hook("render:html", (htmlContext) => {
     htmlContext.head.push(`<script>${script}<\/script>`);
   });
 });
 
 const plugins = [
-  _X_ytM2W8zLCu472UZtGFA5mgq1AYn7XVCL37rNk0pc
+  _Rj5w4lEnccefL0la9wmPqMANyRheV7cZmJldjwwNKs
 ];
 
 const assets = {
-  "/favicon.ico": {
-    "type": "image/vnd.microsoft.icon",
-    "etag": "\"14f2a-ov6oPTtsCDLG9WvIhQckfgAvoJI\"",
-    "mtime": "2026-07-01T19:37:50.690Z",
-    "size": 85802,
-    "path": "../public/favicon.ico"
+  "/embed.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"280-hRN8IKIByGwMjfqPyEqzHMt/UEQ\"",
+    "mtime": "2026-08-19T19:58:39.135Z",
+    "size": 640,
+    "path": "../public/embed.js"
+  },
+  "/manifest.webmanifest": {
+    "type": "application/manifest+json",
+    "etag": "\"261-/JaWXVPDML/WGqvbDBy0L9SM+iI\"",
+    "mtime": "2026-08-19T19:58:39.129Z",
+    "size": 609,
+    "path": "../public/manifest.webmanifest"
   },
   "/resize.ts": {
     "type": "video/mp2t",
     "etag": "\"2c5-OCS9iZpI/taUHrXN196J43F/0Cw\"",
-    "mtime": "2026-07-01T19:37:50.689Z",
+    "mtime": "2026-08-19T19:58:39.134Z",
     "size": 709,
     "path": "../public/resize.ts"
+  },
+  "/favicon.ico": {
+    "type": "image/vnd.microsoft.icon",
+    "etag": "\"14f2a-ov6oPTtsCDLG9WvIhQckfgAvoJI\"",
+    "mtime": "2026-08-19T19:58:39.135Z",
+    "size": 85802,
+    "path": "../public/favicon.ico"
   },
   "/robots.txt": {
     "type": "text/plain; charset=utf-8",
     "etag": "\"18-j8OIsL9qGDmNZ+lHhp2tyH4XtaE\"",
-    "mtime": "2026-07-01T19:37:50.689Z",
+    "mtime": "2026-08-19T19:58:39.135Z",
     "size": 24,
     "path": "../public/robots.txt"
   },
   "/sw.js": {
     "type": "text/javascript; charset=utf-8",
-    "etag": "\"63e-uAvoQRd7hLRWAs7yt1B+7KBlKvg\"",
-    "mtime": "2026-07-01T19:37:51.454Z",
-    "size": 1598,
+    "etag": "\"803-M3xeq8p9aj8VeV7khvBOdJxNtSs\"",
+    "mtime": "2026-08-19T19:58:40.070Z",
+    "size": 2051,
     "path": "../public/sw.js"
   },
-  "/manifest.webmanifest": {
-    "type": "application/manifest+json",
-    "etag": "\"261-/JaWXVPDML/WGqvbDBy0L9SM+iI\"",
-    "mtime": "2026-07-01T19:37:50.681Z",
-    "size": 609,
-    "path": "../public/manifest.webmanifest"
+  "/workbox-9e0cfdd6.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"57d9-t5FulVhkGZCpy5Xv1m/49GZQwUg\"",
+    "mtime": "2026-08-19T19:58:40.070Z",
+    "size": 22489,
+    "path": "../public/workbox-9e0cfdd6.js"
   },
   "/_nuxt/BBnX5xw4.js": {
     "type": "text/javascript; charset=utf-8",
     "etag": "\"1674-HyZL1eUl9QW4o4RCa0ogOE8HLCk\"",
-    "mtime": "2026-07-01T19:37:50.682Z",
+    "mtime": "2026-08-19T19:58:39.132Z",
     "size": 5748,
     "path": "../public/_nuxt/BBnX5xw4.js"
   },
-  "/workbox-9c191d2f.js": {
+  "/_nuxt/C_N3cjh2.js": {
     "type": "text/javascript; charset=utf-8",
-    "etag": "\"3b08-FESaFuRU1G+tiFaqJ5mU8aDzyWU\"",
-    "mtime": "2026-07-01T19:37:51.455Z",
-    "size": 15112,
-    "path": "../public/workbox-9c191d2f.js"
-  },
-  "/embed.js": {
-    "type": "text/javascript; charset=utf-8",
-    "etag": "\"280-hRN8IKIByGwMjfqPyEqzHMt/UEQ\"",
-    "mtime": "2026-07-01T19:37:50.688Z",
-    "size": 640,
-    "path": "../public/embed.js"
-  },
-  "/_nuxt/CPwSbOmK.js": {
-    "type": "text/javascript; charset=utf-8",
-    "etag": "\"1be-Xunq+i0CQJhoYR/4KEzca73wf3g\"",
-    "mtime": "2026-07-01T19:37:50.682Z",
+    "etag": "\"1be-x/K8q57kVIYGB6kDDleqb5IiKSY\"",
+    "mtime": "2026-08-19T19:58:39.132Z",
     "size": 446,
-    "path": "../public/_nuxt/CPwSbOmK.js"
+    "path": "../public/_nuxt/C_N3cjh2.js"
   },
-  "/_nuxt/index.DTvmaj4n.css": {
-    "type": "text/css; charset=utf-8",
-    "etag": "\"539-upUI4kabSf7P1QsgiHSHdtRi+Dk\"",
-    "mtime": "2026-07-01T19:37:50.683Z",
-    "size": 1337,
-    "path": "../public/_nuxt/index.DTvmaj4n.css"
-  },
-  "/_nuxt/entry.CtLS5nSB.css": {
-    "type": "text/css; charset=utf-8",
-    "etag": "\"2a62a-izdS5B296fV+h6RFClBcJetG/AQ\"",
-    "mtime": "2026-07-01T19:37:50.685Z",
-    "size": 173610,
-    "path": "../public/_nuxt/entry.CtLS5nSB.css"
-  },
-  "/_nuxt/BQjcoVv0.js": {
+  "/_nuxt/NtlrgFl0.js": {
     "type": "text/javascript; charset=utf-8",
-    "etag": "\"5f792-p245JHZUqCIh+mRxq/po1ObvXOk\"",
-    "mtime": "2026-07-01T19:37:50.686Z",
-    "size": 391058,
-    "path": "../public/_nuxt/BQjcoVv0.js"
+    "etag": "\"1e545-pEadfxfdjtUNDEnBrD0ssWt+/sA\"",
+    "mtime": "2026-08-19T19:58:39.132Z",
+    "size": 124229,
+    "path": "../public/_nuxt/NtlrgFl0.js"
   },
-  "/_nuxt/DDmjjtM_.js": {
+  "/_nuxt/VwQVcfr1.js": {
     "type": "text/javascript; charset=utf-8",
-    "etag": "\"1da76-lemPt/oWmxEIJZDo/+TiMHTRWjc\"",
-    "mtime": "2026-07-01T19:37:50.683Z",
-    "size": 121462,
-    "path": "../public/_nuxt/DDmjjtM_.js"
+    "etag": "\"5f79d-cTrY0SL5+8ExAIQ4v6MzcbXpO+k\"",
+    "mtime": "2026-08-19T19:58:39.132Z",
+    "size": 391069,
+    "path": "../public/_nuxt/VwQVcfr1.js"
+  },
+  "/_nuxt/entry.DTpMVMJg.css": {
+    "type": "text/css; charset=utf-8",
+    "etag": "\"2a7c6-VCptpbSG52nSAB3DmmSJWT+yNls\"",
+    "mtime": "2026-08-19T19:58:39.132Z",
+    "size": 174022,
+    "path": "../public/_nuxt/entry.DTpMVMJg.css"
   },
   "/images/logo-icon.webp": {
     "type": "image/webp",
     "etag": "\"4a82-Cq74D5kyjiUvih5Pxl9gJIOqLII\"",
-    "mtime": "2026-07-01T19:37:50.688Z",
+    "mtime": "2026-08-19T19:58:39.134Z",
     "size": 19074,
     "path": "../public/images/logo-icon.webp"
-  },
-  "/_nuxt/builds/latest.json": {
-    "type": "application/json",
-    "etag": "\"47-cQhdEUQD+SzcaQb7Fx6UaJON6NM\"",
-    "mtime": "2026-07-01T19:37:50.679Z",
-    "size": 71,
-    "path": "../public/_nuxt/builds/latest.json"
-  },
-  "/_nuxt/builds/meta/32ad95e6-d971-40e5-80aa-9a2294894091.json": {
-    "type": "application/json",
-    "etag": "\"8b-ebBDjLQ0v+6ja8JCae1kKHIa/CU\"",
-    "mtime": "2026-07-01T19:37:50.677Z",
-    "size": 139,
-    "path": "../public/_nuxt/builds/meta/32ad95e6-d971-40e5-80aa-9a2294894091.json"
   },
   "/_nuxt/default.BnoOvR7f.css": {
     "type": "text/css; charset=utf-8",
     "etag": "\"41-iRjyskADLEf9xNZTWowy47eFuaY\"",
-    "mtime": "2026-07-01T19:37:50.682Z",
+    "mtime": "2026-08-19T19:58:39.132Z",
     "size": 65,
     "path": "../public/_nuxt/default.BnoOvR7f.css"
+  },
+  "/_nuxt/index.CsuwqywJ.css": {
+    "type": "text/css; charset=utf-8",
+    "etag": "\"539-bFReP5fYAjdyE4Rn09InSpit3h0\"",
+    "mtime": "2026-08-19T19:58:39.132Z",
+    "size": 1337,
+    "path": "../public/_nuxt/index.CsuwqywJ.css"
+  },
+  "/_nuxt/builds/latest.json": {
+    "type": "application/json",
+    "etag": "\"47-RiCXL3SHlCGi7Kjab3K+zHFYyE4\"",
+    "mtime": "2026-08-19T19:58:39.127Z",
+    "size": 71,
+    "path": "../public/_nuxt/builds/latest.json"
+  },
+  "/_nuxt/builds/meta/b152b887-805f-41c9-a3b1-84b90c5a84f1.json": {
+    "type": "application/json",
+    "etag": "\"8b-jjxNoYe/oZRyjM08zy0xOatj1uc\"",
+    "mtime": "2026-08-19T19:58:39.125Z",
+    "size": 139,
+    "path": "../public/_nuxt/builds/meta/b152b887-805f-41c9-a3b1-84b90c5a84f1.json"
   },
   "/images/logo-icon.png": {
     "type": "image/png",
     "etag": "\"27671-Kh07/31I5hhXU55fhP1vNrTN7b8\"",
-    "mtime": "2026-07-01T19:37:50.690Z",
+    "mtime": "2026-08-19T19:58:39.135Z",
     "size": 161393,
     "path": "../public/images/logo-icon.png"
   },
   "/images/maskable-icon.png": {
     "type": "image/png",
-    "etag": "\"cfd6-f4krW5Y8Tabp2/P5JcL9Xth3FYY\"",
-    "mtime": "2026-07-01T19:37:50.689Z",
-    "size": 53206,
+    "etag": "\"3ae2f-fX/9QB5iv8TUIazompGQMtgc0vE\"",
+    "mtime": "2026-08-19T19:58:39.135Z",
+    "size": 241199,
     "path": "../public/images/maskable-icon.png"
   }
 };
@@ -5412,7 +5412,7 @@ function getAsset (id) {
 
 const METHODS = /* @__PURE__ */ new Set(["HEAD", "GET"]);
 const EncodingMap = { gzip: ".gz", br: ".br" };
-const _6ze5Nz = eventHandler((event) => {
+const _FVZwyn = eventHandler((event) => {
   if (event.method && !METHODS.has(event.method)) {
     return;
   }
@@ -5536,7 +5536,7 @@ const collections = {
 };
 
 const DEFAULT_ENDPOINT = "https://api.iconify.design";
-const _hGHDFX = defineCachedEventHandler(async (event) => {
+const _ePw4hR = defineCachedEventHandler(async (event) => {
   const url = getRequestURL(event);
   if (!url)
     return createError$1({ status: 400, message: "Invalid icon request" });
@@ -5588,7 +5588,7 @@ const _hGHDFX = defineCachedEventHandler(async (event) => {
 
 const _SxA8c9 = defineEventHandler(() => {});
 
-const _ClUglH = lazyEventHandler(() => {
+const _sN7tB1 = lazyEventHandler(() => {
   const opts = useRuntimeConfig().ipx || {};
   const fsDir = opts?.fs?.dir ? (Array.isArray(opts.fs.dir) ? opts.fs.dir : [opts.fs.dir]).map((dir) => isAbsolute(dir) ? dir : fileURLToPath(new URL(dir, globalThis._importMeta_.url))) : void 0;
   const fsStorage = opts.fs?.dir ? ipxFSStorage({ ...opts.fs, dir: fsDir }) : void 0;
@@ -5606,19 +5606,19 @@ const _ClUglH = lazyEventHandler(() => {
   return useBase(opts.baseURL, ipxHandler);
 });
 
-const _lazy_KVKK4Q = () => import('../routes/api/index.post.mjs');
-const _lazy_Spn1yw = () => import('../routes/api/index.post2.mjs');
-const _lazy_DcsqxU = () => import('../routes/renderer.mjs').then(function (n) { return n.r; });
+const _lazy__ajTs5 = () => import('../routes/api/index.post.mjs');
+const _lazy_tXPgLV = () => import('../routes/api/index.post2.mjs');
+const _lazy_HjJzMw = () => import('../routes/renderer.mjs').then(function (n) { return n.r; });
 
 const handlers = [
-  { route: '', handler: _6ze5Nz, lazy: false, middleware: true, method: undefined },
-  { route: '/api/image', handler: _lazy_KVKK4Q, lazy: true, middleware: false, method: "post" },
-  { route: '/api/lead', handler: _lazy_Spn1yw, lazy: true, middleware: false, method: "post" },
-  { route: '/__nuxt_error', handler: _lazy_DcsqxU, lazy: true, middleware: false, method: undefined },
-  { route: '/api/_nuxt_icon/:collection', handler: _hGHDFX, lazy: false, middleware: false, method: undefined },
+  { route: '', handler: _FVZwyn, lazy: false, middleware: true, method: undefined },
+  { route: '/api/image', handler: _lazy__ajTs5, lazy: true, middleware: false, method: "post" },
+  { route: '/api/lead', handler: _lazy_tXPgLV, lazy: true, middleware: false, method: "post" },
+  { route: '/__nuxt_error', handler: _lazy_HjJzMw, lazy: true, middleware: false, method: undefined },
+  { route: '/api/_nuxt_icon/:collection', handler: _ePw4hR, lazy: false, middleware: false, method: undefined },
   { route: '/__nuxt_island/**', handler: _SxA8c9, lazy: false, middleware: false, method: undefined },
-  { route: '/_ipx/**', handler: _ClUglH, lazy: false, middleware: false, method: undefined },
-  { route: '/**', handler: _lazy_DcsqxU, lazy: true, middleware: false, method: undefined }
+  { route: '/_ipx/**', handler: _sN7tB1, lazy: false, middleware: false, method: undefined },
+  { route: '/**', handler: _lazy_HjJzMw, lazy: true, middleware: false, method: undefined }
 ];
 
 function createNitroApp() {

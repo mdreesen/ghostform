@@ -490,7 +490,7 @@ const _routes = [
     name: "index",
     path: "/",
     meta: __nuxt_page_meta || {},
-    component: () => import('./index-BaVH5_I0.mjs')
+    component: () => import('./index-BD5JFXJM.mjs')
   }
 ];
 const _wrapInTransition = (props, children) => {
@@ -849,7 +849,7 @@ const LazyIcon = defineAsyncComponent(() => Promise.resolve().then(() => index).
 const lazyGlobalComponents = [
   ["Icon", LazyIcon]
 ];
-const components_plugin_z4hgvsiddfKkfXTP6M8M4zG5Cb7sGnDhcryKVM45Di4 = /* @__PURE__ */ defineNuxtPlugin({
+const components_plugin_4kY4pyzJIYX99vmMAAIorFf3CnAaptHitJgf7JxiED8 = /* @__PURE__ */ defineNuxtPlugin({
   name: "nuxt:global-components",
   setup(nuxtApp) {
     for (const [name, component] of lazyGlobalComponents) {
@@ -858,7 +858,7 @@ const components_plugin_z4hgvsiddfKkfXTP6M8M4zG5Cb7sGnDhcryKVM45Di4 = /* @__PURE
     }
   }
 });
-const pwa_icons_plugin_C24GcIKjcI2zsa8A86om0L2LZjx1chWtzYxD11T7Txg = /* @__PURE__ */ defineNuxtPlugin(() => {
+const pwa_icons_plugin_OtOZ6CGly_Vz5_PCGGLA9qHLz2Y5_d5czYAX7q_3Lug = /* @__PURE__ */ defineNuxtPlugin(() => {
   return {
     provide: {
       pwaIcons: {
@@ -3125,8 +3125,8 @@ const plugins = [
   unhead_k2P3m_ZDyjlr2mMYnoDPwavjsDN8hBlk9cFai0bbopU,
   plugin,
   revive_payload_server_MVtmlZaQpj6ApFmshWfUWl5PehCebzaBf2NuRMiIbms,
-  components_plugin_z4hgvsiddfKkfXTP6M8M4zG5Cb7sGnDhcryKVM45Di4,
-  pwa_icons_plugin_C24GcIKjcI2zsa8A86om0L2LZjx1chWtzYxD11T7Txg,
+  components_plugin_4kY4pyzJIYX99vmMAAIorFf3CnAaptHitJgf7JxiED8,
+  pwa_icons_plugin_OtOZ6CGly_Vz5_PCGGLA9qHLz2Y5_d5czYAX7q_3Lug,
   colors_E7kSti5pGZ28QhUUurq6gGRU3l65WuXO_KJC3GQgzFo,
   plugin_MeUvTuoKUi51yb_kBguab6hdcExVXeTtZtTg9TZZBB8,
   plugin_server_9Ca9_HhnjAGwBWpwAydRauMHxWoxTDY60BrArRnXN_A,
@@ -4286,7 +4286,7 @@ const getImage = (src, { modifiers = {}, baseURL: baseURL2 } = {}, ctx) => {
 };
 const validateDomains = true;
 const supportsAlias = true;
-const ipxRuntime$_80Zjes55n0mOUim1TctuZwgzFEVULqt9129Sz5Z2yZ4 = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+const ipxRuntime$MfK6NR4J35lspZ4NwbOnDbcKaAYkj2x3DiiAaTuRxqY = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   getImage,
   operationsGenerator,
@@ -4317,7 +4317,7 @@ const imageOptions = {
     ]
   },
   providers: {
-    ["ipx"]: { provider: ipxRuntime$_80Zjes55n0mOUim1TctuZwgzFEVULqt9129Sz5Z2yZ4, defaults: {} }
+    ["ipx"]: { provider: ipxRuntime$MfK6NR4J35lspZ4NwbOnDbcKaAYkj2x3DiiAaTuRxqY, defaults: {} }
   }
 };
 const useImage = (event) => {
@@ -7554,7 +7554,7 @@ _sfc_main$3.setup = (props, ctx) => {
 };
 const __nuxt_component_0 = Object.assign(_sfc_main$3, { __name: "UApp" });
 const layouts = {
-  default: defineAsyncComponent(() => import('./default-YjL8EAbA.mjs').then((m) => m.default || m))
+  default: defineAsyncComponent(() => import('./default-D5eeCbcL.mjs').then((m) => m.default || m))
 };
 const LayoutLoader = defineComponent({
   name: "LayoutLoader",
@@ -7684,7 +7684,7 @@ const LayoutProvider = defineComponent({
   }
 });
 const pwaInfo = { "webManifest": { "href": "/manifest.webmanifest" } };
-const __nuxt_component_2 = defineComponent({
+const __nuxt_component_3 = defineComponent({
   async setup() {
     if (pwaInfo) {
       const meta = ref({ link: [] });
@@ -7735,7 +7735,7 @@ const defineRouteProvider = (name = "RouteProvider") => defineComponent({
   }
 });
 const RouteProvider = defineRouteProvider();
-const __nuxt_component_3 = defineComponent({
+const __nuxt_component_4 = defineComponent({
   name: "NuxtPage",
   inheritAttrs: false,
   props: {
@@ -7797,8 +7797,9 @@ const _sfc_main$2 = {};
 function _sfc_ssrRender(_ctx, _push, _parent, _attrs) {
   const _component_UApp = __nuxt_component_0;
   const _component_NuxtLayout = __nuxt_component_1;
-  const _component_VitePwaManifest = __nuxt_component_2;
-  const _component_NuxtPage = __nuxt_component_3;
+  const _component_VitePwaManifest = __nuxt_component_3;
+  const _component_NuxtPwaManifest = __nuxt_component_3;
+  const _component_NuxtPage = __nuxt_component_4;
   _push(`<div${ssrRenderAttrs(_attrs)}>`);
   _push(ssrRenderComponent(_component_UApp, null, {
     default: withCtx((_, _push2, _parent2, _scopeId) => {
@@ -7807,10 +7808,12 @@ function _sfc_ssrRender(_ctx, _push, _parent, _attrs) {
           default: withCtx((_2, _push3, _parent3, _scopeId2) => {
             if (_push3) {
               _push3(ssrRenderComponent(_component_VitePwaManifest, null, null, _parent3, _scopeId2));
+              _push3(ssrRenderComponent(_component_NuxtPwaManifest, null, null, _parent3, _scopeId2));
               _push3(ssrRenderComponent(_component_NuxtPage, null, null, _parent3, _scopeId2));
             } else {
               return [
                 createVNode(_component_VitePwaManifest),
+                createVNode(_component_NuxtPwaManifest),
                 createVNode(_component_NuxtPage)
               ];
             }
@@ -7822,6 +7825,7 @@ function _sfc_ssrRender(_ctx, _push, _parent, _attrs) {
           createVNode(_component_NuxtLayout, null, {
             default: withCtx(() => [
               createVNode(_component_VitePwaManifest),
+              createVNode(_component_NuxtPwaManifest),
               createVNode(_component_NuxtPage)
             ]),
             _: 1

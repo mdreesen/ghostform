@@ -195,20 +195,34 @@ const UserModel = mongoose.models.User || mongoose.model("User", userSchema);
 
 const User = UserModel;
 async function useUser(data) {
-  try {
-    await connectDB();
-    const findUser = await User.find({ email_hashed: data.company_email }).lean();
-    if (findUser[0]) {
-      return findUser[0];
-    }
-    ;
-  } catch (error) {
-    console.log(error);
+  if (!(data == null ? void 0 : data.company_email)) {
     throw createError({
-      statusCode: 500,
-      statusMessage: "Something went wrong."
+      statusCode: 400,
+      message: "Form is missing its company_email parameter \u2014 the link is incomplete."
     });
   }
+  try {
+    await connectDB();
+  } catch (error) {
+    console.error("[lead] Mongo connection failed:", error);
+    throw createError({
+      statusCode: 503,
+      message: "Database unavailable. Check MONGO_URI."
+    });
+  }
+  const findUser = await User.findOne({ email_hashed: data.company_email }).lean();
+  if (!findUser) {
+    console.error(
+      "[lead] No company matched email_hashed:",
+      String(data.company_email).slice(0, 12) + "\u2026",
+      "- the form link may be stale, or the account regenerated its hash."
+    );
+    throw createError({
+      statusCode: 404,
+      message: "This form is not linked to an active account. Regenerate the form link."
+    });
+  }
+  return findUser;
 }
 
 function date() {
@@ -263,55 +277,82 @@ const LeadModel = mongoose.models.Lead || mongoose.model("Lead", leadSchema);
 
 const Lead = LeadModel;
 async function useLead(companyId, companyEmail, companyName, answers) {
+  if (!companyId) {
+    throw createError({
+      statusCode: 400,
+      message: "Cannot save a lead without a company id."
+    });
+  }
   try {
     await connectDB();
-    await Lead.create({ userId: companyId, company_email: companyEmail, company_name: companyName, ...answers, date: date() });
+    const created = await Lead.create({
+      userId: companyId,
+      company_email: companyEmail,
+      company_name: companyName,
+      ...answers,
+      date: date()
+    });
+    return created;
   } catch (error) {
-    console.log(error);
+    if ((error == null ? void 0 : error.name) === "ValidationError") {
+      const fields = Object.keys(error.errors || {}).join(", ");
+      console.error("[lead] Validation failed on:", fields, error.message);
+      throw createError({
+        statusCode: 400,
+        message: `Lead rejected \u2014 invalid or missing: ${fields || "unknown field"}`
+      });
+    }
+    console.error("[lead] Save failed:", error);
     throw createError({
       statusCode: 500,
-      statusMessage: "Something went wrong."
+      message: (error == null ? void 0 : error.message) || "Could not save the lead."
     });
   }
 }
 
 const index_post = defineEventHandler(async (event) => {
-  var _a;
+  var _a, _b;
+  const formData = await readMultipartFormData(event);
+  const answersPart = formData == null ? void 0 : formData.find((item) => item.name === "answers");
+  const companyPart = formData == null ? void 0 : formData.find((item) => item.name === "company");
+  const imagePart = formData == null ? void 0 : formData.find((item) => item.name === "image");
+  let answers = leadData;
+  let company = companyData;
   try {
-    const formData = await readMultipartFormData(event);
-    const answersPart = formData == null ? void 0 : formData.find((item) => item.name === "answers");
-    const companyPart = formData == null ? void 0 : formData.find((item) => item.name === "company");
-    let answers = leadData;
-    let company = companyData;
-    if (answersPart) {
-      const jsonString = answersPart.data.toString("utf-8");
-      answers = JSON.parse(jsonString);
-    }
-    ;
-    if (companyPart) {
-      const jsonString = companyPart.data.toString("utf-8");
-      company = JSON.parse(jsonString);
-    }
-    ;
-    if (!(answers == null ? void 0 : answers.email)) throw createError({ statusCode: 400, message: "Missing data: Need email" });
-    const findCompany = await useUser(company);
-    const imagePart = formData == null ? void 0 : formData.find((item) => item.name === "image");
-    const companyId = findCompany == null ? void 0 : findCompany._id;
-    const companyEmail = findCompany == null ? void 0 : findCompany.email;
-    const companyName = (_a = findCompany == null ? void 0 : findCompany.company) != null ? _a : "NoReply";
-    const leadEmail = answers == null ? void 0 : answers.email;
-    await useLead(companyId, companyEmail, companyName, answers);
-    await emailLead(companyName, leadEmail);
-    await emailCompany(answers, companyEmail, imagePart);
-    return { status: "success" };
+    if (answersPart) answers = JSON.parse(answersPart.data.toString("utf-8"));
+    if (companyPart) company = JSON.parse(companyPart.data.toString("utf-8"));
   } catch (error) {
-    if (error instanceof Error) {
-      console.error("Validation Details:", JSON.stringify(error.cause, null, 2));
-    } else {
-      console.log("An unknown error occurred");
-    }
-    throw error;
+    throw createError({ statusCode: 400, message: "Malformed form payload." });
   }
+  if (!(answers == null ? void 0 : answers.email)) {
+    throw createError({ statusCode: 400, message: "Missing data: Need email" });
+  }
+  const findCompany = await useUser(company);
+  const companyId = findCompany == null ? void 0 : findCompany._id;
+  const companyEmail = findCompany == null ? void 0 : findCompany.email;
+  const companyName = (_a = findCompany == null ? void 0 : findCompany.company) != null ? _a : "NoReply";
+  const leadEmail = answers == null ? void 0 : answers.email;
+  const savedLead = await useLead(companyId, companyEmail, companyName, answers);
+  const notifications = await Promise.allSettled([
+    emailLead(companyName, leadEmail),
+    emailCompany(answers, companyEmail, imagePart)
+  ]);
+  notifications.forEach((result, i) => {
+    var _a2;
+    if (result.status === "rejected") {
+      console.error(
+        `[lead] Notification ${i === 0 ? "to lead" : "to company"} failed:`,
+        ((_a2 = result.reason) == null ? void 0 : _a2.message) || result.reason
+      );
+    }
+  });
+  const emailsFailed = notifications.some((n) => n.status === "rejected");
+  return {
+    status: "success",
+    leadId: String((_b = savedLead == null ? void 0 : savedLead._id) != null ? _b : ""),
+    // Surfaced so the UI could warn if desired; the capture itself is safe.
+    emailsFailed
+  };
 });
 
 export { index_post as default };
