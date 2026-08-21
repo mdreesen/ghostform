@@ -1,26 +1,84 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
 
+/* ============================================================
+   GHOSTFORM CAPTURE — design tokens
+   Matched to the dashboard: warm cream paper, warm near-black
+   ink, a single terracotta accent, olive small-caps labels.
+   Fraunces for display, Inter for everything else.
+
+   Colours are driven by CSS variables so a realtor can override
+   background/font/accent via query params without us shipping a
+   second stylesheet.
+   ============================================================ */
+
+@theme {
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
 html {
   height: 100%;
   width: 100%;
-  align-content: center;
+  /* Sensible fallbacks; the layout overrides these from query params. */
+  --gf-bg: #F7F4EF;
+  --gf-fg: #1F1B16;
+  --gf-accent: #B5563A;
+  --gf-muted: #8A847C;
+  --gf-hair: #DDD6C9;
+
+  --ui-bg: var(--gf-bg);
+  --ui-text: var(--gf-fg);
 }
 
 body {
   height: 100%;
   width: 100%;
-  align-content: center;
+  background: var(--gf-bg);
+  color: var(--gf-fg);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
-/* body {
-    min-height: 100vh;
-};
 
-textarea {
-  field-sizing: content;
-};
+.gf-display {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
 
-html {
-  background: none !important;
-  background-color: transparent !important;
-} */
+.gf-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+/* Inputs inherit the realtor's colours rather than hardcoding. */
+.gf-input {
+  width: 100%;
+  background: transparent;
+  color: var(--gf-fg);
+  border: 0;
+  border-bottom: 1px solid var(--gf-hair);
+  padding: 10px 0;
+  font-size: 20px;
+  outline: none;
+  transition: border-color 0.25s ease;
+}
+.gf-input::placeholder { color: var(--gf-muted); opacity: 0.7; }
+.gf-input:focus { border-bottom-color: var(--gf-accent); }
+
+/* Remove the number spinner — it's noise on a phone. */
+.gf-input[type="number"]::-webkit-outer-spin-button,
+.gf-input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.gf-input[type="number"] { -moz-appearance: textfield; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    transition-duration: .001ms !important;
+  }
+}

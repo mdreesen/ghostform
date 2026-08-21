@@ -6,6 +6,7 @@ import { errors } from '~/lib/errors';
 import { useQuestions } from '~/composables/useQuestions';
 import { useFormOffline } from '~/composables/useOffline';
 import { useFormConfig } from '~/composables/useFormConfig';
+import { validateField, isRequired, inputAttrs } from '~/utils/validation';
 // Example configured link:
 // /?category=realtor&source=default&id=<userId>&company_name=<hash>&company_email=<hash>&calendar=<url>&background_color=#09090B&font_color=#FFFFFF
 // http://localhost:3000/?category=realtor&source=default&id=6a037a5ef945b9b2ca73a93d&company_name=$2b$15$eXsdK5TP.TC/M8QXsUuwh.bddChSOn8vckNGoWzXljfIktJ9Zs80y&company_email=$2b$15$8kJfxGFr8anR5xLRxFSIeO8KnG2zH4asf27ZpRjz1X6xhFcmFORCq&calendar=https://calendly.com/whiteravendev90/30min&background_color=#09090B&font_color=#FFFFFF
@@ -20,8 +21,8 @@ const props = defineProps({
 // Resolve config from the URL, or fall back to what we saved on a previous
 // online visit. This is what lets the form open with NO query params at all —
 // from a home-screen icon, or offline where the link can't be re-fetched.
-const { resolveConfig, listConfigs } = useFormConfig();
-const { config, fromCache } = resolveConfig(props.routeData);
+const { resolveConfig } = useFormConfig();
+const { config } = resolveConfig(props.routeData);
 
 const notConfigured = computed(() => !config);
 
@@ -32,7 +33,6 @@ const company_name = config?.company_name ?? '';
 const company_email = config?.company_email ?? '';
 const calendar = config?.calendar;
 const use_image_upload = config?.use_image_upload;
-const usingSavedConfig = fromCache;
 const step = ref(0);
 const answers = ref(leadData(category).data);
 const company = ref({ category: category, id: id, company_name: company_name, company_email: company_email });
@@ -94,7 +94,48 @@ const backStep = () => {
     if (step.value >= 1) step.value--;
 }
 
+// Inline validation for the CURRENT step. The lead is stopped here rather than
+// at submit — failing at the end, after they've answered everything, is the
+// worst place to fail.
+const fieldError = ref('');
+const touched = ref(false);
+
+const currentField = computed(() => questions?.value?.[step.value]);
+const currentValue = computed(() => answers.value[currentField.value?.id]);
+const currentRequired = computed(() => isRequired(currentField.value?.id));
+
+// Live-check once they've attempted to move on, so the error clears as they fix
+// it rather than nagging while they're still typing the first character.
+watch(currentValue, () => {
+    if (!touched.value) return;
+    const res = validateField(currentField.value?.id, currentValue.value);
+    fieldError.value = res.valid ? '' : (res.message || '');
+});
+
+// Reset per-step state when the question changes.
+watch(step, () => {
+    fieldError.value = '';
+    touched.value = false;
+});
+
 const nextStep = () => {
+    const field = currentField.value;
+    const result = validateField(field?.id, answers.value[field?.id]);
+
+    if (!result.valid) {
+        touched.value = true;
+        fieldError.value = result.message || 'Please check this.';
+        // Put focus back so they can correct it without hunting for the field.
+        nextTick(() => {
+            const el = document.getElementById(field?.id) as HTMLInputElement | null;
+            el?.focus();
+        });
+        return;
+    }
+
+    fieldError.value = '';
+    touched.value = false;
+
     if (step.value < questions?.value?.length - 1) step.value++
     else submitForm()
 }
@@ -163,79 +204,136 @@ const submitForm = async () => {
 </script>
 
 <template>
-    <div :class="`w-105 h-135 flex items-center justify-center p-6 font-sans rounded-4xl drop-shadow-2xl`">
+    <div class="w-full max-w-[440px] mx-auto px-6 py-8 font-sans">
 
         <!-- First-ever open with no link and nothing saved: we genuinely can't
              tell which realtor this lead belongs to, so say so plainly rather
              than collecting a lead we'd have to throw away. -->
-        <div v-if="notConfigured" class="max-w-md w-full text-center space-y-3">
-            <p class="text-xl font-medium">This form isn't set up yet</p>
-            <p class="text-sm opacity-70 leading-relaxed">
+        <div v-if="notConfigured" class="text-center py-10">
+            <p class="gf-display text-[26px] mb-3">This form isn't set up yet</p>
+            <p class="text-[14px] leading-relaxed" style="color: var(--gf-muted)">
                 Open your GhostForm link once while you have signal. After that it
                 works offline, and you can add it to your home screen.
             </p>
         </div>
 
-        <div v-else-if="!aiResult" class="max-w-md w-full space-y-4">
-            <!-- Connection state: reassures the realtor BEFORE they lose signal
-                 that captures will still be saved. -->
-            <div class="flex items-center gap-2 text-[11px] tracking-wide opacity-70">
+        <div v-else-if="!aiResult">
+
+            <!-- Connection state. Shown BEFORE signal is lost so the realtor
+                 trusts that a capture will survive a dead zone. -->
+            <div class="flex items-center gap-2.5 mb-8">
                 <span
-                    class="w-1.5 h-1.5 rounded-full"
-                    :class="isOnline ? 'bg-emerald-400' : 'bg-amber-400'"
+                    class="w-1.5 h-1.5 rounded-full shrink-0"
+                    :style="{ background: isOnline ? 'var(--gf-accent)' : 'var(--gf-muted)' }"
                 />
-                <span v-if="isOnline">Online{{ usingSavedConfig ? ' · saved setup' : '' }}</span>
-                <span v-else>Offline — leads are saved and sent when signal returns</span>
+                <span class="gf-eyebrow" style="color: var(--gf-muted)">
+                    <template v-if="isOnline">Secure form</template>
+                    <template v-else>Offline — saved and sent when signal returns</template>
+                </span>
             </div>
 
-            <div class="h-1 bg-zinc-800 rounded-full">
-                <div class="h-1 bg-blue-500 transition-all duration-500"
-                    :style="{ width: `${((step + 1) / questions?.length) * 100}%` }"></div>
+            <!-- Progress: a counter plus a hairline rule. Reads as an
+                 ordered document rather than a loading bar. -->
+            <div class="flex items-baseline justify-between mb-3">
+                <span class="gf-eyebrow" style="color: var(--gf-muted)">
+                    {{ String(step + 1).padStart(2, '0') }} — {{ String(questions?.length || 0).padStart(2, '0') }}
+                </span>
+                <span class="gf-eyebrow" style="color: var(--gf-muted)">
+                    {{ Math.round(((step + 1) / (questions?.length || 1)) * 100) }}%
+                </span>
+            </div>
+            <div class="h-px w-full mb-10" style="background: var(--gf-hair)">
+                <div
+                    class="h-px transition-all duration-500 ease-out"
+                    :style="{ width: `${((step + 1) / (questions?.length || 1)) * 100}%`, background: 'var(--gf-accent)' }"
+                />
             </div>
 
+            <!-- The question -->
             <transition name="fade" mode="out-in">
-                <div :key="step" class="space-y-4">
-                    <label class="block text-2xl font-medium">{{ questions[step]?.label }}</label>
-                    <input v-model="answers[questions[step]?.id]" :type="questions[step]?.type" @keyup.enter="nextStep"
+                <div :key="step">
+                    <label
+                        :for="questions[step]?.id"
+                        class="gf-display block text-[27px] leading-[1.2] mb-2"
+                    >
+                        {{ questions[step]?.label }}
+                    </label>
+
+                    <!-- Say up front which answers are needed, rather than
+                         only revealing it when they try to move on. -->
+                    <p class="gf-eyebrow mb-6" style="color: var(--gf-muted)">
+                        {{ currentRequired ? 'Required' : 'Optional — skip if you like' }}
+                    </p>
+
+                    <input
+                        :id="questions[step]?.id"
+                        v-model="answers[questions[step]?.id]"
+                        v-bind="inputAttrs(questions[step]?.id, questions[step]?.type)"
                         :name="questions[step]?.id"
-                        class="w-full bg-transparent border-b-2 border-white py-2 text-xl focus:border-blue-500 outline-none transition-colors"
-                        autofocus />
+                        :aria-invalid="Boolean(fieldError)"
+                        :aria-describedby="fieldError ? `${questions[step]?.id}-error` : undefined"
+                        class="gf-input"
+                        :style="fieldError ? { borderBottomColor: 'var(--gf-accent)' } : undefined"
+                        autofocus
+                        @keyup.enter="nextStep"
+                    />
+
+                    <!-- Inline, directly under the field it refers to -->
+                    <p
+                        v-if="fieldError"
+                        :id="`${questions[step]?.id}-error`"
+                        class="text-[13px] mt-3 leading-relaxed"
+                        style="color: var(--gf-accent)"
+                        role="alert"
+                    >
+                        {{ fieldError }}
+                    </p>
                 </div>
             </transition>
 
             <baseLoading v-if="loading" class="z-10" />
 
-            <div class="w-full">
+            <!-- Actions -->
+            <div class="mt-10">
+                <div class="flex items-center gap-3">
+                    <button
+                        v-if="step > 0"
+                        class="px-5 py-3.5 text-[11px] uppercase tracking-[0.12em] font-semibold transition-colors"
+                        style="border: 1px solid var(--gf-hair); color: var(--gf-muted)"
+                        @click="backStep"
+                    >
+                        Back
+                    </button>
 
-                <div class="flex w-full justify-between gap-5">
-                    <baseButton v-if="use_image_upload" :text="useUploadImage ? 'Cancel Upload' : 'Upload an image'"
-                        @click="useUploadImage = !useUploadImage" />
-
-                    <div class="bg-blue-600 w-full justify-evenly px-6 py-2 rounded-lg flex gap-2 items-center">
-                        <button class="hover:bg-blue-500 transition w-full h-7.5" @click="backStep">
-                            Back
-                        </button>
-
-                        <span>|</span>
-
-                        <button class="hover:bg-blue-500 transition w-full h-7.5" @click="nextStep">
-                            {{ step === questions?.length - 1 ? 'Finish' : 'Next' }}
-                        </button>
-
-                    </div>
+                    <button
+                        class="flex-1 px-6 py-3.5 text-[11px] uppercase tracking-[0.12em] font-semibold transition-opacity hover:opacity-90"
+                        :style="{ background: 'var(--gf-accent)', color: 'var(--gf-bg)' }"
+                        @click="nextStep"
+                    >
+                        {{ step === questions?.length - 1 ? 'Send it' : 'Next' }}
+                    </button>
                 </div>
 
-                <div v-if="useUploadImage">
+                <button
+                    v-if="use_image_upload"
+                    class="mt-4 gf-eyebrow transition-opacity hover:opacity-70"
+                    style="color: var(--gf-muted)"
+                    @click="useUploadImage = !useUploadImage"
+                >
+                    {{ useUploadImage ? '— Cancel upload' : '+ Add a photo' }}
+                </button>
+
+                <div v-if="useUploadImage" class="mt-5">
                     <appImageUpload @file-selected="handleImageSelection" />
                 </div>
             </div>
 
-            <div v-if="setError">
+            <div v-if="setError" class="mt-6">
                 <baseError :message="errors(setError)" />
             </div>
         </div>
 
-        <div v-else class="w-70">
+        <div v-else>
             <appSuccess :show="showSuccess" :email="userEmail" :calendar="calendar" />
         </div>
     </div>

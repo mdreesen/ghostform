@@ -14,14 +14,14 @@ const props = defineProps({
 </script>
 
 <template>
-    <div class="bg-blue-600 px-6 py-2 rounded-lg flex gap-2 items-center">
-        <button class="hover:bg-blue-500 transition">
+    <div class="flex gap-3 items-center w-full">
+        <button class="flex-1 px-5 py-3.5 text-[11px] uppercase tracking-[0.12em] font-semibold transition-opacity hover:opacity-90" :style="{ background: 'var(--gf-accent)', color: 'var(--gf-bg)' }">
         {{ props.textOne }}
     </button>
 
     <span>|</span>
 
-    <button class="hover:bg-blue-500 transition">
+    <button class="flex-1 px-5 py-3.5 text-[11px] uppercase tracking-[0.12em] font-semibold transition-opacity hover:opacity-90" :style="{ background: 'var(--gf-accent)', color: 'var(--gf-bg)' }">
         {{ props.textTwo }}
     </button>
 
