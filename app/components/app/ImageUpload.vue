@@ -23,32 +23,30 @@ const handleFileChange = (e: Event) => {
 </script>
 
 <template>
-  <div class="max-w-xl mx-auto p-6 space-y-6">
+  <div class="w-full space-y-5">
     <div @click="fileInput?.click()"
-      class="group relative border-2 border-dashed border-zinc-800 rounded-2xl p-6 text-center hover:border-blue-500/50 transition-all cursor-pointer bg-zinc-900/50">
+      class="group relative p-7 text-center cursor-pointer transition-colors" style="border: 1px dashed var(--gf-hair)">
       <input type="file" ref="fileInput" class="hidden" accept="image/*" @change="handleFileChange" />
 
       <div v-if="!previewUrl" class="space-y-2">
         <div class="text-4xl">
         </div>
-        <p class="text-zinc-400 font-medium text-lg">Drop your project photo here</p>
-        <p class="text-zinc-600 text-sm italic">or click to browse</p>
-        <NuxtImg class="relative z-10 h-12 w-full object-contain drop-shadow-md" :src="'/images/logo-icon.webp'" format="webp"
-        preload loading="eager" fetch-priority="high" />
+        <p class="text-[15px]" style="color: var(--gf-fg)">Add a photo</p>
+        <p class="text-[12.5px] mt-1" style="color: var(--gf-muted)">Tap to choose one</p>
       </div>
 
-      <img v-else :src="previewUrl" class="mx-auto max-h-35 rounded-xl shadow-2xl" />
+      <img v-else :src="previewUrl" class="mx-auto max-h-36 object-contain" />
 
 
       <baseLoading v-if="isUploading" />
     </div>
 
     <transition name="fade">
-      <div v-if="analysis" class="bg-zinc-900 border border-zinc-800 p-6 rounded-2xl shadow-xl">
-        <h3 class="text-blue-400 font-bold mb-3 flex items-center gap-2">
+      <div v-if="analysis" class="p-6" style="border: 1px solid var(--gf-hair)">
+        <h3 class="gf-eyebrow mb-3 flex items-center gap-2" style="color: var(--gf-accent)">
           <span>✨</span> Ghost AI Analysis
         </h3>
-        <p class="text-zinc-300 leading-relaxed">{{ analysis }}</p>
+        <p class="text-[14px] leading-relaxed" style="color: var(--gf-fg)">{{ analysis }}</p>
       </div>
     </transition>
   </div>

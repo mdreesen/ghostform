@@ -2,65 +2,79 @@
 import confetti from 'canvas-confetti';
 
 const props = defineProps({
-    show: {
-        type: Boolean,
-        required: true,
-    },
-    email: {
-        type: String,
-        default: '',
-    },
-    calendar: {
-        type: String,
-    },
+    show: { type: Boolean, required: true },
+    email: { type: String, default: '' },
+    calendar: { type: String },
 })
 
-const emit = defineEmits(['close']);
+/**
+ * Confetti recoloured to the form's own palette. Reading the CSS variables at
+ * runtime means it matches whatever colours the realtor configured, rather than
+ * firing cyan and purple over a warm cream form.
+ */
+function paletteColors(): string[] {
+    if (!import.meta.client) return ['#B5563A']
+    const styles = getComputedStyle(document.documentElement)
+    const accent = styles.getPropertyValue('--gf-accent').trim() || '#B5563A'
+    const fg = styles.getPropertyValue('--gf-fg').trim() || '#1F1B16'
+    return [accent, fg, '#C9866F']
+}
 
-// Trigger confetti when the modal opens
 watch(() => props.show, (newVal) => {
-  if (newVal) {
+    if (!newVal) return
     confetti({
-      particleCount: 150,
-      spread: 70,
-      origin: { y: 0.6 },
-      colors: ['#00F2FF', '#7000FF', '#ffffff']
-    });
-  }
-});
+        particleCount: 90,
+        spread: 62,
+        startVelocity: 34,
+        gravity: 0.9,
+        scalar: 0.9,
+        origin: { y: 0.55 },
+        colors: paletteColors()
+    })
+})
 </script>
 
 <template>
-  <Transition name="ghost-modal">
-    <div class="fixed inset-0 z-100 flex items-center justify-center p-6 bg-black/80 backdrop-blur-sm">
-      <div class="relative w-full bg-zinc-900 border border-white/10 p-8 rounded-[2.5rem] text-center shadow-2xl">
-        
-        <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-cyan-500/20 blur-2xl rounded-full"></div>
-        
-        <div class="relative w-20 h-20 bg-linear-to-br from-cyan-400 to-blue-600 rounded-2xl mx-auto mb-6 flex items-center justify-center shadow-lg rotate-3">
-          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+    <Transition name="ghost-modal">
+        <div class="w-full text-center py-6">
+
+            <!-- A simple rule and a tick, rather than a glowing gradient tile -->
+            <div
+                class="w-14 h-14 mx-auto mb-7 flex items-center justify-center rounded-full"
+                :style="{ background: 'var(--gf-accent)' }"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24"
+                    fill="none" stroke="var(--gf-bg)" stroke-width="3"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 6 9 17l-5-5" />
+                </svg>
+            </div>
+
+            <h3 class="gf-display text-[28px] mb-3">Thank you</h3>
+
+            <p class="text-[14.5px] leading-relaxed mb-9 max-w-[34ch] mx-auto" style="color: var(--gf-muted)">
+                We've sent a confirmation to
+                <span :style="{ color: 'var(--gf-fg)' }">{{ email }}</span>.
+                You'll hear back shortly.
+            </p>
+
+            <div v-if="calendar" class="pt-7" style="border-top: 1px solid var(--gf-hair)">
+                <p class="gf-eyebrow mb-4" style="color: var(--gf-muted)">Rather not wait?</p>
+                <baseButtonNavigate :href="calendar" text="Book a time directly" />
+            </div>
         </div>
-
-        <h3 class="text-2xl font-black mb-2">Submission Sent!</h3>
-        <p class="text-zinc-400 text-sm mb-8 leading-relaxed">
-          Your inquiry has been sent! We've sent a confirmation to <span class="text-cyan-400 font-bold">{{ email }}</span>.
-        </p>
-
-        <baseButtonNavigate v-if="calendar" :href="calendar" text="Book an appointment here." />
-      </div>
-    </div>
-  </Transition>
+    </Transition>
 </template>
 
 <style scoped>
 .ghost-modal-enter-active,
 .ghost-modal-leave-active {
-  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .ghost-modal-enter-from,
 .ghost-modal-leave-to {
-  opacity: 0;
-  transform: scale(0.9) translateY(20px);
+    opacity: 0;
+    transform: translateY(12px);
 }
 </style>
