@@ -103,7 +103,6 @@ const submitForm = async () => {
   loading.value = true
   setError.value = ''
 
-  // 📵 INTERCEPT & LOG LOCALLY IF DEVICE IS OFFLINE
   if (!navigator.onLine) {
     const stagedSuccess = await stageFormOffline(category, answers.value, company.value, useFile.value)
     if (stagedSuccess) {
