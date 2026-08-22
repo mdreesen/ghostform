@@ -25,6 +25,7 @@ const leadSchema = new Schema({
     budget: Number,
     notes: String,
     seeing_an_agent: String,
+    data_kind: String,
     ai_analysis: String,
     status: { type: String, default: 'new' },
     date: { type: String, default: () => new Date().toISOString() },
