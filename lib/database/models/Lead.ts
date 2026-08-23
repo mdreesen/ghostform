@@ -25,8 +25,30 @@ const leadSchema = new Schema({
     budget: Number,
     notes: String,
     seeing_an_agent: String,
+
+    // ── Qualification (the deep-dive questionnaire) ──────────────
+    // Sent once a lead gets serious. Answers are keyed by question id
+    // (q_timeline, q_financing, ...) — see server/utils/qualificationQuestions.ts
+    qualification: {
+      sentAt: Date,
+      completedAt: Date,
+      intent: String,              // 'buy' | 'sell'
+      answers: { type: Object, default: {} }
+    },
+    // Cached analysis so the dashboard doesn't re-run (and re-bill) the model
+    // on every page view. Regenerated only when asked or on new answers.
+    analysis: {
+      readiness: Number,
+      readinessLabel: String,
+      financingRisk: String,
+      signals: [String],
+      gaps: [String],
+      read: String,
+      nextSteps: [String],
+      source: String,
+      generatedAt: Date
+    },
     ai_analysis: String,
-    data_kind: String,
     status: { type: String, default: 'new' },
     date: { type: String, default: () => new Date().toISOString() },
     reminderSent: { type: Boolean, default: false },

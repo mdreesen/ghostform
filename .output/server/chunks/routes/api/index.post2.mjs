@@ -323,8 +323,30 @@ const leadSchema = new Schema({
   budget: Number,
   notes: String,
   seeing_an_agent: String,
+  // ── Qualification (the deep-dive questionnaire) ──────────────
+  // Sent once a lead gets serious. Answers are keyed by question id
+  // (q_timeline, q_financing, ...) — see server/utils/qualificationQuestions.ts
+  qualification: {
+    sentAt: Date,
+    completedAt: Date,
+    intent: String,
+    // 'buy' | 'sell'
+    answers: { type: Object, default: {} }
+  },
+  // Cached analysis so the dashboard doesn't re-run (and re-bill) the model
+  // on every page view. Regenerated only when asked or on new answers.
+  analysis: {
+    readiness: Number,
+    readinessLabel: String,
+    financingRisk: String,
+    signals: [String],
+    gaps: [String],
+    read: String,
+    nextSteps: [String],
+    source: String,
+    generatedAt: Date
+  },
   ai_analysis: String,
-  data_kind: String,
   status: { type: String, default: "new" },
   date: { type: String, default: () => (/* @__PURE__ */ new Date()).toISOString() },
   reminderSent: { type: Boolean, default: false },
@@ -393,41 +415,6 @@ async function useLead(companyId, companyEmail, companyName, answers) {
     });
   }
 }
-async function useLeadUpdate(companyId, companyEmail, companyName, answers) {
-  if (!companyId) {
-    throw createError({
-      statusCode: 400,
-      message: "Cannot save a lead without a company id."
-    });
-  }
-  try {
-    await connectDB();
-    await Lead.findOneAndUpdate(
-      { email: answers == null ? void 0 : answers.email },
-      {
-        userId: companyId,
-        company_email: companyEmail,
-        company_name: companyName,
-        ...answers
-      },
-      { new: true }
-    );
-  } catch (error) {
-    if ((error == null ? void 0 : error.name) === "ValidationError") {
-      const fields = Object.keys(error.errors || {}).join(", ");
-      console.error("[lead] Validation failed on:", fields, error.message);
-      throw createError({
-        statusCode: 400,
-        message: `Lead rejected \u2014 invalid or missing: ${fields || "unknown field"}`
-      });
-    }
-    console.error("[lead] Save failed:", error);
-    throw createError({
-      statusCode: 500,
-      message: (error == null ? void 0 : error.message) || "Could not save the lead."
-    });
-  }
-}
 
 const index_post = defineEventHandler(async (event) => {
   var _a, _b;
@@ -451,9 +438,6 @@ const index_post = defineEventHandler(async (event) => {
   const companyEmail = findCompany == null ? void 0 : findCompany.email;
   const companyName = (_a = findCompany == null ? void 0 : findCompany.company) != null ? _a : "NoReply";
   const leadEmail = answers == null ? void 0 : answers.email;
-  if (answers.source.includes("data_active")) {
-    await useLeadUpdate(companyId, companyEmail, companyName, answers);
-  }
   const savedLead = await useLead(companyId, companyEmail, companyName, answers);
   const notifications = await Promise.allSettled([
     emailLead(companyName, leadEmail),

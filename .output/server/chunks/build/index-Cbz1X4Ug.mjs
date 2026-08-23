@@ -1,5 +1,5 @@
-import { defineComponent, mergeProps, unref, computed, ref, watch, useSSRContext } from 'vue';
-import { ssrRenderComponent, ssrRenderAttrs, ssrRenderStyle, ssrInterpolate, ssrRenderAttr, ssrGetDynamicModelProps } from 'vue/server-renderer';
+import { defineComponent, computed, unref, ref, watch, mergeProps, useSSRContext } from 'vue';
+import { ssrRenderComponent, ssrRenderAttrs, ssrRenderStyle, ssrInterpolate, ssrRenderAttr, ssrRenderList, ssrRenderDynamicModel, ssrIncludeBooleanAttr, ssrGetDynamicModelProps } from 'vue/server-renderer';
 import { _ as _export_sfc, u as useRoute } from './server.mjs';
 import confetti from 'canvas-confetti';
 import Dexie from 'dexie';
@@ -31,6 +31,155 @@ import 'unhead/server';
 import 'devalue';
 import 'unhead/utils';
 
+const FIELD_RULES = {
+  // The email IS the lead — without it the realtor can't follow up and the
+  // server rejects the submission outright.
+  email: { required: true, rule: "email" },
+  name: { required: true, rule: "name" },
+  // Optional, but if they typed something it should be dialable.
+  phone: { required: false, rule: "phone" },
+  age: { required: false, rule: "number" },
+  price: { required: false, rule: "number" },
+  sqft: { required: false, rule: "number" },
+  bedrooms: { required: false, rule: "number" },
+  bathrooms: { required: false, rule: "number" },
+  budget: { required: false, rule: "number" }
+};
+const EMAIL_RE = /^[^\s@]+@[^\s@.]+(\.[^\s@.]+)+$/;
+function digitCount(value) {
+  return (value.match(/\d/g) || []).length;
+}
+function validateField(fieldId, raw) {
+  const config = FIELD_RULES[fieldId];
+  const value = (raw ?? "").toString().trim();
+  if (!config) return { valid: true };
+  if (!value) {
+    return config.required ? { valid: false, message: requiredMessage(fieldId) } : { valid: true };
+  }
+  switch (config.rule) {
+    case "email":
+      return EMAIL_RE.test(value) ? { valid: true } : { valid: false, message: "That email doesn't look right — check for a typo." };
+    case "phone": {
+      const digits = digitCount(value);
+      if (digits === 0) {
+        return { valid: false, message: "Please enter a phone number, or leave it blank." };
+      }
+      if (digits < 10) {
+        return { valid: false, message: "That looks a bit short — include the area code." };
+      }
+      if (digits > 15) {
+        return { valid: false, message: "That's more digits than a phone number has." };
+      }
+      return { valid: true };
+    }
+    case "name":
+      return value.length >= 2 ? { valid: true } : { valid: false, message: "Please enter your name." };
+    case "number":
+      return /^[\d,.\s$]+$/.test(value) ? { valid: true } : { valid: false, message: "Please enter a number." };
+    default:
+      return { valid: true };
+  }
+}
+function requiredMessage(fieldId) {
+  if (fieldId === "email") return "We need an email so we can get back to you.";
+  if (fieldId === "name") return "Please enter your name.";
+  return "This one is needed.";
+}
+function isRequired(fieldId) {
+  return FIELD_RULES[fieldId]?.required ?? false;
+}
+function inputAttrs(fieldId, declaredType) {
+  switch (FIELD_RULES[fieldId]?.rule) {
+    case "email":
+      return { type: "email", inputmode: "email", autocomplete: "email", autocapitalize: "off", spellcheck: false };
+    case "phone":
+      return { type: "tel", inputmode: "tel", autocomplete: "tel" };
+    case "number":
+      return { type: declaredType === "number" ? "number" : "text", inputmode: "numeric" };
+    case "name":
+      return { type: "text", inputmode: "text", autocomplete: "name", autocapitalize: "words" };
+    default:
+      return { type: declaredType || "text" };
+  }
+}
+const _sfc_main$7 = /* @__PURE__ */ defineComponent({
+  __name: "Qualify",
+  __ssrInlineRender: true,
+  props: {
+    token: {}
+  },
+  setup(__props) {
+    const loading = ref(true);
+    const loadError = ref("");
+    const submitting = ref(false);
+    const done = ref(false);
+    const alreadyDone = ref(false);
+    const firstName = ref("");
+    const questions = ref([]);
+    const answers = ref({});
+    const step = ref(0);
+    const fieldError = ref("");
+    const touched = ref(false);
+    const current = computed(() => questions.value[step.value]);
+    const isLast = computed(() => step.value === questions.value.length - 1);
+    const progress = computed(
+      () => questions.value.length ? (step.value + 1) / questions.value.length * 100 : 0
+    );
+    watch(() => answers.value[current.value?.id], () => {
+      if (!touched.value) return;
+      fieldError.value = "";
+    });
+    return (_ctx, _push, _parent, _attrs) => {
+      _push(`<div${ssrRenderAttrs(mergeProps({ class: "w-full max-w-[460px] mx-auto px-6 py-8" }, _attrs))} data-v-5bf8a37b>`);
+      if (unref(loading)) {
+        _push(`<div class="py-16 text-center" data-v-5bf8a37b><p class="text-[14px]" style="${ssrRenderStyle({ "color": "var(--gf-muted)" })}" data-v-5bf8a37b>Loading your questions…</p></div>`);
+      } else if (unref(loadError)) {
+        _push(`<div class="py-12 text-center" data-v-5bf8a37b><p class="gf-display text-[24px] mb-3" data-v-5bf8a37b>This link isn&#39;t working</p><p class="text-[14px] leading-relaxed" style="${ssrRenderStyle({ "color": "var(--gf-muted)" })}" data-v-5bf8a37b>${ssrInterpolate(unref(loadError))} Get in touch with your agent and they can send a fresh one. </p></div>`);
+      } else if (unref(alreadyDone) || unref(done)) {
+        _push(`<div class="py-12 text-center" data-v-5bf8a37b><div class="w-14 h-14 mx-auto mb-7 flex items-center justify-center rounded-full" style="${ssrRenderStyle({ background: "var(--gf-accent)" })}" data-v-5bf8a37b><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--gf-bg)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" data-v-5bf8a37b><path d="M20 6 9 17l-5-5" data-v-5bf8a37b></path></svg></div><p class="gf-display text-[26px] mb-3" data-v-5bf8a37b>${ssrInterpolate(unref(done) ? "Thank you" : "Already received")}</p><p class="text-[14.5px] leading-relaxed max-w-[32ch] mx-auto" style="${ssrRenderStyle({ "color": "var(--gf-muted)" })}" data-v-5bf8a37b>${ssrInterpolate(unref(done) ? "That gives your agent everything they need to be useful. Expect to hear from them shortly." : "We've already got your answers — nothing more to do.")}</p></div>`);
+      } else {
+        _push(`<div data-v-5bf8a37b><div class="mb-9" data-v-5bf8a37b><p class="gf-display text-[22px] leading-snug mb-2" data-v-5bf8a37b>`);
+        if (unref(firstName)) {
+          _push(`<!--[-->Thanks, ${ssrInterpolate(unref(firstName))}.<!--]-->`);
+        } else {
+          _push(`<!--[-->A few questions.<!--]-->`);
+        }
+        _push(`</p><p class="text-[13.5px] leading-relaxed" style="${ssrRenderStyle({ "color": "var(--gf-muted)" })}" data-v-5bf8a37b> About five minutes. Skip anything you&#39;d rather not answer. </p></div><div class="flex items-baseline justify-between mb-3" data-v-5bf8a37b><span class="gf-eyebrow" style="${ssrRenderStyle({ "color": "var(--gf-muted)" })}" data-v-5bf8a37b>${ssrInterpolate(String(unref(step) + 1).padStart(2, "0"))} — ${ssrInterpolate(String(unref(questions).length).padStart(2, "0"))}</span><span class="gf-eyebrow" style="${ssrRenderStyle({ "color": "var(--gf-muted)" })}" data-v-5bf8a37b>${ssrInterpolate(Math.round(unref(progress)))}%</span></div><div class="h-px w-full mb-10" style="${ssrRenderStyle({ "background": "var(--gf-hair)" })}" data-v-5bf8a37b><div class="h-px transition-all duration-500 ease-out" style="${ssrRenderStyle({ width: `${unref(progress)}%`, background: "var(--gf-accent)" })}" data-v-5bf8a37b></div></div><div data-v-5bf8a37b><label${ssrRenderAttr("for", unref(current)?.id)} class="gf-display block text-[24px] leading-[1.25] mb-7" data-v-5bf8a37b>${ssrInterpolate(unref(current)?.label)}</label>`);
+        if (unref(current)?.type === "choice") {
+          _push(`<div class="flex flex-col gap-2.5" data-v-5bf8a37b><!--[-->`);
+          ssrRenderList(unref(current).options, (opt) => {
+            _push(`<button class="text-left px-4 py-3.5 text-[15px] transition-colors" style="${ssrRenderStyle(unref(answers)[unref(current).id] === opt ? { border: "1px solid var(--gf-accent)", color: "var(--gf-accent)" } : { border: "1px solid var(--gf-hair)", color: "var(--gf-fg)" })}" data-v-5bf8a37b>${ssrInterpolate(opt)}</button>`);
+          });
+          _push(`<!--]--></div>`);
+        } else if (unref(current)?.type === "long") {
+          _push(`<textarea${ssrRenderAttr("id", unref(current)?.id)} rows="4" class="gf-input" style="${ssrRenderStyle({ "border": "1px solid var(--gf-hair)", "padding": "12px 14px", "font-size": "16px", "resize": "none" })}" placeholder="Whatever comes to mind" data-v-5bf8a37b>${ssrInterpolate(unref(answers)[unref(current).id])}</textarea>`);
+        } else {
+          _push(`<input${ssrRenderAttr("id", unref(current)?.id)}${ssrRenderDynamicModel(unref(current)?.type === "number" ? "text" : "text", unref(answers)[unref(current).id], null)}${ssrRenderAttr("type", unref(current)?.type === "number" ? "text" : "text")}${ssrRenderAttr("inputmode", unref(current)?.type === "number" ? "numeric" : "text")} class="gf-input" data-v-5bf8a37b>`);
+        }
+        if (unref(fieldError)) {
+          _push(`<p class="text-[13px] mt-3" style="${ssrRenderStyle({ "color": "var(--gf-accent)" })}" role="alert" data-v-5bf8a37b>${ssrInterpolate(unref(fieldError))}</p>`);
+        } else {
+          _push(`<!---->`);
+        }
+        _push(`</div><div class="mt-10 flex items-center gap-3" data-v-5bf8a37b>`);
+        if (unref(step) > 0) {
+          _push(`<button class="px-5 py-3.5 text-[11px] uppercase tracking-[0.12em] font-semibold" style="${ssrRenderStyle({ "border": "1px solid var(--gf-hair)", "color": "var(--gf-muted)" })}" data-v-5bf8a37b> Back </button>`);
+        } else {
+          _push(`<!---->`);
+        }
+        _push(`<button${ssrIncludeBooleanAttr(unref(submitting)) ? " disabled" : ""} class="flex-1 px-6 py-3.5 text-[11px] uppercase tracking-[0.12em] font-semibold transition-opacity hover:opacity-90 disabled:opacity-50" style="${ssrRenderStyle({ background: "var(--gf-accent)", color: "var(--gf-bg)" })}" data-v-5bf8a37b>${ssrInterpolate(unref(submitting) ? "Sending…" : unref(isLast) ? "Send my answers" : "Next")}</button></div><button class="mt-4 gf-eyebrow transition-opacity hover:opacity-70" style="${ssrRenderStyle({ "color": "var(--gf-muted)" })}" data-v-5bf8a37b> Skip this one </button></div>`);
+      }
+      _push(`</div>`);
+    };
+  }
+});
+const _sfc_setup$7 = _sfc_main$7.setup;
+_sfc_main$7.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("components/app/Qualify.vue");
+  return _sfc_setup$7 ? _sfc_setup$7(props, ctx) : void 0;
+};
+const __nuxt_component_0$2 = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$7, [["__scopeId", "data-v-5bf8a37b"]]), { __name: "AppQualify" });
 const _sfc_main$6 = {};
 function _sfc_ssrRender(_ctx, _push, _parent, _attrs) {
   _push(`<div${ssrRenderAttrs(mergeProps({
@@ -47,7 +196,7 @@ _sfc_main$6.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("components/base/Loading.vue");
   return _sfc_setup$6 ? _sfc_setup$6(props, ctx) : void 0;
 };
-const __nuxt_component_0$2 = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$6, [["ssrRender", _sfc_ssrRender]]), { __name: "BaseLoading" });
+const __nuxt_component_0$1 = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$6, [["ssrRender", _sfc_ssrRender]]), { __name: "BaseLoading" });
 const _sfc_main$5 = /* @__PURE__ */ defineComponent({
   __name: "ImageUpload",
   __ssrInlineRender: true,
@@ -58,7 +207,7 @@ const _sfc_main$5 = /* @__PURE__ */ defineComponent({
     const isUploading = ref(false);
     const analysis = ref(null);
     return (_ctx, _push, _parent, _attrs) => {
-      const _component_baseLoading = __nuxt_component_0$2;
+      const _component_baseLoading = __nuxt_component_0$1;
       _push(`<div${ssrRenderAttrs(mergeProps({ class: "w-full space-y-5" }, _attrs))} data-v-48274c97><div class="group relative p-7 text-center cursor-pointer transition-colors" style="${ssrRenderStyle({ "border": "1px dashed var(--gf-hair)" })}" data-v-48274c97><input type="file" class="hidden" accept="image/*" data-v-48274c97>`);
       if (!unref(previewUrl)) {
         _push(`<div class="space-y-2" data-v-48274c97><div class="text-4xl" data-v-48274c97></div><p class="text-[15px]" style="${ssrRenderStyle({ "color": "var(--gf-fg)" })}" data-v-48274c97>Add a photo</p><p class="text-[12.5px] mt-1" style="${ssrRenderStyle({ "color": "var(--gf-muted)" })}" data-v-48274c97>Tap to choose one</p></div>`);
@@ -86,7 +235,7 @@ _sfc_main$5.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("components/app/ImageUpload.vue");
   return _sfc_setup$5 ? _sfc_setup$5(props, ctx) : void 0;
 };
-const __nuxt_component_1 = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$5, [["__scopeId", "data-v-48274c97"]]), { __name: "AppImageUpload" });
+const __nuxt_component_1$1 = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$5, [["__scopeId", "data-v-48274c97"]]), { __name: "AppImageUpload" });
 const _sfc_main$4 = /* @__PURE__ */ defineComponent({
   __name: "Error",
   __ssrInlineRender: true,
@@ -140,7 +289,7 @@ _sfc_main$3.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("components/base/ButtonNavigate.vue");
   return _sfc_setup$3 ? _sfc_setup$3(props, ctx) : void 0;
 };
-const __nuxt_component_0$1 = Object.assign(_sfc_main$3, { __name: "BaseButtonNavigate" });
+const __nuxt_component_0 = Object.assign(_sfc_main$3, { __name: "BaseButtonNavigate" });
 const _sfc_main$2 = /* @__PURE__ */ defineComponent({
   __name: "success",
   __ssrInlineRender: true,
@@ -167,7 +316,7 @@ const _sfc_main$2 = /* @__PURE__ */ defineComponent({
       });
     });
     return (_ctx, _push, _parent, _attrs) => {
-      const _component_baseButtonNavigate = __nuxt_component_0$1;
+      const _component_baseButtonNavigate = __nuxt_component_0;
       _push(`<div${ssrRenderAttrs(mergeProps({ class: "w-full text-center py-6" }, _attrs))} data-v-69179972><div class="w-14 h-14 mx-auto mb-7 flex items-center justify-center rounded-full" style="${ssrRenderStyle({ background: "var(--gf-accent)" })}" data-v-69179972><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--gf-bg)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" data-v-69179972><path d="M20 6 9 17l-5-5" data-v-69179972></path></svg></div><h3 class="gf-display text-[28px] mb-3" data-v-69179972>Thank you</h3><p class="text-[14.5px] leading-relaxed mb-9 max-w-[34ch] mx-auto" style="${ssrRenderStyle({ "color": "var(--gf-muted)" })}" data-v-69179972> We&#39;ve sent a confirmation to <span style="${ssrRenderStyle({ color: "var(--gf-fg)" })}" data-v-69179972>${ssrInterpolate(__props.email)}</span>. You&#39;ll hear back shortly. </p>`);
       if (__props.calendar) {
         _push(`<div class="pt-7" style="${ssrRenderStyle({ "border-top": "1px solid var(--gf-hair)" })}" data-v-69179972><p class="gf-eyebrow mb-4" style="${ssrRenderStyle({ "color": "var(--gf-muted)" })}" data-v-69179972>Rather not wait?</p>`);
@@ -450,77 +599,6 @@ function useFormConfig() {
     hasSaved: computed(() => Object.keys(store).length > 0)
   };
 }
-const FIELD_RULES = {
-  // The email IS the lead — without it the realtor can't follow up and the
-  // server rejects the submission outright.
-  email: { required: true, rule: "email" },
-  name: { required: true, rule: "name" },
-  // Optional, but if they typed something it should be dialable.
-  phone: { required: false, rule: "phone" },
-  age: { required: false, rule: "number" },
-  price: { required: false, rule: "number" },
-  sqft: { required: false, rule: "number" },
-  bedrooms: { required: false, rule: "number" },
-  bathrooms: { required: false, rule: "number" },
-  budget: { required: false, rule: "number" }
-};
-const EMAIL_RE = /^[^\s@]+@[^\s@.]+(\.[^\s@.]+)+$/;
-function digitCount(value) {
-  return (value.match(/\d/g) || []).length;
-}
-function validateField(fieldId, raw) {
-  const config = FIELD_RULES[fieldId];
-  const value = (raw ?? "").toString().trim();
-  if (!config) return { valid: true };
-  if (!value) {
-    return config.required ? { valid: false, message: requiredMessage(fieldId) } : { valid: true };
-  }
-  switch (config.rule) {
-    case "email":
-      return EMAIL_RE.test(value) ? { valid: true } : { valid: false, message: "That email doesn't look right — check for a typo." };
-    case "phone": {
-      const digits = digitCount(value);
-      if (digits === 0) {
-        return { valid: false, message: "Please enter a phone number, or leave it blank." };
-      }
-      if (digits < 10) {
-        return { valid: false, message: "That looks a bit short — include the area code." };
-      }
-      if (digits > 15) {
-        return { valid: false, message: "That's more digits than a phone number has." };
-      }
-      return { valid: true };
-    }
-    case "name":
-      return value.length >= 2 ? { valid: true } : { valid: false, message: "Please enter your name." };
-    case "number":
-      return /^[\d,.\s$]+$/.test(value) ? { valid: true } : { valid: false, message: "Please enter a number." };
-    default:
-      return { valid: true };
-  }
-}
-function requiredMessage(fieldId) {
-  if (fieldId === "email") return "We need an email so we can get back to you.";
-  if (fieldId === "name") return "Please enter your name.";
-  return "This one is needed.";
-}
-function isRequired(fieldId) {
-  return FIELD_RULES[fieldId]?.required ?? false;
-}
-function inputAttrs(fieldId, declaredType) {
-  switch (FIELD_RULES[fieldId]?.rule) {
-    case "email":
-      return { type: "email", inputmode: "email", autocomplete: "email", autocapitalize: "off", spellcheck: false };
-    case "phone":
-      return { type: "tel", inputmode: "tel", autocomplete: "tel" };
-    case "number":
-      return { type: declaredType === "number" ? "number" : "text", inputmode: "numeric" };
-    case "name":
-      return { type: "text", inputmode: "text", autocomplete: "name", autocapitalize: "words" };
-    default:
-      return { type: declaredType || "text" };
-  }
-}
 const _sfc_main$1 = /* @__PURE__ */ defineComponent({
   __name: "GhostForm",
   __ssrInlineRender: true,
@@ -583,8 +661,8 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
       touched.value = false;
     });
     return (_ctx, _push, _parent, _attrs) => {
-      const _component_baseLoading = __nuxt_component_0$2;
-      const _component_appImageUpload = __nuxt_component_1;
+      const _component_baseLoading = __nuxt_component_0$1;
+      const _component_appImageUpload = __nuxt_component_1$1;
       const _component_baseError = __nuxt_component_2;
       const _component_appSuccess = __nuxt_component_3;
       let _temp0;
@@ -668,19 +746,28 @@ _sfc_main$1.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("components/app/GhostForm.vue");
   return _sfc_setup$1 ? _sfc_setup$1(props, ctx) : void 0;
 };
-const __nuxt_component_0 = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$1, [["__scopeId", "data-v-9ae13943"]]), { __name: "AppGhostForm" });
+const __nuxt_component_1 = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$1, [["__scopeId", "data-v-9ae13943"]]), { __name: "AppGhostForm" });
 const _sfc_main = /* @__PURE__ */ defineComponent({
   __name: "index",
   __ssrInlineRender: true,
   setup(__props) {
     const route = useRoute();
     const formId = route.params.id;
+    const qualifyToken = computed(() => String(route.query.t || ""));
+    const isQualify = computed(
+      () => String(route.query.source || "") === "qualify" && qualifyToken.value.length > 0
+    );
     return (_ctx, _push, _parent, _attrs) => {
-      const _component_appGhostForm = __nuxt_component_0;
-      _push(ssrRenderComponent(_component_appGhostForm, mergeProps({
-        routeData: unref(route).query,
-        id: unref(formId)
-      }, _attrs), null, _parent));
+      const _component_appQualify = __nuxt_component_0$2;
+      const _component_appGhostForm = __nuxt_component_1;
+      if (unref(isQualify)) {
+        _push(ssrRenderComponent(_component_appQualify, { token: unref(qualifyToken) }, null, _parent));
+      } else {
+        _push(ssrRenderComponent(_component_appGhostForm, {
+          routeData: unref(route).query,
+          id: unref(formId)
+        }, null, _parent));
+      }
     };
   }
 });
@@ -690,7 +777,7 @@ _sfc_main.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("pages/index.vue");
   return _sfc_setup ? _sfc_setup(props, ctx) : void 0;
 };
-const index = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-a69afbf2"]]);
+const index = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-c43f2e33"]]);
 
 export { index as default };
-//# sourceMappingURL=index-CpjpQErM.mjs.map
+//# sourceMappingURL=index-Cbz1X4Ug.mjs.map

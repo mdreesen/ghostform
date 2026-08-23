@@ -6,6 +6,18 @@ definePageMeta({
 const route = useRoute();
 const formId = route.params.id;
 
+/**
+ * Two modes on this one route:
+ *   - normal capture (open house / listing / quick entry)
+ *   - source=qualify&t=<token> — the deep-dive questionnaire sent to a lead
+ *     who's getting serious. Different audience, different question set, and
+ *     it UPDATES an existing lead rather than creating one.
+ */
+const qualifyToken = computed(() => String(route.query.t || ''));
+const isQualify = computed(() =>
+  String(route.query.source || '') === 'qualify' && qualifyToken.value.length > 0
+);
+
 
 // We use an IntersectionObserver or ResizeObserver 
 // to tell the parent site exactly how tall we are.
@@ -27,7 +39,8 @@ onMounted(() => {
 
 <template>
   <Transition name="ghost-modal">
-    <appGhostForm :routeData="route.query" :id="formId" />
+    <appQualify v-if="isQualify" :token="qualifyToken" />
+    <appGhostForm v-else :routeData="route.query" :id="formId" />
   </Transition>
 </template>
 

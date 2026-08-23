@@ -35,11 +35,6 @@ export default defineEventHandler(async (event) => {
     const companyName = findCompany?.company ?? 'NoReply';
     const leadEmail = answers?.email;
 
-    // Save first
-    if (answers.source.includes('data_active')) {
-      await useLeadUpdate(companyId, companyEmail, companyName, answers);
-    };
-
     const savedLead = await useLead(companyId, companyEmail, companyName, answers);
 
     // 2. Notifications are best-effort. Failures are logged, not thrown:

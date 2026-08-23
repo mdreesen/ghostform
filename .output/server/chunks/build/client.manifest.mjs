@@ -4,7 +4,7 @@ const client_manifest = {
     "module": true,
     "prefetch": true,
     "preload": true,
-    "file": "hpa6diY_.js",
+    "file": "IXMh0cga.js",
     "name": "entry",
     "src": "../node_modules/nuxt/dist/app/entry.js",
     "isEntry": true,
@@ -13,12 +13,12 @@ const client_manifest = {
       "../node_modules/workbox-window/build/workbox-window.prod.es5.mjs"
     ],
     "css": [
-      "entry.j_jhloEN.css"
+      "entry.7mjx8kPv.css"
     ],
     "assets": []
   },
-  "entry.j_jhloEN.css": {
-    "file": "entry.j_jhloEN.css",
+  "entry.7mjx8kPv.css": {
+    "file": "entry.7mjx8kPv.css",
     "resourceType": "style",
     "prefetch": true,
     "preload": true
@@ -38,7 +38,7 @@ const client_manifest = {
     "module": true,
     "prefetch": true,
     "preload": true,
-    "file": "BqDTjKp1.js",
+    "file": "fyOPiQBR.js",
     "name": "default",
     "src": "layouts/default.vue",
     "isDynamicEntry": true,
@@ -58,7 +58,7 @@ const client_manifest = {
     "module": true,
     "prefetch": true,
     "preload": true,
-    "file": "B-6GS4DO.js",
+    "file": "TEePRSxI.js",
     "name": "index",
     "src": "pages/index.vue",
     "isDynamicEntry": true,
@@ -67,8 +67,8 @@ const client_manifest = {
     ],
     "css": []
   },
-  "index.uNDyMMSQ.css": {
-    "file": "index.uNDyMMSQ.css",
+  "index.BQC8ow5h.css": {
+    "file": "index.BQC8ow5h.css",
     "resourceType": "style",
     "prefetch": true,
     "preload": true
