@@ -3,7 +3,7 @@ import type { Company } from '~/types/user';
 import { leadData } from '~/utils/users/useLead';
 import { companyData } from '~/utils/users/company';
 import { useUser } from '~/lib/user';
-import { useLead, useLeadUpdate } from '~/lib/lead';
+import { useLead } from '~/lib/lead';
 
 export default defineEventHandler(async (event) => {
     const formData = await readMultipartFormData(event);
