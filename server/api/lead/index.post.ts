@@ -3,7 +3,7 @@ import type { Company } from '~/types/user';
 import { leadData } from '~/utils/users/useLead';
 import { companyData } from '~/utils/users/company';
 import { useUser } from '~/lib/user';
-import { useLead } from '~/lib/lead';
+import { useLead, useLeadUpdate } from '~/lib/lead';
 
 export default defineEventHandler(async (event) => {
     const formData = await readMultipartFormData(event);
@@ -35,9 +35,11 @@ export default defineEventHandler(async (event) => {
     const companyName = findCompany?.company ?? 'NoReply';
     const leadEmail = answers?.email;
 
-    // 1. SAVE FIRST. This is the only step that must succeed — everything
-    //    below is notification, and a notification failure must never make the
-    //    realtor think the lead was lost.
+    // Save first
+    if (answers.source.includes('data_active')) {
+      await useLeadUpdate(companyId, companyEmail, companyName, answers);
+    };
+
     const savedLead = await useLead(companyId, companyEmail, companyName, answers);
 
     // 2. Notifications are best-effort. Failures are logged, not thrown:

@@ -25,8 +25,8 @@ const leadSchema = new Schema({
     budget: Number,
     notes: String,
     seeing_an_agent: String,
-    data_kind: String,
     ai_analysis: String,
+    data_kind: String,
     status: { type: String, default: 'new' },
     date: { type: String, default: () => new Date().toISOString() },
     reminderSent: { type: Boolean, default: false },
@@ -38,7 +38,23 @@ const leadSchema = new Schema({
       reminderScheduledAt: {
         type: Date,
         required: false
-      }
+      },
+    // ============================================================
+    // Contact tracking — powers the daily "who to contact" briefing.
+    // lastContactedAt is stamped every time we email a lead (manual
+    // reminder, campaign blast) OR the realtor logs an outreach.
+    // Older leads created before this field existed fall back to
+    // createdAt / updatedAt inside the briefing engine.
+    // ============================================================
+    lastContactedAt: {
+        type: Date,
+        required: false,
+        index: true // Indexed so cold-lead scans stay fast at volume
+    },
+    contactCount: {
+        type: Number,
+        default: 0 // How many touches this lead has received from us
+    }
 }, { timestamps: true }) // Automates true createdAt/updatedAt tracking lines
 
 export default mongoose.models.Lead || mongoose.model('Lead', leadSchema)

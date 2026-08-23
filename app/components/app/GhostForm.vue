@@ -173,7 +173,7 @@ const submitForm = async () => {
 
   try {
     const fd = new FormData();
-    const jsonLeadBlob = new Blob([JSON.stringify({ ...answers.value, category: category })], {
+    const jsonLeadBlob = new Blob([JSON.stringify({ ...answers.value, category: category, source: config?.source })], {
       type: 'application/json'
     });
     const jsonCompanyBlob = new Blob([JSON.stringify(company.value)], {
