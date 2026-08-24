@@ -17,6 +17,7 @@
 import { validateField } from '~/utils/validation'
 
 const props = defineProps<{ leadId: string }>()
+console.log('Lead ID is here', props.leadId);
 
 const loading = ref(true)
 const loadError = ref('')
