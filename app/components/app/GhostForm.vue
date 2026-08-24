@@ -23,7 +23,7 @@ const props = defineProps({
 // from a home-screen icon, or offline where the link can't be re-fetched.
 const { resolveConfig } = useFormConfig();
 const { config } = resolveConfig(props.routeData);
-
+console.log(props.routeData)
 const notConfigured = computed(() => !config);
 
 const category = config?.category ?? 'realtor';
@@ -31,6 +31,7 @@ const source = config?.source ?? 'default';
 const id = config?.id ?? '';
 const company_name = config?.company_name ?? '';
 const company_email = config?.company_email ?? '';
+const seen_at = config?.seen_at ?? '';
 const calendar = config?.calendar;
 const use_image_upload = config?.use_image_upload;
 const step = ref(0);
@@ -173,7 +174,7 @@ const submitForm = async () => {
 
   try {
     const fd = new FormData();
-    const jsonLeadBlob = new Blob([JSON.stringify({ ...answers.value, category: category, source: config?.source })], {
+    const jsonLeadBlob = new Blob([JSON.stringify({ ...answers.value, category: category, source: config?.source, seen_at: seen_at })], {
       type: 'application/json'
     });
     const jsonCompanyBlob = new Blob([JSON.stringify(company.value)], {

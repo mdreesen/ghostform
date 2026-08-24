@@ -29,7 +29,7 @@ export default defineEventHandler(async (event) => {
     // Resolve the realtor. Throws a specific 400/404/503 if this fails, rather
     // than returning undefined and blowing up later with a generic 500.
     const findCompany = await useUser(company);
-
+console.log(answers)
     const companyId = findCompany?._id;
     const companyEmail = findCompany?.email;
     const companyName = findCompany?.company ?? 'NoReply';

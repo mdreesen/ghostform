@@ -5,7 +5,6 @@ definePageMeta({
 
 const route = useRoute();
 const formId = route.params.id;
-
 /**
  * Two modes on this one route:
  *   - normal capture (open house / listing / quick entry)

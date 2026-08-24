@@ -21,11 +21,12 @@ export interface FormConfig {
   category: string
   source: string
   id: string
+  seen_at?: string;
   company_name: string
   company_email: string
   calendar?: string
-  background_color?: string
-  font_color?: string
+  // background_color?: string
+  // font_color?: string
   use_image_upload?: string
   /** display-only label so the realtor can confirm the right account is loaded */
   label?: string
@@ -71,9 +72,10 @@ export function useFormConfig() {
       id: String(query.id),
       company_name: String(query.company_name || ''),
       company_email: String(query.company_email || ''),
+      seen_at: String(query.address || ''),
       calendar: query.calendar ? String(query.calendar) : undefined,
-      background_color: query.background_color ? String(query.background_color) : undefined,
-      font_color: query.font_color ? String(query.font_color) : undefined,
+      // background_color: query.background_color ? String(query.background_color) : undefined,
+      // font_color: query.font_color ? String(query.font_color) : undefined,
       use_image_upload: query.use_image_upload ? String(query.use_image_upload) : undefined,
       label,
       savedAt: Date.now()
@@ -111,6 +113,7 @@ export function useFormConfig() {
   function resolveConfig(query: any): { config: FormConfig | null; fromCache: boolean } {
     if (isCompleteConfig(query)) {
       saveConfig(query)
+      console.log(query)
       return {
         config: {
           category: String(query.category || 'realtor'),
@@ -118,9 +121,10 @@ export function useFormConfig() {
           id: String(query.id),
           company_name: String(query.company_name || ''),
           company_email: String(query.company_email || ''),
+          seen_at: query.address ? String(query.address) : '',
           calendar: query.calendar ? String(query.calendar) : undefined,
-          background_color: query.background_color ? String(query.background_color) : undefined,
-          font_color: query.font_color ? String(query.font_color) : undefined,
+          // background_color: query.background_color ? String(query.background_color) : undefined,
+          // font_color: query.font_color ? String(query.font_color) : undefined,
           use_image_upload: query.use_image_upload ? String(query.use_image_upload) : undefined,
           savedAt: Date.now()
         },
