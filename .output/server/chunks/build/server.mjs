@@ -1,5 +1,5 @@
 import process from 'node:process';globalThis._importMeta_=globalThis._importMeta_||{url:"file:///_entry.js",env:process.env};import { hasInjectionContext, inject, getCurrentInstance, defineAsyncComponent, defineComponent, useSlots, h, Fragment, createElementBlock, shallowRef, provide, cloneVNode, computed, useSSRContext, unref, shallowReactive, ref, Suspense, createApp, reactive, toRaw, onServerPrefetch, useAttrs, mergeProps, useModel, withCtx, renderSlot, createVNode, openBlock, createBlock, createTextVNode, toDisplayString, createCommentVNode, mergeModels, watch, resolveDynamicComponent, toRef as toRef$1, renderList, useId, onErrorCaptured, effectScope, toValue, useTemplateRef, withModifiers, getCurrentScope, resolveComponent, isRef, nextTick, onScopeDispose, isReadonly, toRefs, isShallow, isReactive, readonly, customRef, markRaw } from 'vue';
-import { s as serialize, n as getContext, $ as $fetch$1, o as baseURL, q as defu, t as defuFn, v as klona, w as createHooks, c as createError$1, x as isEqual, y as parseQuery, z as hasProtocol, l as joinURL, A as hasProtocol$1, B as withLeadingSlash, C as joinURL$1, D as parseURL, E as withQuery, F as isScriptProtocol, G as withTrailingSlash, H as withoutTrailingSlash, I as sanitizeStatusCode, J as executeAsync, K as encodeParam, L as toRouteMatcher, M as createRouter$1, N as encodePath } from '../nitro/nitro.mjs';
+import { n as serialize, o as getContext, $ as $fetch$1, q as baseURL, t as defu, v as defuFn, w as klona, x as createHooks, c as createError$1, y as isEqual, z as parseQuery, A as hasProtocol, l as joinURL, B as hasProtocol$1, C as withLeadingSlash, D as joinURL$1, E as parseURL, F as withQuery, G as isScriptProtocol, H as withTrailingSlash, I as withoutTrailingSlash, J as sanitizeStatusCode, K as executeAsync, L as encodeParam, M as toRouteMatcher, N as createRouter$1, O as encodePath } from '../nitro/nitro.mjs';
 import { useRoute as useRoute$1, RouterView, createMemoryHistory, createRouter, START_LOCATION } from 'vue-router';
 import colors from 'tailwindcss/colors';
 import { Icon, getIcon, loadIcon as loadIcon$1, _api, addAPIProvider, setCustomIconsLoader } from '@iconify/vue';
@@ -490,7 +490,7 @@ const _routes = [
     name: "index",
     path: "/",
     meta: __nuxt_page_meta || {},
-    component: () => import('./index-BJ3wd0Pm.mjs')
+    component: () => import('./index-C0Ne_MKw.mjs')
   }
 ];
 const _wrapInTransition = (props, children) => {
@@ -7554,7 +7554,7 @@ _sfc_main$3.setup = (props, ctx) => {
 };
 const __nuxt_component_0 = Object.assign(_sfc_main$3, { __name: "UApp" });
 const layouts = {
-  default: defineAsyncComponent(() => import('./default-BeOsy65o.mjs').then((m) => m.default || m))
+  default: defineAsyncComponent(() => import('./default-Cc2IzocT.mjs').then((m) => m.default || m))
 };
 const LayoutLoader = defineComponent({
   name: "LayoutLoader",

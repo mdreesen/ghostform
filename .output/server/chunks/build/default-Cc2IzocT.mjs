@@ -51,11 +51,39 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     });
     const muted = computed(() => isDark.value ? "rgba(255,255,255,0.62)" : "#8A847C");
     const hair = computed(() => isDark.value ? "rgba(255,255,255,0.16)" : "#DDD6C9");
+    const manifestHref = computed(() => {
+      const keep = [
+        "category",
+        "source",
+        "id",
+        "company_name",
+        "company_email",
+        "calendar",
+        "address"
+      ];
+      const p = new URLSearchParams();
+      for (const k of keep) {
+        const v = route.query[k];
+        if (v !== void 0 && String(v).length) p.set(k, String(v));
+      }
+      const qs = p.toString();
+      return qs ? `/gf-manifest.webmanifest?${qs}` : "/gf-manifest.webmanifest";
+    });
     useHead({
+      meta: [
+        // iOS reads these rather than the manifest for standalone behaviour.
+        { name: "apple-mobile-web-app-capable", content: "yes" },
+        { name: "apple-mobile-web-app-status-bar-style", content: "default" },
+        { name: "apple-mobile-web-app-title", content: "GhostForm" },
+        { name: "mobile-web-app-capable", content: "yes" }
+      ],
       htmlAttrs: {
         style: `--gf-bg:${bg.value}; --gf-fg:${fg.value}; --gf-accent:${accent.value}; --gf-muted:${muted.value}; --gf-hair:${hair.value};`
       },
       link: [
+        // Must come before other links so Safari picks it up reliably.
+        { rel: "manifest", href: manifestHref.value },
+        { rel: "apple-touch-icon", href: "/images/maskable-icon.png" },
         { rel: "preconnect", href: "https://fonts.googleapis.com" },
         { rel: "preconnect", href: "https://fonts.gstatic.com", crossorigin: "" },
         {
@@ -79,4 +107,4 @@ _sfc_main.setup = (props, ctx) => {
 };
 
 export { _sfc_main as default };
-//# sourceMappingURL=default-BeOsy65o.mjs.map
+//# sourceMappingURL=default-Cc2IzocT.mjs.map

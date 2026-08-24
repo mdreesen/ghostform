@@ -567,9 +567,10 @@ function useFormConfig() {
           id: String(query.id),
           company_name: String(query.company_name || ""),
           company_email: String(query.company_email || ""),
+          seen_at: query.address ? String(query.address) : "",
           calendar: query.calendar ? String(query.calendar) : void 0,
-          background_color: query.background_color ? String(query.background_color) : void 0,
-          font_color: query.font_color ? String(query.font_color) : void 0,
+          // background_color: query.background_color ? String(query.background_color) : undefined,
+          // font_color: query.font_color ? String(query.font_color) : undefined,
           use_image_upload: query.use_image_upload ? String(query.use_image_upload) : void 0,
           savedAt: Date.now()
         },
@@ -620,6 +621,7 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
     const id = config?.id ?? "";
     const company_name = config?.company_name ?? "";
     const company_email = config?.company_email ?? "";
+    config?.seen_at ?? "";
     const calendar = config?.calendar;
     const use_image_upload = config?.use_image_upload;
     const step = ref(0);
@@ -668,17 +670,17 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
       const _component_baseError = __nuxt_component_2;
       const _component_appSuccess = __nuxt_component_3;
       let _temp0;
-      _push(`<div${ssrRenderAttrs(mergeProps({ class: "w-full max-w-[440px] mx-auto px-6 py-8 font-sans" }, _attrs))} data-v-9ae13943>`);
+      _push(`<div${ssrRenderAttrs(mergeProps({ class: "w-full max-w-[440px] mx-auto px-6 py-8 font-sans" }, _attrs))} data-v-d418c81b>`);
       if (notConfigured.value) {
-        _push(`<div class="text-center py-10" data-v-9ae13943><p class="gf-display text-[26px] mb-3" data-v-9ae13943>This form isn&#39;t set up yet</p><p class="text-[14px] leading-relaxed" style="${ssrRenderStyle({ "color": "var(--gf-muted)" })}" data-v-9ae13943> Open your GhostForm link once while you have signal. After that it works offline, and you can add it to your home screen. </p></div>`);
+        _push(`<div class="text-center py-10" data-v-d418c81b><p class="gf-display text-[26px] mb-3" data-v-d418c81b>This form isn&#39;t set up yet</p><p class="text-[14px] leading-relaxed" style="${ssrRenderStyle({ "color": "var(--gf-muted)" })}" data-v-d418c81b> Open your GhostForm link once while you have signal. After that it works offline, and you can add it to your home screen. </p></div>`);
       } else if (!aiResult.value) {
-        _push(`<div data-v-9ae13943><div class="flex items-center gap-2.5 mb-8" data-v-9ae13943><span class="gf-eyebrow" style="${ssrRenderStyle({ "color": "var(--gf-muted)" })}" data-v-9ae13943>`);
+        _push(`<div data-v-d418c81b><div class="flex items-center gap-2.5 mb-8" data-v-d418c81b><span class="gf-eyebrow" style="${ssrRenderStyle({ "color": "var(--gf-muted)" })}" data-v-d418c81b>`);
         if (!isOnline.value) {
-          _push(`<!--[--><span class="w-1.5 h-1.5 rounded-full shrink-0" style="${ssrRenderStyle({ background: isOnline.value ? "var(--gf-accent)" : "var(--gf-muted)" })}" data-v-9ae13943></span><span data-v-9ae13943>Offline — saved and sent when signal returns</span><!--]-->`);
+          _push(`<!--[--><span class="w-1.5 h-1.5 rounded-full shrink-0" style="${ssrRenderStyle({ background: isOnline.value ? "var(--gf-accent)" : "var(--gf-muted)" })}" data-v-d418c81b></span><span data-v-d418c81b>Offline — saved and sent when signal returns</span><!--]-->`);
         } else {
           _push(`<!---->`);
         }
-        _push(`</span></div><div class="flex items-baseline justify-between mb-3" data-v-9ae13943><span class="gf-eyebrow" style="${ssrRenderStyle({ "color": "var(--gf-muted)" })}" data-v-9ae13943>${ssrInterpolate(String(step.value + 1).padStart(2, "0"))} — ${ssrInterpolate(String(questions.value?.length || 0).padStart(2, "0"))}</span><span class="gf-eyebrow" style="${ssrRenderStyle({ "color": "var(--gf-muted)" })}" data-v-9ae13943>${ssrInterpolate(Math.round((step.value + 1) / (questions.value?.length || 1) * 100))}% </span></div><div class="h-px w-full mb-10" style="${ssrRenderStyle({ "background": "var(--gf-hair)" })}" data-v-9ae13943><div class="h-px transition-all duration-500 ease-out" style="${ssrRenderStyle({ width: `${(step.value + 1) / (questions.value?.length || 1) * 100}%`, background: "var(--gf-accent)" })}" data-v-9ae13943></div></div><div data-v-9ae13943><label${ssrRenderAttr("for", questions.value[step.value]?.id)} class="gf-display block text-[27px] leading-[1.2] mb-2" data-v-9ae13943>${ssrInterpolate(questions.value[step.value]?.label)}</label><p class="gf-eyebrow mb-6" style="${ssrRenderStyle({ "color": "var(--gf-muted)" })}" data-v-9ae13943>${ssrInterpolate(currentRequired.value ? "Required" : "Optional — skip if you like")}</p><input${ssrRenderAttrs((_temp0 = mergeProps({
+        _push(`</span></div><div class="flex items-baseline justify-between mb-3" data-v-d418c81b><span class="gf-eyebrow" style="${ssrRenderStyle({ "color": "var(--gf-muted)" })}" data-v-d418c81b>${ssrInterpolate(String(step.value + 1).padStart(2, "0"))} — ${ssrInterpolate(String(questions.value?.length || 0).padStart(2, "0"))}</span><span class="gf-eyebrow" style="${ssrRenderStyle({ "color": "var(--gf-muted)" })}" data-v-d418c81b>${ssrInterpolate(Math.round((step.value + 1) / (questions.value?.length || 1) * 100))}% </span></div><div class="h-px w-full mb-10" style="${ssrRenderStyle({ "background": "var(--gf-hair)" })}" data-v-d418c81b><div class="h-px transition-all duration-500 ease-out" style="${ssrRenderStyle({ width: `${(step.value + 1) / (questions.value?.length || 1) * 100}%`, background: "var(--gf-accent)" })}" data-v-d418c81b></div></div><div data-v-d418c81b><label${ssrRenderAttr("for", questions.value[step.value]?.id)} class="gf-display block text-[27px] leading-[1.2] mb-2" data-v-d418c81b>${ssrInterpolate(questions.value[step.value]?.label)}</label><p class="gf-eyebrow mb-6" style="${ssrRenderStyle({ "color": "var(--gf-muted)" })}" data-v-d418c81b>${ssrInterpolate(currentRequired.value ? "Required" : "Optional — skip if you like")}</p><input${ssrRenderAttrs((_temp0 = mergeProps({
           id: questions.value[step.value]?.id
         }, unref(inputAttrs)(questions.value[step.value]?.id, questions.value[step.value]?.type), {
           name: questions.value[step.value]?.id,
@@ -687,9 +689,9 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
           class: "gf-input",
           style: fieldError.value ? { borderBottomColor: "var(--gf-accent)" } : void 0,
           autofocus: ""
-        }), mergeProps(_temp0, ssrGetDynamicModelProps(_temp0, answers.value[questions.value[step.value]?.id]))))} data-v-9ae13943>`);
+        }), mergeProps(_temp0, ssrGetDynamicModelProps(_temp0, answers.value[questions.value[step.value]?.id]))))} data-v-d418c81b>`);
         if (fieldError.value) {
-          _push(`<p${ssrRenderAttr("id", `${questions.value[step.value]?.id}-error`)} class="text-[13px] mt-3 leading-relaxed" style="${ssrRenderStyle({ "color": "var(--gf-accent)" })}" role="alert" data-v-9ae13943>${ssrInterpolate(fieldError.value)}</p>`);
+          _push(`<p${ssrRenderAttr("id", `${questions.value[step.value]?.id}-error`)} class="text-[13px] mt-3 leading-relaxed" style="${ssrRenderStyle({ "color": "var(--gf-accent)" })}" role="alert" data-v-d418c81b>${ssrInterpolate(fieldError.value)}</p>`);
         } else {
           _push(`<!---->`);
         }
@@ -699,20 +701,20 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
         } else {
           _push(`<!---->`);
         }
-        _push(`<div class="mt-10" data-v-9ae13943><div class="flex items-center gap-3" data-v-9ae13943>`);
+        _push(`<div class="mt-10" data-v-d418c81b><div class="flex items-center gap-3" data-v-d418c81b>`);
         if (step.value > 0) {
-          _push(`<button class="px-5 py-3.5 text-[11px] uppercase tracking-[0.12em] font-semibold transition-colors" style="${ssrRenderStyle({ "border": "1px solid var(--gf-hair)", "color": "var(--gf-muted)" })}" data-v-9ae13943> Back </button>`);
+          _push(`<button class="px-5 py-3.5 text-[11px] uppercase tracking-[0.12em] font-semibold transition-colors" style="${ssrRenderStyle({ "border": "1px solid var(--gf-hair)", "color": "var(--gf-muted)" })}" data-v-d418c81b> Back </button>`);
         } else {
           _push(`<!---->`);
         }
-        _push(`<button class="flex-1 px-6 py-3.5 text-[11px] uppercase tracking-[0.12em] font-semibold transition-opacity hover:opacity-90" style="${ssrRenderStyle({ background: "var(--gf-accent)", color: "var(--gf-bg)" })}" data-v-9ae13943>${ssrInterpolate(step.value === questions.value?.length - 1 ? "Send it" : "Next")}</button></div>`);
+        _push(`<button class="flex-1 px-6 py-3.5 text-[11px] uppercase tracking-[0.12em] font-semibold transition-opacity hover:opacity-90" style="${ssrRenderStyle({ background: "var(--gf-accent)", color: "var(--gf-bg)" })}" data-v-d418c81b>${ssrInterpolate(step.value === questions.value?.length - 1 ? "Send it" : "Next")}</button></div>`);
         if (unref(use_image_upload)) {
-          _push(`<button class="mt-4 gf-eyebrow transition-opacity hover:opacity-70" style="${ssrRenderStyle({ "color": "var(--gf-muted)" })}" data-v-9ae13943>${ssrInterpolate(useUploadImage.value ? "— Cancel upload" : "+ Add a photo")}</button>`);
+          _push(`<button class="mt-4 gf-eyebrow transition-opacity hover:opacity-70" style="${ssrRenderStyle({ "color": "var(--gf-muted)" })}" data-v-d418c81b>${ssrInterpolate(useUploadImage.value ? "— Cancel upload" : "+ Add a photo")}</button>`);
         } else {
           _push(`<!---->`);
         }
         if (useUploadImage.value) {
-          _push(`<div class="mt-5" data-v-9ae13943>`);
+          _push(`<div class="mt-5" data-v-d418c81b>`);
           _push(ssrRenderComponent(_component_appImageUpload, { onFileSelected: handleImageSelection }, null, _parent));
           _push(`</div>`);
         } else {
@@ -720,7 +722,7 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
         }
         _push(`</div>`);
         if (setError.value) {
-          _push(`<div class="mt-6" data-v-9ae13943>`);
+          _push(`<div class="mt-6" data-v-d418c81b>`);
           _push(ssrRenderComponent(_component_baseError, {
             message: unref(errors)(setError.value)
           }, null, _parent));
@@ -730,7 +732,7 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
         }
         _push(`</div>`);
       } else {
-        _push(`<div data-v-9ae13943>`);
+        _push(`<div data-v-d418c81b>`);
         _push(ssrRenderComponent(_component_appSuccess, {
           show: showSuccess.value,
           email: userEmail.value,
@@ -748,7 +750,7 @@ _sfc_main$1.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("components/app/GhostForm.vue");
   return _sfc_setup$1 ? _sfc_setup$1(props, ctx) : void 0;
 };
-const __nuxt_component_1 = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$1, [["__scopeId", "data-v-9ae13943"]]), { __name: "AppGhostForm" });
+const __nuxt_component_1 = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$1, [["__scopeId", "data-v-d418c81b"]]), { __name: "AppGhostForm" });
 const _sfc_main = /* @__PURE__ */ defineComponent({
   __name: "index",
   __ssrInlineRender: true,
@@ -777,7 +779,7 @@ _sfc_main.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("pages/index.vue");
   return _sfc_setup ? _sfc_setup(props, ctx) : void 0;
 };
-const index = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-d7dfb7c1"]]);
+const index = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-3d33b8e0"]]);
 
 export { index as default };
-//# sourceMappingURL=index-BJ3wd0Pm.mjs.map
+//# sourceMappingURL=index-C0Ne_MKw.mjs.map

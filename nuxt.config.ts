@@ -38,6 +38,12 @@ export default defineNuxtConfig({
 
   pwa: {
     registerType: 'autoUpdate',
+    // The module must NOT inject its own <link rel="manifest">. The layout
+    // links a per-realtor manifest (server/routes/gf-manifest.webmanifest)
+    // that carries the query params into start_url — two competing manifest
+    // links would be resolved by document order, not by which one is correct.
+    injectRegister: 'auto',
+    includeManifestIcons: false,
     manifest: {
       name: 'GhostForm Lead Capture',
       short_name: 'GhostForm',
