@@ -14,10 +14,7 @@ const formId = route.params.id;
  *     it UPDATES an existing lead rather than creating one.
  */
 const qualifyLeadId = computed(() => String(route.query.lead || ''));
-const isQualify = computed(() =>
-  String(route.query.source || '') === 'qualify' && /^[a-f0-9]{24}$/i.test(qualifyLeadId.value)
-);
-
+const isQualify = computed(() => route.query.source.includes('qualify'));
 
 // We use an IntersectionObserver or ResizeObserver 
 // to tell the parent site exactly how tall we are.

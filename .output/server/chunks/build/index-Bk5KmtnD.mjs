@@ -754,9 +754,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     const route = useRoute();
     const formId = route.params.id;
     const qualifyLeadId = computed(() => String(route.query.lead || ""));
-    const isQualify = computed(
-      () => String(route.query.source || "") === "qualify" && /^[a-f0-9]{24}$/i.test(qualifyLeadId.value)
-    );
+    const isQualify = computed(() => route.query.source.includes("qualify"));
     return (_ctx, _push, _parent, _attrs) => {
       const _component_appQualify = __nuxt_component_0$2;
       const _component_appGhostForm = __nuxt_component_1;
@@ -777,7 +775,7 @@ _sfc_main.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("pages/index.vue");
   return _sfc_setup ? _sfc_setup(props, ctx) : void 0;
 };
-const index = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-28825169"]]);
+const index = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-d7dfb7c1"]]);
 
 export { index as default };
-//# sourceMappingURL=index-Dksm4PBw.mjs.map
+//# sourceMappingURL=index-Bk5KmtnD.mjs.map
