@@ -23,7 +23,7 @@ const props = defineProps({
 // from a home-screen icon, or offline where the link can't be re-fetched.
 const { resolveConfig } = useFormConfig();
 const { config } = resolveConfig(props.routeData);
-console.log(props.routeData)
+
 const notConfigured = computed(() => !config);
 
 const category = config?.category ?? 'realtor';

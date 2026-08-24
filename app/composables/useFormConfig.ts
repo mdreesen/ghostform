@@ -113,7 +113,7 @@ export function useFormConfig() {
   function resolveConfig(query: any): { config: FormConfig | null; fromCache: boolean } {
     if (isCompleteConfig(query)) {
       saveConfig(query)
-      console.log(query)
+
       return {
         config: {
           category: String(query.category || 'realtor'),
