@@ -106,7 +106,7 @@ const _sfc_main$7 = /* @__PURE__ */ defineComponent({
   __name: "Qualify",
   __ssrInlineRender: true,
   props: {
-    token: {}
+    leadId: {}
   },
   setup(__props) {
     const loading = ref(true);
@@ -130,44 +130,44 @@ const _sfc_main$7 = /* @__PURE__ */ defineComponent({
       fieldError.value = "";
     });
     return (_ctx, _push, _parent, _attrs) => {
-      _push(`<div${ssrRenderAttrs(mergeProps({ class: "w-full max-w-[460px] mx-auto px-6 py-8" }, _attrs))} data-v-5bf8a37b>`);
+      _push(`<div${ssrRenderAttrs(mergeProps({ class: "w-full max-w-[460px] mx-auto px-6 py-8" }, _attrs))} data-v-45c991f8>`);
       if (unref(loading)) {
-        _push(`<div class="py-16 text-center" data-v-5bf8a37b><p class="text-[14px]" style="${ssrRenderStyle({ "color": "var(--gf-muted)" })}" data-v-5bf8a37b>Loading your questions…</p></div>`);
+        _push(`<div class="py-16 text-center" data-v-45c991f8><p class="text-[14px]" style="${ssrRenderStyle({ "color": "var(--gf-muted)" })}" data-v-45c991f8>Loading your questions…</p></div>`);
       } else if (unref(loadError)) {
-        _push(`<div class="py-12 text-center" data-v-5bf8a37b><p class="gf-display text-[24px] mb-3" data-v-5bf8a37b>This link isn&#39;t working</p><p class="text-[14px] leading-relaxed" style="${ssrRenderStyle({ "color": "var(--gf-muted)" })}" data-v-5bf8a37b>${ssrInterpolate(unref(loadError))} Get in touch with your agent and they can send a fresh one. </p></div>`);
+        _push(`<div class="py-12 text-center" data-v-45c991f8><p class="gf-display text-[24px] mb-3" data-v-45c991f8>This link isn&#39;t working</p><p class="text-[14px] leading-relaxed" style="${ssrRenderStyle({ "color": "var(--gf-muted)" })}" data-v-45c991f8>${ssrInterpolate(unref(loadError))} Get in touch with your agent and they can send a fresh one. </p></div>`);
       } else if (unref(alreadyDone) || unref(done)) {
-        _push(`<div class="py-12 text-center" data-v-5bf8a37b><div class="w-14 h-14 mx-auto mb-7 flex items-center justify-center rounded-full" style="${ssrRenderStyle({ background: "var(--gf-accent)" })}" data-v-5bf8a37b><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--gf-bg)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" data-v-5bf8a37b><path d="M20 6 9 17l-5-5" data-v-5bf8a37b></path></svg></div><p class="gf-display text-[26px] mb-3" data-v-5bf8a37b>${ssrInterpolate(unref(done) ? "Thank you" : "Already received")}</p><p class="text-[14.5px] leading-relaxed max-w-[32ch] mx-auto" style="${ssrRenderStyle({ "color": "var(--gf-muted)" })}" data-v-5bf8a37b>${ssrInterpolate(unref(done) ? "That gives your agent everything they need to be useful. Expect to hear from them shortly." : "We've already got your answers — nothing more to do.")}</p></div>`);
+        _push(`<div class="py-12 text-center" data-v-45c991f8><div class="w-14 h-14 mx-auto mb-7 flex items-center justify-center rounded-full" style="${ssrRenderStyle({ background: "var(--gf-accent)" })}" data-v-45c991f8><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--gf-bg)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" data-v-45c991f8><path d="M20 6 9 17l-5-5" data-v-45c991f8></path></svg></div><p class="gf-display text-[26px] mb-3" data-v-45c991f8>${ssrInterpolate(unref(done) ? "Thank you" : "Already received")}</p><p class="text-[14.5px] leading-relaxed max-w-[32ch] mx-auto" style="${ssrRenderStyle({ "color": "var(--gf-muted)" })}" data-v-45c991f8>${ssrInterpolate(unref(done) ? "That gives your agent everything they need to be useful. Expect to hear from them shortly." : "We've already got your answers — nothing more to do.")}</p></div>`);
       } else {
-        _push(`<div data-v-5bf8a37b><div class="mb-9" data-v-5bf8a37b><p class="gf-display text-[22px] leading-snug mb-2" data-v-5bf8a37b>`);
+        _push(`<div data-v-45c991f8><div class="mb-9" data-v-45c991f8><p class="gf-display text-[22px] leading-snug mb-2" data-v-45c991f8>`);
         if (unref(firstName)) {
           _push(`<!--[-->Thanks, ${ssrInterpolate(unref(firstName))}.<!--]-->`);
         } else {
           _push(`<!--[-->A few questions.<!--]-->`);
         }
-        _push(`</p><p class="text-[13.5px] leading-relaxed" style="${ssrRenderStyle({ "color": "var(--gf-muted)" })}" data-v-5bf8a37b> About five minutes. Skip anything you&#39;d rather not answer. </p></div><div class="flex items-baseline justify-between mb-3" data-v-5bf8a37b><span class="gf-eyebrow" style="${ssrRenderStyle({ "color": "var(--gf-muted)" })}" data-v-5bf8a37b>${ssrInterpolate(String(unref(step) + 1).padStart(2, "0"))} — ${ssrInterpolate(String(unref(questions).length).padStart(2, "0"))}</span><span class="gf-eyebrow" style="${ssrRenderStyle({ "color": "var(--gf-muted)" })}" data-v-5bf8a37b>${ssrInterpolate(Math.round(unref(progress)))}%</span></div><div class="h-px w-full mb-10" style="${ssrRenderStyle({ "background": "var(--gf-hair)" })}" data-v-5bf8a37b><div class="h-px transition-all duration-500 ease-out" style="${ssrRenderStyle({ width: `${unref(progress)}%`, background: "var(--gf-accent)" })}" data-v-5bf8a37b></div></div><div data-v-5bf8a37b><label${ssrRenderAttr("for", unref(current)?.id)} class="gf-display block text-[24px] leading-[1.25] mb-7" data-v-5bf8a37b>${ssrInterpolate(unref(current)?.label)}</label>`);
+        _push(`</p><p class="text-[13.5px] leading-relaxed" style="${ssrRenderStyle({ "color": "var(--gf-muted)" })}" data-v-45c991f8> About five minutes. Skip anything you&#39;d rather not answer. </p></div><div class="flex items-baseline justify-between mb-3" data-v-45c991f8><span class="gf-eyebrow" style="${ssrRenderStyle({ "color": "var(--gf-muted)" })}" data-v-45c991f8>${ssrInterpolate(String(unref(step) + 1).padStart(2, "0"))} — ${ssrInterpolate(String(unref(questions).length).padStart(2, "0"))}</span><span class="gf-eyebrow" style="${ssrRenderStyle({ "color": "var(--gf-muted)" })}" data-v-45c991f8>${ssrInterpolate(Math.round(unref(progress)))}%</span></div><div class="h-px w-full mb-10" style="${ssrRenderStyle({ "background": "var(--gf-hair)" })}" data-v-45c991f8><div class="h-px transition-all duration-500 ease-out" style="${ssrRenderStyle({ width: `${unref(progress)}%`, background: "var(--gf-accent)" })}" data-v-45c991f8></div></div><div data-v-45c991f8><label${ssrRenderAttr("for", unref(current)?.id)} class="gf-display block text-[24px] leading-[1.25] mb-7" data-v-45c991f8>${ssrInterpolate(unref(current)?.label)}</label>`);
         if (unref(current)?.type === "choice") {
-          _push(`<div class="flex flex-col gap-2.5" data-v-5bf8a37b><!--[-->`);
+          _push(`<div class="flex flex-col gap-2.5" data-v-45c991f8><!--[-->`);
           ssrRenderList(unref(current).options, (opt) => {
-            _push(`<button class="text-left px-4 py-3.5 text-[15px] transition-colors" style="${ssrRenderStyle(unref(answers)[unref(current).id] === opt ? { border: "1px solid var(--gf-accent)", color: "var(--gf-accent)" } : { border: "1px solid var(--gf-hair)", color: "var(--gf-fg)" })}" data-v-5bf8a37b>${ssrInterpolate(opt)}</button>`);
+            _push(`<button class="text-left px-4 py-3.5 text-[15px] transition-colors" style="${ssrRenderStyle(unref(answers)[unref(current).id] === opt ? { border: "1px solid var(--gf-accent)", color: "var(--gf-accent)" } : { border: "1px solid var(--gf-hair)", color: "var(--gf-fg)" })}" data-v-45c991f8>${ssrInterpolate(opt)}</button>`);
           });
           _push(`<!--]--></div>`);
         } else if (unref(current)?.type === "long") {
-          _push(`<textarea${ssrRenderAttr("id", unref(current)?.id)} rows="4" class="gf-input" style="${ssrRenderStyle({ "border": "1px solid var(--gf-hair)", "padding": "12px 14px", "font-size": "16px", "resize": "none" })}" placeholder="Whatever comes to mind" data-v-5bf8a37b>${ssrInterpolate(unref(answers)[unref(current).id])}</textarea>`);
+          _push(`<textarea${ssrRenderAttr("id", unref(current)?.id)} rows="4" class="gf-input" style="${ssrRenderStyle({ "border": "1px solid var(--gf-hair)", "padding": "12px 14px", "font-size": "16px", "resize": "none" })}" placeholder="Whatever comes to mind" data-v-45c991f8>${ssrInterpolate(unref(answers)[unref(current).id])}</textarea>`);
         } else {
-          _push(`<input${ssrRenderAttr("id", unref(current)?.id)}${ssrRenderDynamicModel(unref(current)?.type === "number" ? "text" : "text", unref(answers)[unref(current).id], null)}${ssrRenderAttr("type", unref(current)?.type === "number" ? "text" : "text")}${ssrRenderAttr("inputmode", unref(current)?.type === "number" ? "numeric" : "text")} class="gf-input" data-v-5bf8a37b>`);
+          _push(`<input${ssrRenderAttr("id", unref(current)?.id)}${ssrRenderDynamicModel(unref(current)?.type === "number" ? "text" : "text", unref(answers)[unref(current).id], null)}${ssrRenderAttr("type", unref(current)?.type === "number" ? "text" : "text")}${ssrRenderAttr("inputmode", unref(current)?.type === "number" ? "numeric" : "text")} class="gf-input" data-v-45c991f8>`);
         }
         if (unref(fieldError)) {
-          _push(`<p class="text-[13px] mt-3" style="${ssrRenderStyle({ "color": "var(--gf-accent)" })}" role="alert" data-v-5bf8a37b>${ssrInterpolate(unref(fieldError))}</p>`);
+          _push(`<p class="text-[13px] mt-3" style="${ssrRenderStyle({ "color": "var(--gf-accent)" })}" role="alert" data-v-45c991f8>${ssrInterpolate(unref(fieldError))}</p>`);
         } else {
           _push(`<!---->`);
         }
-        _push(`</div><div class="mt-10 flex items-center gap-3" data-v-5bf8a37b>`);
+        _push(`</div><div class="mt-10 flex items-center gap-3" data-v-45c991f8>`);
         if (unref(step) > 0) {
-          _push(`<button class="px-5 py-3.5 text-[11px] uppercase tracking-[0.12em] font-semibold" style="${ssrRenderStyle({ "border": "1px solid var(--gf-hair)", "color": "var(--gf-muted)" })}" data-v-5bf8a37b> Back </button>`);
+          _push(`<button class="px-5 py-3.5 text-[11px] uppercase tracking-[0.12em] font-semibold" style="${ssrRenderStyle({ "border": "1px solid var(--gf-hair)", "color": "var(--gf-muted)" })}" data-v-45c991f8> Back </button>`);
         } else {
           _push(`<!---->`);
         }
-        _push(`<button${ssrIncludeBooleanAttr(unref(submitting)) ? " disabled" : ""} class="flex-1 px-6 py-3.5 text-[11px] uppercase tracking-[0.12em] font-semibold transition-opacity hover:opacity-90 disabled:opacity-50" style="${ssrRenderStyle({ background: "var(--gf-accent)", color: "var(--gf-bg)" })}" data-v-5bf8a37b>${ssrInterpolate(unref(submitting) ? "Sending…" : unref(isLast) ? "Send my answers" : "Next")}</button></div><button class="mt-4 gf-eyebrow transition-opacity hover:opacity-70" style="${ssrRenderStyle({ "color": "var(--gf-muted)" })}" data-v-5bf8a37b> Skip this one </button></div>`);
+        _push(`<button${ssrIncludeBooleanAttr(unref(submitting)) ? " disabled" : ""} class="flex-1 px-6 py-3.5 text-[11px] uppercase tracking-[0.12em] font-semibold transition-opacity hover:opacity-90 disabled:opacity-50" style="${ssrRenderStyle({ background: "var(--gf-accent)", color: "var(--gf-bg)" })}" data-v-45c991f8>${ssrInterpolate(unref(submitting) ? "Sending…" : unref(isLast) ? "Send my answers" : "Next")}</button></div><button class="mt-4 gf-eyebrow transition-opacity hover:opacity-70" style="${ssrRenderStyle({ "color": "var(--gf-muted)" })}" data-v-45c991f8> Skip this one </button></div>`);
       }
       _push(`</div>`);
     };
@@ -179,7 +179,7 @@ _sfc_main$7.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("components/app/Qualify.vue");
   return _sfc_setup$7 ? _sfc_setup$7(props, ctx) : void 0;
 };
-const __nuxt_component_0$2 = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$7, [["__scopeId", "data-v-5bf8a37b"]]), { __name: "AppQualify" });
+const __nuxt_component_0$2 = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$7, [["__scopeId", "data-v-45c991f8"]]), { __name: "AppQualify" });
 const _sfc_main$6 = {};
 function _sfc_ssrRender(_ctx, _push, _parent, _attrs) {
   _push(`<div${ssrRenderAttrs(mergeProps({
@@ -753,15 +753,15 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
   setup(__props) {
     const route = useRoute();
     const formId = route.params.id;
-    const qualifyToken = computed(() => String(route.query.t || ""));
+    const qualifyLeadId = computed(() => String(route.query.lead || ""));
     const isQualify = computed(
-      () => String(route.query.source || "") === "qualify" && qualifyToken.value.length > 0
+      () => String(route.query.source || "") === "qualify" && /^[a-f0-9]{24}$/i.test(qualifyLeadId.value)
     );
     return (_ctx, _push, _parent, _attrs) => {
       const _component_appQualify = __nuxt_component_0$2;
       const _component_appGhostForm = __nuxt_component_1;
       if (unref(isQualify)) {
-        _push(ssrRenderComponent(_component_appQualify, { token: unref(qualifyToken) }, null, _parent));
+        _push(ssrRenderComponent(_component_appQualify, { "lead-id": unref(qualifyLeadId) }, null, _parent));
       } else {
         _push(ssrRenderComponent(_component_appGhostForm, {
           routeData: unref(route).query,
@@ -777,7 +777,7 @@ _sfc_main.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("pages/index.vue");
   return _sfc_setup ? _sfc_setup(props, ctx) : void 0;
 };
-const index = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-c43f2e33"]]);
+const index = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-28825169"]]);
 
 export { index as default };
-//# sourceMappingURL=index-Cbz1X4Ug.mjs.map
+//# sourceMappingURL=index-Dksm4PBw.mjs.map

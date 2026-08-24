@@ -25,29 +25,6 @@ const leadSchema = new Schema({
     budget: Number,
     notes: String,
     seeing_an_agent: String,
-
-    // ── Qualification (the deep-dive questionnaire) ──────────────
-    // Sent once a lead gets serious. Answers are keyed by question id
-    // (q_timeline, q_financing, ...) — see server/utils/qualificationQuestions.ts
-    qualification: {
-      sentAt: Date,
-      completedAt: Date,
-      intent: String,              // 'buy' | 'sell'
-      answers: { type: Object, default: {} }
-    },
-    // Cached analysis so the dashboard doesn't re-run (and re-bill) the model
-    // on every page view. Regenerated only when asked or on new answers.
-    analysis: {
-      readiness: Number,
-      readinessLabel: String,
-      financingRisk: String,
-      signals: [String],
-      gaps: [String],
-      read: String,
-      nextSteps: [String],
-      source: String,
-      generatedAt: Date
-    },
     ai_analysis: String,
     status: { type: String, default: 'new' },
     date: { type: String, default: () => new Date().toISOString() },
@@ -61,21 +38,15 @@ const leadSchema = new Schema({
         type: Date,
         required: false
       },
-    // ============================================================
-    // Contact tracking — powers the daily "who to contact" briefing.
-    // lastContactedAt is stamped every time we email a lead (manual
-    // reminder, campaign blast) OR the realtor logs an outreach.
-    // Older leads created before this field existed fall back to
-    // createdAt / updatedAt inside the briefing engine.
-    // ============================================================
-    lastContactedAt: {
-        type: Date,
-        required: false,
-        index: true // Indexed so cold-lead scans stay fast at volume
-    },
-    contactCount: {
-        type: Number,
-        default: 0 // How many touches this lead has received from us
+
+    // Deep-dive questionnaire answers. Written by THIS app and read by the
+    // dashboard — both share one database, so there is no cross-origin call
+    // and no CORS involved.
+    qualification: {
+      sentAt: Date,
+      completedAt: Date,
+      intent: String,
+      answers: { type: Object, default: {} }
     }
 }, { timestamps: true }) // Automates true createdAt/updatedAt tracking lines
 

@@ -13,9 +13,9 @@ const formId = route.params.id;
  *     who's getting serious. Different audience, different question set, and
  *     it UPDATES an existing lead rather than creating one.
  */
-const qualifyToken = computed(() => String(route.query.t || ''));
+const qualifyLeadId = computed(() => String(route.query.lead || ''));
 const isQualify = computed(() =>
-  String(route.query.source || '') === 'qualify' && qualifyToken.value.length > 0
+  String(route.query.source || '') === 'qualify' && /^[a-f0-9]{24}$/i.test(qualifyLeadId.value)
 );
 
 
@@ -39,7 +39,7 @@ onMounted(() => {
 
 <template>
   <Transition name="ghost-modal">
-    <appQualify v-if="isQualify" :token="qualifyToken" />
+    <appQualify v-if="isQualify" :lead-id="qualifyLeadId" />
     <appGhostForm v-else :routeData="route.query" :id="formId" />
   </Transition>
 </template>

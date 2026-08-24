@@ -9,15 +9,14 @@
  * because the person answering is actively working with an agent and has a
  * reason to be thorough.
  *
- * Questions are FETCHED from the dashboard rather than defined here — two apps
- * holding diverging copies of the same definitions is a problem this project
- * has already hit once with the Lead model.
+ * Everything here is SAME-ORIGIN. An earlier version fetched from the
+ * dashboard, which required CORS and a preflight for no real benefit — both
+ * apps already share one database, so this app can serve the questions and
+ * write the answers itself.
  */
 import { validateField } from '~/utils/validation'
 
-const props = defineProps<{ token: string }>()
-
-const DASHBOARD = 'https://ghostform-dashboard.vercel.app'
+const props = defineProps<{ leadId: string }>()
 
 const loading = ref(true)
 const loadError = ref('')
@@ -40,7 +39,7 @@ const progress = computed(() =>
 
 onMounted(async () => {
   try {
-    const res = await $fetch<any>(`${DASHBOARD}/api/qualify/${encodeURIComponent(props.token)}`)
+    const res = await $fetch<any>(`/api/qualify/${props.leadId}`)
     firstName.value = res.firstName || ''
     questions.value = res.questions || []
     alreadyDone.value = Boolean(res.completed)
@@ -95,7 +94,7 @@ function skip() {
 async function submit() {
   submitting.value = true
   try {
-    await $fetch(`${DASHBOARD}/api/qualify/${encodeURIComponent(props.token)}`, {
+    await $fetch(`/api/qualify/${props.leadId}`, {
       method: 'POST',
       body: { answers: answers.value }
     })
