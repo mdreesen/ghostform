@@ -48,8 +48,8 @@ const hair = computed(() => isDark.value ? 'rgba(255,255,255,0.16)' : '#DDD6C9')
  * params the page was opened with.
  */
 const manifestHref = computed(() => {
-  const keep = ['category','source','id','company_name','company_email',
-                'calendar','address'];
+  const keep = ['category', 'source', 'id', 'company_name', 'company_email',
+    'calendar', 'address'];
   const p = new URLSearchParams();
   for (const k of keep) {
     const v = route.query[k];
