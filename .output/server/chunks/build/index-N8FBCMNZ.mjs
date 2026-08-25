@@ -484,14 +484,25 @@ class GhostFormQueueDB extends Dexie {
   queue;
   constructor() {
     super("GhostFormQueueDB");
-    this.version(1).stores({
-      queue: "++id, createdAt"
-    });
+    this.version(1).stores({ queue: "++id, createdAt" });
+    this.version(2).stores({ queue: "++id, createdAt" }).upgrade(
+      (tx) => tx.table("queue").toCollection().modify((r) => {
+        r.attempts = r.attempts ?? 0;
+      })
+    );
   }
 }
 const db = new GhostFormQueueDB();
+const MAX_ATTEMPTS = 8;
+const pendingCount = ref(0);
+const isSyncing = ref(false);
 function useFormOffline() {
-  const isSyncing = ref(false);
+  async function refreshCount() {
+    try {
+      pendingCount.value = await db.queue.count();
+    } catch {
+    }
+  }
   async function stageFormOffline(category, answers, company, imageFile) {
     try {
       await db.queue.add({
@@ -499,45 +510,70 @@ function useFormOffline() {
         answersJson: JSON.stringify({ ...answers, category }),
         companyJson: JSON.stringify(company),
         imageBlob: imageFile ? new Blob([imageFile], { type: imageFile.type }) : null,
-        createdAt: Date.now()
+        createdAt: Date.now(),
+        attempts: 0
       });
+      await refreshCount();
+      scheduleRetry(1500);
       return true;
     } catch (err) {
-      console.error("❌ IndexedDB staging pipeline broken:", err);
+      console.error("[offline] Could not stage lead:", err);
       return false;
     }
   }
   async function processOfflineQueue() {
-    if (isSyncing.value || !(void 0).onLine) return;
-    const items = await db.queue.orderBy("createdAt").toArray();
-    if (items.length === 0) return;
+    if (isSyncing.value) return;
+    let items;
+    try {
+      items = await db.queue.orderBy("createdAt").toArray();
+    } catch (err) {
+      console.error("[offline] Could not read queue:", err);
+      return;
+    }
+    const sendable = items.filter((i) => (i.attempts ?? 0) < MAX_ATTEMPTS);
+    pendingCount.value = items.length;
+    if (sendable.length === 0) {
+      return;
+    }
     isSyncing.value = true;
-    console.log(`🔄 Flushing local storage: ${items.length} items staged for delivery...`);
-    for (const record of items) {
+    let sentAny = false;
+    for (const record of sendable) {
       try {
         const fd = new FormData();
         fd.append("answers", new Blob([record.answersJson], { type: "application/json" }));
         fd.append("company", new Blob([record.companyJson], { type: "application/json" }));
-        if (record.imageBlob) {
-          fd.append("image", record.imageBlob, "offline_capture.jpg");
-        }
-        await $fetch("/api/lead", {
-          method: "POST",
-          body: fd
-        });
+        if (record.imageBlob) fd.append("image", record.imageBlob, "offline_capture.jpg");
+        await $fetch("/api/lead", { method: "POST", body: fd });
         await db.queue.delete(record.id);
-        console.log(`✅ Cached entry index #${record.id} securely transferred to database.`);
+        sentAny = true;
       } catch (err) {
-        console.error(`❌ Dispatch block failed for record #${record.id}:`, err);
-        break;
+        const status = err?.statusCode ?? err?.response?.status;
+        const permanent = typeof status === "number" && status >= 400 && status < 500;
+        await db.queue.update(record.id, {
+          attempts: (record.attempts ?? 0) + (permanent ? MAX_ATTEMPTS : 1),
+          lastError: String(err?.message || status || err).slice(0, 200)
+        });
+        if (!permanent) {
+          break;
+        }
       }
     }
     isSyncing.value = false;
+    await refreshCount();
+    if (pendingCount.value > 0) ;
+  }
+  function scheduleRetry(delay) {
+    return;
+  }
+  function bindTriggers() {
+    return;
   }
   return {
     stageFormOffline,
     processOfflineQueue,
-    isSyncing
+    bindTriggers,
+    isSyncing,
+    pendingCount
   };
 }
 const LAST_KEY = "ghostform:lastConfigId";
@@ -635,7 +671,7 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
     const userEmail = ref("");
     const showSuccess = ref(false);
     const isOnline = ref(true);
-    useFormOffline();
+    const { pendingCount: pendingCount2, isSyncing: isSyncing2 } = useFormOffline();
     const questions = computed(() => useQuestions(source));
     const handleImageSelection = async (file) => {
       loading.value = true;
@@ -670,17 +706,25 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
       const _component_baseError = __nuxt_component_2;
       const _component_appSuccess = __nuxt_component_3;
       let _temp0;
-      _push(`<div${ssrRenderAttrs(mergeProps({ class: "w-full max-w-[440px] mx-auto px-6 py-8 font-sans" }, _attrs))} data-v-d418c81b>`);
+      _push(`<div${ssrRenderAttrs(mergeProps({ class: "w-full max-w-[440px] mx-auto px-6 py-8 font-sans" }, _attrs))} data-v-023dbf66>`);
       if (notConfigured.value) {
-        _push(`<div class="text-center py-10" data-v-d418c81b><p class="gf-display text-[26px] mb-3" data-v-d418c81b>This form isn&#39;t set up yet</p><p class="text-[14px] leading-relaxed" style="${ssrRenderStyle({ "color": "var(--gf-muted)" })}" data-v-d418c81b> Open your GhostForm link once while you have signal. After that it works offline, and you can add it to your home screen. </p></div>`);
+        _push(`<div class="text-center py-10" data-v-023dbf66><p class="gf-display text-[26px] mb-3" data-v-023dbf66>This form isn&#39;t set up yet</p><p class="text-[14px] leading-relaxed" style="${ssrRenderStyle({ "color": "var(--gf-muted)" })}" data-v-023dbf66> Open your GhostForm link once while you have signal. After that it works offline, and you can add it to your home screen. </p></div>`);
       } else if (!aiResult.value) {
-        _push(`<div data-v-d418c81b><div class="flex items-center gap-2.5 mb-8" data-v-d418c81b><span class="gf-eyebrow" style="${ssrRenderStyle({ "color": "var(--gf-muted)" })}" data-v-d418c81b>`);
-        if (!isOnline.value) {
-          _push(`<!--[--><span class="w-1.5 h-1.5 rounded-full shrink-0" style="${ssrRenderStyle({ background: isOnline.value ? "var(--gf-accent)" : "var(--gf-muted)" })}" data-v-d418c81b></span><span data-v-d418c81b>Offline — saved and sent when signal returns</span><!--]-->`);
+        _push(`<div data-v-023dbf66><div class="flex items-center gap-2.5 mb-8" data-v-023dbf66><span class="gf-eyebrow flex items-center gap-2.5" style="${ssrRenderStyle({ "color": "var(--gf-muted)" })}" data-v-023dbf66>`);
+        if (unref(pendingCount2) > 0) {
+          _push(`<!--[--><span class="w-1.5 h-1.5 rounded-full shrink-0" style="${ssrRenderStyle({ background: "var(--gf-accent)" })}" data-v-023dbf66></span>`);
+          if (unref(isSyncing2)) {
+            _push(`<span data-v-023dbf66>Sending saved leads…</span>`);
+          } else {
+            _push(`<span data-v-023dbf66>${ssrInterpolate(unref(pendingCount2))} saved lead${ssrInterpolate(unref(pendingCount2) === 1 ? "" : "s")} waiting to send</span>`);
+          }
+          _push(`<!--]-->`);
+        } else if (!isOnline.value) {
+          _push(`<!--[--><span class="w-1.5 h-1.5 rounded-full shrink-0" style="${ssrRenderStyle({ background: "var(--gf-muted)" })}" data-v-023dbf66></span><span data-v-023dbf66>Offline — saved and sent when signal returns</span><!--]-->`);
         } else {
           _push(`<!---->`);
         }
-        _push(`</span></div><div class="flex items-baseline justify-between mb-3" data-v-d418c81b><span class="gf-eyebrow" style="${ssrRenderStyle({ "color": "var(--gf-muted)" })}" data-v-d418c81b>${ssrInterpolate(String(step.value + 1).padStart(2, "0"))} — ${ssrInterpolate(String(questions.value?.length || 0).padStart(2, "0"))}</span><span class="gf-eyebrow" style="${ssrRenderStyle({ "color": "var(--gf-muted)" })}" data-v-d418c81b>${ssrInterpolate(Math.round((step.value + 1) / (questions.value?.length || 1) * 100))}% </span></div><div class="h-px w-full mb-10" style="${ssrRenderStyle({ "background": "var(--gf-hair)" })}" data-v-d418c81b><div class="h-px transition-all duration-500 ease-out" style="${ssrRenderStyle({ width: `${(step.value + 1) / (questions.value?.length || 1) * 100}%`, background: "var(--gf-accent)" })}" data-v-d418c81b></div></div><div data-v-d418c81b><label${ssrRenderAttr("for", questions.value[step.value]?.id)} class="gf-display block text-[27px] leading-[1.2] mb-2" data-v-d418c81b>${ssrInterpolate(questions.value[step.value]?.label)}</label><p class="gf-eyebrow mb-6" style="${ssrRenderStyle({ "color": "var(--gf-muted)" })}" data-v-d418c81b>${ssrInterpolate(currentRequired.value ? "Required" : "Optional — skip if you like")}</p><input${ssrRenderAttrs((_temp0 = mergeProps({
+        _push(`</span></div><div class="flex items-baseline justify-between mb-3" data-v-023dbf66><span class="gf-eyebrow" style="${ssrRenderStyle({ "color": "var(--gf-muted)" })}" data-v-023dbf66>${ssrInterpolate(String(step.value + 1).padStart(2, "0"))} — ${ssrInterpolate(String(questions.value?.length || 0).padStart(2, "0"))}</span><span class="gf-eyebrow" style="${ssrRenderStyle({ "color": "var(--gf-muted)" })}" data-v-023dbf66>${ssrInterpolate(Math.round((step.value + 1) / (questions.value?.length || 1) * 100))}% </span></div><div class="h-px w-full mb-10" style="${ssrRenderStyle({ "background": "var(--gf-hair)" })}" data-v-023dbf66><div class="h-px transition-all duration-500 ease-out" style="${ssrRenderStyle({ width: `${(step.value + 1) / (questions.value?.length || 1) * 100}%`, background: "var(--gf-accent)" })}" data-v-023dbf66></div></div><div data-v-023dbf66><label${ssrRenderAttr("for", questions.value[step.value]?.id)} class="gf-display block text-[27px] leading-[1.2] mb-2" data-v-023dbf66>${ssrInterpolate(questions.value[step.value]?.label)}</label><p class="gf-eyebrow mb-6" style="${ssrRenderStyle({ "color": "var(--gf-muted)" })}" data-v-023dbf66>${ssrInterpolate(currentRequired.value ? "Required" : "Optional — skip if you like")}</p><input${ssrRenderAttrs((_temp0 = mergeProps({
           id: questions.value[step.value]?.id
         }, unref(inputAttrs)(questions.value[step.value]?.id, questions.value[step.value]?.type), {
           name: questions.value[step.value]?.id,
@@ -689,9 +733,9 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
           class: "gf-input",
           style: fieldError.value ? { borderBottomColor: "var(--gf-accent)" } : void 0,
           autofocus: ""
-        }), mergeProps(_temp0, ssrGetDynamicModelProps(_temp0, answers.value[questions.value[step.value]?.id]))))} data-v-d418c81b>`);
+        }), mergeProps(_temp0, ssrGetDynamicModelProps(_temp0, answers.value[questions.value[step.value]?.id]))))} data-v-023dbf66>`);
         if (fieldError.value) {
-          _push(`<p${ssrRenderAttr("id", `${questions.value[step.value]?.id}-error`)} class="text-[13px] mt-3 leading-relaxed" style="${ssrRenderStyle({ "color": "var(--gf-accent)" })}" role="alert" data-v-d418c81b>${ssrInterpolate(fieldError.value)}</p>`);
+          _push(`<p${ssrRenderAttr("id", `${questions.value[step.value]?.id}-error`)} class="text-[13px] mt-3 leading-relaxed" style="${ssrRenderStyle({ "color": "var(--gf-accent)" })}" role="alert" data-v-023dbf66>${ssrInterpolate(fieldError.value)}</p>`);
         } else {
           _push(`<!---->`);
         }
@@ -701,20 +745,20 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
         } else {
           _push(`<!---->`);
         }
-        _push(`<div class="mt-10" data-v-d418c81b><div class="flex items-center gap-3" data-v-d418c81b>`);
+        _push(`<div class="mt-10" data-v-023dbf66><div class="flex items-center gap-3" data-v-023dbf66>`);
         if (step.value > 0) {
-          _push(`<button class="px-5 py-3.5 text-[11px] uppercase tracking-[0.12em] font-semibold transition-colors" style="${ssrRenderStyle({ "border": "1px solid var(--gf-hair)", "color": "var(--gf-muted)" })}" data-v-d418c81b> Back </button>`);
+          _push(`<button class="px-5 py-3.5 text-[11px] uppercase tracking-[0.12em] font-semibold transition-colors" style="${ssrRenderStyle({ "border": "1px solid var(--gf-hair)", "color": "var(--gf-muted)" })}" data-v-023dbf66> Back </button>`);
         } else {
           _push(`<!---->`);
         }
-        _push(`<button class="flex-1 px-6 py-3.5 text-[11px] uppercase tracking-[0.12em] font-semibold transition-opacity hover:opacity-90" style="${ssrRenderStyle({ background: "var(--gf-accent)", color: "var(--gf-bg)" })}" data-v-d418c81b>${ssrInterpolate(step.value === questions.value?.length - 1 ? "Send it" : "Next")}</button></div>`);
+        _push(`<button class="flex-1 px-6 py-3.5 text-[11px] uppercase tracking-[0.12em] font-semibold transition-opacity hover:opacity-90" style="${ssrRenderStyle({ background: "var(--gf-accent)", color: "var(--gf-bg)" })}" data-v-023dbf66>${ssrInterpolate(step.value === questions.value?.length - 1 ? "Send it" : "Next")}</button></div>`);
         if (unref(use_image_upload)) {
-          _push(`<button class="mt-4 gf-eyebrow transition-opacity hover:opacity-70" style="${ssrRenderStyle({ "color": "var(--gf-muted)" })}" data-v-d418c81b>${ssrInterpolate(useUploadImage.value ? "— Cancel upload" : "+ Add a photo")}</button>`);
+          _push(`<button class="mt-4 gf-eyebrow transition-opacity hover:opacity-70" style="${ssrRenderStyle({ "color": "var(--gf-muted)" })}" data-v-023dbf66>${ssrInterpolate(useUploadImage.value ? "— Cancel upload" : "+ Add a photo")}</button>`);
         } else {
           _push(`<!---->`);
         }
         if (useUploadImage.value) {
-          _push(`<div class="mt-5" data-v-d418c81b>`);
+          _push(`<div class="mt-5" data-v-023dbf66>`);
           _push(ssrRenderComponent(_component_appImageUpload, { onFileSelected: handleImageSelection }, null, _parent));
           _push(`</div>`);
         } else {
@@ -722,7 +766,7 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
         }
         _push(`</div>`);
         if (setError.value) {
-          _push(`<div class="mt-6" data-v-d418c81b>`);
+          _push(`<div class="mt-6" data-v-023dbf66>`);
           _push(ssrRenderComponent(_component_baseError, {
             message: unref(errors)(setError.value)
           }, null, _parent));
@@ -732,7 +776,7 @@ const _sfc_main$1 = /* @__PURE__ */ defineComponent({
         }
         _push(`</div>`);
       } else {
-        _push(`<div data-v-d418c81b>`);
+        _push(`<div data-v-023dbf66>`);
         _push(ssrRenderComponent(_component_appSuccess, {
           show: showSuccess.value,
           email: userEmail.value,
@@ -750,7 +794,7 @@ _sfc_main$1.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("components/app/GhostForm.vue");
   return _sfc_setup$1 ? _sfc_setup$1(props, ctx) : void 0;
 };
-const __nuxt_component_1 = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$1, [["__scopeId", "data-v-d418c81b"]]), { __name: "AppGhostForm" });
+const __nuxt_component_1 = /* @__PURE__ */ Object.assign(_export_sfc(_sfc_main$1, [["__scopeId", "data-v-023dbf66"]]), { __name: "AppGhostForm" });
 const _sfc_main = /* @__PURE__ */ defineComponent({
   __name: "index",
   __ssrInlineRender: true,
@@ -758,7 +802,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     const route = useRoute();
     const formId = route.params.id;
     const qualifyLeadId = computed(() => String(route.query.lead || ""));
-    const isQualify = computed(() => route.query.source.includes("qualify"));
+    const isQualify = computed(() => route.query?.source?.includes("qualify"));
     return (_ctx, _push, _parent, _attrs) => {
       const _component_appQualify = __nuxt_component_0$2;
       const _component_appGhostForm = __nuxt_component_1;
@@ -779,7 +823,7 @@ _sfc_main.setup = (props, ctx) => {
   (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("pages/index.vue");
   return _sfc_setup ? _sfc_setup(props, ctx) : void 0;
 };
-const index = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-3d33b8e0"]]);
+const index = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-3690e37b"]]);
 
 export { index as default };
-//# sourceMappingURL=index-C0Ne_MKw.mjs.map
+//# sourceMappingURL=index-N8FBCMNZ.mjs.map

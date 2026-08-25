@@ -47,28 +47,30 @@ const showSuccess = ref(false);
 
 // Modern Network Connection Listener 
 const isOnline = ref(true)
-const { stageFormOffline, processOfflineQueue } = useFormOffline()
+const { stageFormOffline, processOfflineQueue, bindTriggers, pendingCount, isSyncing } = useFormOffline()
 
 function checkNetwork() {
   isOnline.value = navigator.onLine
-  if (isOnline.value) {
-    processOfflineQueue() // Instantly attempt to fire queued requests on link up
-  }
 }
 
 onMounted(() => {
-  if (process.client) {
+  if (import.meta.client) {
     isOnline.value = navigator.onLine
     window.addEventListener('online', checkNetwork)
     window.addEventListener('offline', checkNetwork)
 
-    // Initial clean sweep run on load context
-    if (isOnline.value) processOfflineQueue()
+    // The composable owns retries now: it binds online / focus /
+    // visibilitychange / pageshow and runs a backoff timer while anything is
+    // queued. Previously the only flush triggers were the `online` event and
+    // onMounted — and iOS frequently fires neither when you come back from
+    // airplane mode, which is why nothing sent until the form was reopened.
+    bindTriggers()
+    processOfflineQueue()
   }
 })
 
 onBeforeUnmount(() => {
-  if (process.client) {
+  if (import.meta.client) {
     window.removeEventListener('online', checkNetwork)
     window.removeEventListener('offline', checkNetwork)
   }
@@ -223,10 +225,18 @@ const submitForm = async () => {
       <!-- Connection state. Shown BEFORE signal is lost so the realtor
                  trusts that a capture will survive a dead zone. -->
       <div class="flex items-center gap-2.5 mb-8">
-        <span class="gf-eyebrow" style="color: var(--gf-muted)">
-          <template v-if="!isOnline">
+        <span class="gf-eyebrow flex items-center gap-2.5" style="color: var(--gf-muted)">
+          <!-- Anything still queued takes priority: a realtor should never
+               have to wonder whether a captured lead actually went. -->
+          <template v-if="pendingCount > 0">
             <span class="w-1.5 h-1.5 rounded-full shrink-0"
-              :style="{ background: isOnline ? 'var(--gf-accent)' : 'var(--gf-muted)' }" />
+              :style="{ background: 'var(--gf-accent)' }" />
+            <span v-if="isSyncing">Sending saved leads…</span>
+            <span v-else>{{ pendingCount }} saved lead{{ pendingCount === 1 ? '' : 's' }} waiting to send</span>
+          </template>
+          <template v-else-if="!isOnline">
+            <span class="w-1.5 h-1.5 rounded-full shrink-0"
+              :style="{ background: 'var(--gf-muted)' }" />
             <span>Offline — saved and sent when signal returns</span>
           </template>
         </span>
