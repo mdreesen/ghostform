@@ -449,7 +449,7 @@ const open_house = [
   { id: "email", label: "What's your email?", type: "text" },
   { id: "phone", label: "What's your phone number?", type: "text" },
   { id: "best_communication_method", label: "Best way to contact you?", type: "text" },
-  { id: "seeing_an_agent", label: "Are you currently seeing an agent?", type: "text" },
+  { id: "seeing_an_agent", label: "Are you currently working with an agent?", type: "text" },
   { id: "notes", label: "Other things to note?", type: "text" }
 ];
 const data_active = [
@@ -826,4 +826,4 @@ _sfc_main.setup = (props, ctx) => {
 const index = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-3690e37b"]]);
 
 export { index as default };
-//# sourceMappingURL=index-N8FBCMNZ.mjs.map
+//# sourceMappingURL=index-mTpKF3l7.mjs.map

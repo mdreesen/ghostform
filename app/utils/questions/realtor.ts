@@ -37,7 +37,7 @@ export const open_house = [
     { id: 'email', label: "What's your email?", type: 'text' },
     { id: 'phone', label: "What's your phone number?", type: 'text' },
     { id: 'best_communication_method', label: "Best way to contact you?", type: 'text' },
-    { id: 'seeing_an_agent', label: "Are you currently seeing an agent?", type: 'text' },
+    { id: 'seeing_an_agent', label: "Are you currently working with an agent?", type: 'text' },
     { id: 'notes', label: "Other things to note?", type: 'text' },
 ];
 
