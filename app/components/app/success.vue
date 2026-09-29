@@ -52,10 +52,15 @@ watch(() => props.show, (newVal) => {
 
             <h3 class="gf-display text-[28px] mb-3">Thank you</h3>
 
-            <p class="text-[14.5px] leading-relaxed mb-9 max-w-[34ch] mx-auto" style="color: var(--gf-muted)">
+            <!-- A phone-only lead gets no confirmation email, so promising one
+                 would be a lie on the first thing they ever see from us. -->
+            <p v-if="email" class="text-[14.5px] leading-relaxed mb-9 max-w-[34ch] mx-auto" style="color: var(--gf-muted)">
                 We've sent a confirmation to
                 <span :style="{ color: 'var(--gf-fg)' }">{{ email }}</span>.
                 You'll hear back shortly.
+            </p>
+            <p v-else class="text-[14.5px] leading-relaxed mb-9 max-w-[34ch] mx-auto" style="color: var(--gf-muted)">
+                Your details are with us. You'll hear back shortly.
             </p>
 
             <div v-if="calendar" class="pt-7" style="border-top: 1px solid var(--gf-hair)">

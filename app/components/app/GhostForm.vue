@@ -6,7 +6,7 @@ import { errors } from '~/lib/errors';
 import { useQuestions } from '~/composables/useQuestions';
 import { useFormOffline } from '~/composables/useOffline';
 import { useFormConfig } from '~/composables/useFormConfig';
-import { validateField, isRequired, inputAttrs } from '~/utils/validation';
+import { validateField, isRequired, inputAttrs, validateContactPair } from '~/utils/validation';
 // Example configured link:
 // /?category=realtor&source=default&id=<userId>&company_name=<hash>&company_email=<hash>&calendar=<url>&background_color=#09090B&font_color=#FFFFFF
 // http://localhost:3000/?category=realtor&source=default&id=6a037a5ef945b9b2ca73a93d&company_name=$2b$15$eXsdK5TP.TC/M8QXsUuwh.bddChSOn8vckNGoWzXljfIktJ9Zs80y&company_email=$2b$15$8kJfxGFr8anR5xLRxFSIeO8KnG2zH4asf27ZpRjz1X6xhFcmFORCq&calendar=https://calendly.com/whiteravendev90/30min&background_color=#09090B&font_color=#FFFFFF
@@ -123,7 +123,32 @@ watch(step, () => {
 
 const nextStep = () => {
   const field = currentField.value;
-  const result = validateField(field?.id, answers.value[field?.id]);
+  let result = validateField(field?.id, answers.value[field?.id]);
+
+  /**
+   * EMAIL AND PHONE ARE A PAIR.
+   *
+   * Either is fine, neither is not. Neither field is required on its own, so
+   * the check has to happen when leaving the SECOND of the two — otherwise
+   * someone skips email, skips phone, and reaches the end uncontactable.
+   *
+   * Caught here rather than at submit so they fix it while they're still on
+   * the field, not after answering everything else.
+   */
+  if ((field?.id === 'email' || field?.id === 'phone') && result.valid) {
+    const other = field.id === 'email' ? 'phone' : 'email';
+    const otherIsLater = questions?.value?.findIndex((q: any) => q.id === other) > step.value;
+    const thisOneBlank = !String(answers.value[field.id] ?? '').trim();
+    const otherBlank = !String(answers.value[other] ?? '').trim();
+
+    // Only enforce once the other field has been seen, or doesn't exist.
+    if (thisOneBlank && otherBlank && !otherIsLater) {
+      result = {
+        valid: false,
+        message: 'Please leave an email address or a phone number so we can get back to you.'
+      };
+    }
+  }
 
   if (!result.valid) {
     touched.value = true;
@@ -144,6 +169,20 @@ const nextStep = () => {
 }
 
 const submitForm = async () => {
+  /**
+   * Backstop. The step check above catches the normal path, but a lead who
+   * navigates back and clears a field could otherwise slip through — and a
+   * submission with no way to contact them is worth nothing to the realtor.
+   */
+  const pair = validateContactPair(answers.value as Record<string, unknown>);
+  if (!pair.valid) {
+    const back = questions?.value?.findIndex((q: any) => q.id === 'email' || q.id === 'phone');
+    if (back >= 0) step.value = back;
+    touched.value = true;
+    fieldError.value = pair.message || 'Please leave a way to contact you.';
+    return;
+  }
+
   loading.value = true
   setError.value = ''
 

@@ -2,11 +2,9 @@ export type FieldRule = 'email' | 'phone' | 'name' | 'number' | 'none'
 
 /** Which fields must be answered, and how each is checked. */
 export const FIELD_RULES: Record<string, { required: boolean; rule: FieldRule }> = {
-  // The email IS the lead — without it the realtor can't follow up and the
-  // server rejects the submission outright.
-  email: { required: true, rule: 'email' },
+
+  email: { required: false, rule: 'email' },
   name: { required: true, rule: 'name' },
-  // Optional, but if they typed something it should be dialable.
   phone: { required: false, rule: 'phone' },
   age: { required: false, rule: 'number' },
   price: { required: false, rule: 'number' },
@@ -36,6 +34,37 @@ function digitCount(value: string): number {
 export interface ValidationResult {
   valid: boolean
   message?: string
+}
+
+/**
+ * The pair check.
+ *
+ * validateField() looks at one field at a time and so cannot express "one of
+ * these two". This runs once before submit, and is the only thing standing
+ * between a realtor and a lead they can't contact.
+ */
+export function validateContactPair(answers: Record<string, unknown>): ValidationResult {
+  const email = (answers.email ?? '').toString().trim()
+  const phone = (answers.phone ?? '').toString().trim()
+
+  if (!email && !phone) {
+    return {
+      valid: false,
+      message: 'Please leave an email address or a phone number so we can get back to you.'
+    }
+  }
+
+  // Whichever they gave still has to be usable. A typo'd email with no phone
+  // is the same as no contact detail at all.
+  if (email && !phone) return validateField('email', email)
+  if (phone && !email) return validateField('phone', phone)
+
+  // Both given: each must be valid if present, but one bad entry shouldn't
+  // block a submission when the other is fine.
+  const e = validateField('email', email)
+  const p = validateField('phone', phone)
+  if (!e.valid && !p.valid) return e
+  return { valid: true }
 }
 
 export function validateField(fieldId: string, raw: unknown): ValidationResult {
